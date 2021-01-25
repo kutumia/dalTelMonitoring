@@ -1,0 +1,190 @@
+<%- include('../includesMonitoring/header')-%>
+        <div class="wrapper">
+
+            <div class="page-wrap">
+              <%- include('../includesMonitoring/sidebar')-%>
+
+                
+                <div class="main-content">
+                    <div class="container-fluid">
+            
+            
+                        <div class="container">
+                            <table class="table table-bordered table-striped" id="tblCustomers" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <tr>
+                                    <th>উপজেলা</thtable>
+                                    <th>মাঠ প্রদর্শনী</th>
+                                    <th>মাঠ দিবস</th>
+                                    <th>কৃষক প্রশিক্ষণ</th>
+                                    <th>কৃষি মেলা</th>
+                                    <th>কৃষক পুরষকার বিতরণ দিবস</th>
+                                    <th>এলএলপি বিতরণ</th>
+                                    <th>সৌর আলোর ফাদ বিতরণ</th>
+                                    <th>সামগ্রিক অগ্রগতী</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    <tr>
+                                        <td style="text-align:justify">বরিশাল সদর</td>
+                                        <td > <label for="cars">১/৬</label>
+                                            <select name="cars" id="cars">
+                                                <option value="volvo">-</option>
+                                              <option value="volvo">মাঠ প্রদর্শনী-১</option>
+                                              <option value="volvo">মাঠ প্রদর্শনী-২</option>
+                                              <option value="volvo">মাঠ প্রদর্শনী-৩</option>
+                                              <option value="volvo">মাঠ প্রদর্শনী-৪</option>
+                                              <option value="volvo">মাঠ প্রদর্শনী-৫</option>
+                                              <option value="volvo">মাঠ প্রদর্শনী-৬</option>
+                                            </select>
+                                        </td>
+                                        <td >১/৪</td>
+                                        <td >৩/৩</td>
+                                        <td >৪/৫</td>
+                                        <td >১/৫</td>
+                                        <td >১/৩</td>
+                                        <td >০/২</td>
+                                        <td id="piechart" >১২/২৮
+                                           
+            
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            
+            <script type="text/javascript">
+            // Load google charts
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            
+            // Draw the chart and set the chart values
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+              ['Task', 'Hours per Day'],
+              ['মাঠ প্রদর্শনী', 8],
+              ['মাঠ দিবস', 2],
+              ['কৃষক প্রশিক্ষণ', 4],
+              ['কৃষি মেলা', 2],
+              ['কৃষক পুরষকার বিতরণ দিবস', 8],
+              ['সৌর আলোর ফাদ বিতরণ', 2],
+              ['সামগ্রিক অগ্রগতী', 8]
+            ]);
+            
+              // Optional; add a title and set the width and height of the chart
+              var options = {'title':'১০/২৮', 'width':250, 'height':150};
+            
+              // Display the chart inside the <div> element with id="piechart"
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+            }
+            </script>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>বাবুগঞ্জ</td>
+                                        <td >১/৬</td>
+                                        <td >২/৪</td>
+                                        <td >৩/৩</td>
+                                        <td >৪/৫</td>
+                                        <td >৫/৫</td>
+                                        <td >২/৩</td>
+                                        <td >১/২</td>
+                                        <td >১০/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>উজিরপুর</td>
+                                        <td >৩/৬</td>
+                                        <td >৪/৪</td>
+                                        <td >২/৩</td>
+                                        <td >২/৫</td>
+                                        <td >৩/৫</td>
+                                        <td >২/৩</td>
+                                        <td >১/২</td>
+                                        <td >১৬/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>বাকেরগঞ্জ</td>
+                                        <td >৬/৬</td>
+                                        <td >৪/৪</td>
+                                        <td >২/৩</td>
+                                        <td >২/৫</td>
+                                        <td >৪/৫</td>
+                                        <td >২/৩</td>
+                                        <td >১/২</td>
+                                        <td >২০/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>বানারীপাড়া</td>
+                                        <td >৩/৬</td>
+                                        <td >২/৪</td>
+                                        <td >১/৩</td>
+                                        <td >২/৫</td>
+                                        <td >৪/৫</td>
+                                        <td >২/৩</td>
+                                        <td >১/২</td>
+                                        <td >১৮/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>গৌরনদী</td>
+                                        <td >১/৬</td>
+                                        <td >২/৪</td>
+                                        <td >৩/৩</td>
+                                        <td >৪/৫</td>
+                                        <td >২/৫</td>
+                                        <td >১/৩</td>
+                                        <td >১/২</td>
+                                        <td >১০/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>আগইলঝড়া</td>
+                                        <td >১/৬</td>
+                                        <td >২/৪</td>
+                                        <td >৩/৩</td>
+                                        <td >৪/৫</td>
+                                        <td >৫/৫</td>
+                                        <td >১/৩</td>
+                                        <td >২/২</td>
+                                        <td >১৩/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>মুলাদী</td>
+                                        <td >১/৬</td>
+                                        <td >২/৪</td>
+                                        <td >৩/৩</td>
+                                        <td >৪/৫</td>
+                                        <td >৫/৫</td>
+                                        <td >২/৩</td>
+                                        <td >২/২</td>
+                                        <td >১৭/২৮</td>
+                                    </tr>
+            
+                                    <tr>
+                                        <td>হিজলা</td>
+                                        <td >২/৬</td>
+                                        <td >১/৪</td>
+                                        <td >৩/৩</td>
+                                        <td >৪/৫</td>
+                                        <td >১/৫</td>
+                                        <td >১/৩</td>
+                                        <td >০/২</td>
+                                        <td >১২/২৮</td>
+                                    </tr>
+                                    <tr>
+                                        <td>মেহেন্দীগঞ্জ</td>
+                                        <td >১/৬</td>
+                                        <td >১/৪</td>
+                                        <td >১/৩</td>
+                                        <td >১/৫</td>
+                                        <td >১/৫</td>
+                                        <td >০/৩</td>
+                                        <td >০/২</td>
+                                        <td >৫/২৮</td>
+                                    </tr>
+                                    
+                                    
+                                
+                                </tbody>
+                </div>
+                        </div>
+            </div>
+        </div>
+        
+        <%- include('../includesMonitoring/footer')-%>
