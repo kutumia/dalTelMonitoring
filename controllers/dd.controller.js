@@ -95,15 +95,9 @@ module.exports.ddDashboard = async(req,res) => {
 
 //signUp controller
 module.exports.ddsignup=async(req,res)=>{
-    await ad.findAll()
-    .then(data => {
-        console.log("inside");
-        res.render('dd/signup', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'',records: data });
-    })
-    .catch(err => {
-        console.log("outside");
-        res.render('dd/signup', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'',records: err });
-    })
+
+        res.render('dd/signup', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'' });
+   
 };
 module.exports.ddsignuppost=async(req,res)=>{
     try {
