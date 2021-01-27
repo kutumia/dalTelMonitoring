@@ -21,7 +21,6 @@ const express = require('express');
 
 module.exports.pdlogin=async(req,res)=>{
     res.render('pd/login', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'' });
-    res.send("log");
 };
 
 module.exports.pdloginpost=async(req,res)=>{
