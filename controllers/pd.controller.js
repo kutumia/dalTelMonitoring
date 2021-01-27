@@ -598,7 +598,16 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
 
 //activities
 module.exports.activities = async(req,res) => {
-    res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'' })
+    try {
+        const activitiess = await activities.findAll({
+            include: [upazilla]
+        })
+        console.log("activities",activitiess)
+        res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'' })
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
 module.exports.addActivities = async(req,res) => {
     try{
