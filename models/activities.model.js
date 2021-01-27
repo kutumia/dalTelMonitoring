@@ -32,7 +32,10 @@ module.exports = (sequelize, Sequelize) => {
         dd_id : {
             type: Sequelize.INTEGER
         },
-        timeFrame : {
+        start_time : {
+            type: Sequelize.STRING
+        },
+        end_time : {
             type: Sequelize.STRING
         }
     });
