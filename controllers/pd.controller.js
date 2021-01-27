@@ -613,7 +613,19 @@ module.exports.addActivities = async(req,res) => {
 module.exports.postActivities = async (req,res) => {
     try{
         const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazilla_id} = req.body;
-        console.log("post field",req.body.field_day)
+
+        const upazillaInfo = await upazilla.findByPk(upazilla_id)
+
+        var startRange = "";
+        var endRange = "";
+        if (res.locals.moment().format("M") < 7) {
+            startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+            endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+        } else {
+            startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+            endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+        }
+
         const activityPost = await activities.create({
             field_exhibition,
             field_day,
@@ -622,9 +634,12 @@ module.exports.postActivities = async (req,res) => {
             farmer_awards,
             llP_distribution,
             solarlight_trap,
-            upazilla_id
+            upazilla_id,
+            dd_id: upazillaInfo.dd_id,
+            start_time : startRange,
+            end_time : endRange
         })
-        console.log(activityPost)
+
         res.redirect('/pd/activities')
     }
     catch (e) {

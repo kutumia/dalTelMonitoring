@@ -9,6 +9,7 @@ const saaoTraining = db.saaoTraining;
 const review = db.review;
 const bij = db.bij;
 const motivational = db.motivational;
+const Activities = db.activities;
 
 const multer = require("multer");
 const path = require("path");
@@ -138,7 +139,6 @@ var uploadmotivational = multer({
   storage: storagemotivational,
 }).single("newsUp");
 exports.uploadmotivational = uploadmotivational;
-
 
 //logIn controller start
 module.exports.upazillatable = async (req, res) => {
@@ -319,6 +319,7 @@ module.exports.dashboardMonitoring = async (req, res) => {
 
 //fieldDay controller
 module.exports.fieldDay = async (req, res) => {
+  
   await fieldDay
     .findAll({
       where: { upazilla: req.session.user_id },
@@ -367,11 +368,14 @@ module.exports.fieldDayYear = async (req, res) => {
 };
 
 module.exports.fieldDayForm = async (req, res) => {
+  const fieldDayActivities = await Activities.findAll({});
+//   console.log(fieldDayActivities);
   res.render("upazilla/fieldDay/fieldDayForm", {
-    title: "মাঠ দিবস ",
+    title: "মাঠ দিবস",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: fieldDayActivities
   });
 };
 
@@ -575,7 +579,7 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
 };
 //farmerPrize controller ends
 
-//saaoTraining controller
+//saaoTraining controller --------------------------------------
 module.exports.saaoTraining = async (req, res) => {
   await saaoTraining
     .findAll({
@@ -658,9 +662,9 @@ module.exports.saaoTrainingFormPost = async (req, res) => {
     console.log("file not uploaded successfully");
   }
 };
-//saaoTraining controller ends
+//saaoTraining controller ends ----------------------------------
 
-//review controller
+//review controller----------------------------------------------
 module.exports.review = async (req, res) => {
   await review
     .findAll({
@@ -743,9 +747,9 @@ module.exports.reviewFormPost = async (req, res) => {
     console.log("file not uploaded successfully");
   }
 };
-//review controller ends
+//review controller ends----------------------------------------
 
-//bij controller
+//bij controller-----------------------------------------------
 module.exports.bij = async (req, res) => {
   await bij
     .findAll({
@@ -828,7 +832,7 @@ module.exports.bijFormPost = async (req, res) => {
     console.log("file not uploaded successfully");
   }
 };
-//bij controller ends
+//bij controller ends--------------------------------------------
 
 //motivational controller
 module.exports.motivational = async (req, res) => {

@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(function (req, res, next) {
   res.locals.type = req.session.type;
   res.locals.user_id = req.session.user_id;
+  res.locals.moment = require("moment");
   next();
 });
 
