@@ -1,3 +1,4 @@
+var Upazilla = require('./upazilla.model');
 module.exports = (sequelize, Sequelize) => {
     const activities = sequelize.define("activities", {
         id: {
@@ -27,9 +28,13 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         upazilla_id : {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            reference:{
+                model: Upazilla,
+                key: 'id'
+            }
         },
-        dd_id : {
+        dd_id:{
             type: Sequelize.INTEGER
         },
         start_time : {
