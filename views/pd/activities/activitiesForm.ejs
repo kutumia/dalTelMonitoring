@@ -1,0 +1,104 @@
+<%- include('../../includesMonitoring/header')-%>
+<div class="wrapper">
+    <%- include('../../includesMonitoring/topbar')-%>
+    <div class="page-wrap">
+        <%- include('../../includesMonitoring/sidebar')-%>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div id="signupbox" style="margin-top:50px" class="mainbox col-md-12 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="panel-title text-center">
+                                    <h2>কৃষক পুরষ্কার তথ্য যোগ</h2>
+                                </div>
+                                <p><%
+                                    if(success !=''){ %>
+                                        <%= success %>
+                                    <% } %>
+                                </p>
+                            </div>
+                            <div class="panel-body" >
+                                <form action="/pd/postActivities" id="FieldTrialForm" class="form-horizontal" method="post"  role="form">
+                                    <div id="signupalert" style="display:none" class="alert alert-danger">
+                                        <p>Error:</p>
+                                        <span></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleFormControlSelect1" class="col-md-3">উপজেলা</label>
+                                        <select class="form-control" id="exampleFormControlSelect1" name="upazilla_id">
+                                            <option> Choose an উপজেলা </option>
+                                            <% upazillas.map((upazilla,key) => { %>
+                                                 <option value=<%= upazilla.id %> > <%= key+1 %> . <%= upazilla.uname %> </option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-md-3 control-label">মাঠ প্রদর্শনী</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="field_exhibition" placeholder="মাঠ প্রদর্শনী">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description" class="col-md-3 control-label">মাঠ দিবস</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="field_day" placeholder="মাঠ দিবস">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="date" class="col-md-3 control-label">কৃষক প্রশিক্ষণ</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="farmer_training" placeholder="কৃষক প্রশিক্ষণ">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">কৃষি মেলা</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="agricultural_fair" placeholder="কৃষি মেলা">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="year" class="col-md-3 control-label">কৃষক পুরষকার বিতরণ দিবস</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="farmer_awards" placeholder="কৃষক পুরষকার বিতরণ দিবস">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="year" class="col-md-3 control-label">এলএলপি বিতরণ</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="llP_distribution" placeholder="এলএলপি বিতরণ" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="year" class="col-md-3 control-label">সৌর আলোর ফাদ বিতরণ</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="solarlight_trap" placeholder="সৌর আলোর ফাদ বিতরণ" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- Button -->
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <input type="submit" name="submit" value="submit" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../includesMonitoring/footer')-%>

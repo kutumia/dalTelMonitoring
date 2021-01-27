@@ -9,6 +9,7 @@ const saaoTraining = db.saaoTraining;
 const review = db.review;
 const bij = db.bij;
 const motivational = db.motivational;
+const activities = db.activities;
 
 
 const jwt= require('jsonwebtoken');
@@ -131,13 +132,6 @@ module.exports.pdsignuppost=async(req,res)=>{
     } 
 };
 //signUp controller end
-
-
-////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////
-///////////////////////////////////////////
-///////////////////Monitoring?????????????????????/////////
-///////////////////////////////////////////////////////////////
 
 //dashboard controller
 module.exports.dashboardMonitoring = async(req,res) => {
@@ -603,3 +597,38 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
 };
 //motivational controller ends
 
+//activities
+module.exports.activities = async(req,res) => {
+    res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'' })
+}
+module.exports.addActivities = async(req,res) => {
+    try{
+        const upazillas = await upazilla.findAll()
+        res.render('pd/activities/activitiesForm',{ title: 'Form',success:'', upazillas: upazillas })
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+module.exports.postActivities = async (req,res) => {
+    try{
+        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazilla_id} = req.body;
+        console.log("post field",req.body.field_day)
+        const activityPost = await activities.create({
+            field_exhibition,
+            field_day,
+            farmer_training,
+            agricultural_fair,
+            farmer_awards,
+            llP_distribution,
+            solarlight_trap,
+            upazilla_id
+        })
+        console.log(activityPost)
+        res.redirect('/pd/activities')
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+//activities

@@ -30,5 +30,6 @@ db.motivational = require("./motivational.model.js")(sequelize, Sequelize);
 db.farmerPrize = require("./farmerPrize.model.js")(sequelize, Sequelize);
 db.review = require("./review.model.js")(sequelize, Sequelize);
 db.saaoTraining = require("./saaoTraining.model.js")(sequelize, Sequelize);
+db.activities = require("./activities.model")(sequelize,Sequelize);
 
 module.exports = db;
