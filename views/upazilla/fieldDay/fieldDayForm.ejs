@@ -34,7 +34,7 @@
                                                 </option>
                                                 <% activities.forEach((activity) => { 
                                                     for(let step=0; step< parseInt( activity.field_day ); step++) { %>
-                                                        <option value= <%=title%> <%=step+1%> > <%=title%> <%=step+1%> </option>
+                                                        <option value= <%= title %>-<%= step+1 %> > <%=title%> <%=step+1%> </option>
                                                     <% }
                                                  }); %> 
                                             </select>

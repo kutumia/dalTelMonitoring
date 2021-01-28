@@ -371,7 +371,7 @@ module.exports.fieldDayForm = async (req, res) => {
   const fieldDayActivities = await Activities.findAll({});
 //   console.log(fieldDayActivities);
   res.render("upazilla/fieldDay/fieldDayForm", {
-    title: "মাঠ দিবস",
+    title: "মাঠ-দিবস",
     msg: "",
     success: "",
     user_id: req.session.user_id,
