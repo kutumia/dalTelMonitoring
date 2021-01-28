@@ -404,6 +404,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
       .catch((err) => {
         console.log("file not uploaded successfully");
       });
+      
   } else {
     console.log("file not uploaded successfully");
   }
