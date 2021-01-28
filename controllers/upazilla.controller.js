@@ -367,9 +367,26 @@ module.exports.fieldDayYear = async (req, res) => {
     });
 };
 
+//fieldDayForm GET
 module.exports.fieldDayForm = async (req, res) => {
-  const fieldDayActivities = await Activities.findAll({});
-//   console.log(fieldDayActivities);
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const fieldDayActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
+
   res.render("upazilla/fieldDay/fieldDayForm", {
     title: "মাঠ-দিবস",
     msg: "",
@@ -379,8 +396,27 @@ module.exports.fieldDayForm = async (req, res) => {
   });
 };
 
+//fieldDayForm POST
 module.exports.fieldDayFormPost = async (req, res) => {
-  console.log(req);
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const activity = await Activities.findOne({
+    where : {
+      upazillaId : req.body.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  })
+  // console.log("activity",activity)
+
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/fieldDay/" + req.file.filename;
@@ -400,14 +436,26 @@ module.exports.fieldDayFormPost = async (req, res) => {
       })
       .then((data) => {
         res.redirect("/upazilla/fieldDay");
+        const fieldDayValue = activity.field_day_done;
+        const incrementedValue = fieldDayValue++;
+        console.log("increment",incrementedValue);
+        activity.update(
+          {
+            field_day_done : incrementedValue
+          },
+          { 
+            where: {id : activity.id},
+          }
+        );
       })
       .catch((err) => {
         console.log("file not uploaded successfully");
-      });
-      
+      });      
+
   } else {
     console.log("file not uploaded successfully");
   }
+
 };
 //fieldDay controller ends
 
