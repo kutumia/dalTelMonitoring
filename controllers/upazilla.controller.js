@@ -391,7 +391,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
 
-  const activity = await Activities.findAll({
+  const activity = await Activities.findOne({
     where : {
       upazillaId : req.body.user_id,
       start_time : startRange,

@@ -619,7 +619,37 @@ module.exports.filterActivities = async (req,res) => {
         },
         include: [upazilla]
     })
-    res.render("pd/activities/activityTable", { records: activityArray }, function (err, html) {
+
+    var upazillas = [];
+    var activityPercentage = [];
+
+    var totalActivitySum = 0;
+    var totalDoneActivitySum = 0;
+
+    activityArray.map((activity,key) => {
+        upazillas.push(activity.upazilla.uname);
+        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.field_day;
+        totalActivitySum = totalActivitySum + activity.farmer_training;
+        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.farmer_awards;
+        totalActivitySum = totalActivitySum + activity.llP_distribution;
+        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+
+        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+
+        activityPercentage.push( (totalDoneActivitySum * 100) / totalActivitySum )
+    })
+
+    console.log(upazillas,activityPercentage)
+
+    res.render("pd/activities/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
         }
     );
