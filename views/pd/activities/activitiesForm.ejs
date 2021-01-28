@@ -27,23 +27,21 @@
 
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="upazillaId">
-                                            <option> Choose an উপজেলা </option>
+                                        <select class="form-control" id="dd_id" name="dd_id">
+                                            <option> Choose an জেলা </option>
                                             <% ddArray.map((dd,key) => { %>
-                                                <option value=<%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                                <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
                                             <% }) %>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleFormControlSelect1" class="col-md-3">উপজেলা</label>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="upazillaId">
-                                            <option> Choose an উপজেলা </option>
-                                            <% upazillas.map((upazilla,key) => { %>
-                                                 <option value=<%= upazilla.id %> > <%= key+1 %> . <%= upazilla.uname %> </option>
-                                            <% }) %>
+                                        <label for="exampleFormControlSelect12" class="col-md-3">উপজেলা</label>
+                                        <select class="form-control" id="upazillaId" name="upazillaId">
+
                                         </select>
                                     </div>
+
 
 
                                     <div class="form-group">
@@ -110,5 +108,26 @@
         </div>
     </div>
 </div>
-
 <%- include('../../includesMonitoring/footer')-%>
+<script type="text/javascript">
+    $('#dd_id').on("change click load",async function () {
+        var dd_id = $('#dd_id').val();
+        const { data } = await axios.post(`/pd/fetchUpazilla`,{dd_id:dd_id});
+        $('#upazillaId').empty();
+        if(data){
+            $('#upazillaId').append('<option value="0"> Choose upazillaId </option>');
+            if (data.length > 0) {
+                $.each(data, function(key, value){
+                    var count = key+1
+                    $('#upazillaId').append('<option value="'+value.id+'">' + count + ' . ' + value.uname + '</option>');
+                });
+            }
+            else{
+                $('#upazillaId').append('<option value="">No Upazilla Found</option>');
+            }
+
+        }else {
+            $('#upazillaId').empty();
+        }
+    });
+</script>

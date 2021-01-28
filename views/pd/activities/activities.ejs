@@ -12,39 +12,25 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
+                                    <select class="form-control" id="dd_id" name="dd_id">
+                                        <option> Choose an জেলা </option>
+                                        <% ddArray.map((dd,key) => { %>
+                                            <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <a href="/pd/addActivities" class="btn btn-danger">Add Activities</a>
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Id</th>
-                                            <th scope="col"> উপজেলা </th>
-                                            <th scope="col"> মাঠ প্রদর্শনী </th>
-                                            <th scope="col"> মাঠ দিবস	</th>
-                                            <th scope="col"> কৃষক প্রশিক্ষণ </th>
-                                            <th scope="col"> কৃষি মেলা	</th>
-                                            <th scope="col"> কৃষক পুরষকার বিতরণ দিবস	</th>
-                                            <th scope="col"> এলএলপি বিতরণ </th>
-                                            <th scope="col"> সৌর আলোর ফাদ বিতরণ </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% activityArray.map((activity,key) => { %>
-                                            <tr>
-                                                <th scope="row"><%= key+1 %></th>
-                                                <td><%= activity.upazilla.uname %></td>
-                                                <td><%= activity.field_exhibition %></td>
-                                                <td><%= activity.field_day %></td>
-                                                <td><%= activity.farmer_training %></td>
-                                                <td><%= activity.agricultural_fair %></td>
-                                                <td><%= activity.farmer_awards %></td>
-                                                <td><%= activity.llP_distribution %></td>
-                                                <td><%= activity.solarlight_trap %></td>
-                                            </tr>
-                                        <%  }) %>
-                                    </tbody>
-                                </table>
+                                <div id="output">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -58,8 +44,6 @@
 
                 <div class="table-responsive" id="output"></div>
 
-
-                <div id="output"></div>
                 <!--                    <div id="loading" class="loading"><img src="{{ asset('assets/img/icon/loading.gif') }}" alt=""></div>-->
             </div>
         </div>
@@ -82,103 +66,17 @@
 </script>
 
 <script type="text/javascript">
+    $('#dd_id').on("change click load",async function () {
+        var dd_id = $('#dd_id').val();
+        const { data } = await axios.post(`/pd/filterActivities`,{dd_id:dd_id});
 
-    $("body").on("click", "#btnExport", function () {
-        html2canvas($('#tblCustomers')[0], {
-            onrendered: function (canvas) {
-                var data = canvas.toDataURL();
-                var docDefinition = {
-                    content: [{
-                        image: data,
-                        width: 650
-                    }]
-                };
-                pdfMake.createPdf(docDefinition).download("farmer-details.pdf");
-            }
-        });
-    });
-
-    $('#district').on("change",function () {
-        var district = $('#district').val();
-        $.ajax({
-            type: "POST",
-            url: "/pd/bijDistrictFilter",
-            data: {district: district},
-            datatype: "json",
-            beforeSend: function() {
-                // setting a timeout
-                $('#loading').show();
-                $('#output').hide();
-            },
-            success: function (data) {
-                $('#output').html(data);
-                $('#tblCustomers').DataTable();
-                $('#upazilla').empty();
-                if(data){
-                    $.each(data, function(key, value){
-                        $('#upazilla').append('<option value="'+value.id+'">' + value.uname + '</option>');
-
-                    });
-                }else {
-                    $('#upazilla').empty();
-                }
-
-            },
-            complete: function() {
-                $('#loading').hide();
-                $('#output').show();
-            }
-        });
-    });
-
-    $("#wrapper").load( "no url rn",function() {
-
-        var year = new Date().getFullYear();
-        var upazilla = $('#upazilla').val();
-        $.ajax({
-            type: "POST",
-            url: "/pd/bijFilter",
-            data: {year: year,upazilla:upazilla},
-            datatype: "json",
-            beforeSend: function() {
-                // setting a timeout
-                $('#loading').show();
-                $('#output').hide();
-
-            },
-            success: function (data) {
-                $('#output').html(data);
-                $('#tblCustomers').DataTable();
-            },
-            complete: function() {
-                $('#loading').hide();
-                $('#output').show();
-            }
-        });
-    });
-
-    $('#submit').on("click",function () {
-        var year = $('#year').val();
-        var upazilla = $('#upazilla').val();
-        $.ajax({
-            type: "POST",
-            url: "/pd/bijFilter",
-            data: {year: year,upazilla:upazilla},
-            datatype: "json",
-            beforeSend: function() {
-                // setting a timeout
-                $('#loading').show();
-                $('#output').hide();
-            },
-            success: function (data) {
-                $('#output').html(data);
-                $('#tblCustomers').DataTable();
-            },
-            complete: function() {
-                $('#loading').hide();
-                $('#output').show();
-            }
-        });
+        $('#output').empty();
+        if(data){
+            $("#output").html(data);
+            $('#tblCustomers').DataTable();
+        }else {
+            $('#output').empty();
+        }
     });
 
     $(document).ready(function() {

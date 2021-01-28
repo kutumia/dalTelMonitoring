@@ -597,12 +597,43 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
 //motivational controller ends
 
 //activities
+module.exports.fetchUpazilla = async(req,res) => {
+    console.log("dd_ids",req.body.dd_id)
+    try {
+        const upazillaArray = await upazilla.findAll({
+            where : {
+                ddId : req.body.dd_id
+            }
+        })
+        res.send(upazillaArray);
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+
+module.exports.filterActivities = async (req,res) => {
+    const activityArray = await activities.findAll({
+        where : {
+            dd_id: req.body.dd_id
+        },
+        include: [upazilla]
+    })
+    res.render("pd/activities/activityTable", { records: activityArray }, function (err, html) {
+            res.send(html);
+        }
+    );
+}
+
 module.exports.activities = async(req,res) => {
     try {
+        const ddArray = await dd.findAll({
+            include: [upazilla]
+        })
         const activityArray = await activities.findAll({
             include: [upazilla]
         })
-        res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'',activityArray:activityArray })
+        res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'',activityArray:activityArray , ddArray: ddArray})
     }
     catch (e) {
         console.log(e)
@@ -610,7 +641,6 @@ module.exports.activities = async(req,res) => {
 }
 module.exports.addActivities = async(req,res) => {
     try{
-        // const upazillas = await upazilla.findAll()
         const ddArray = await dd.findAll({
             include: [upazilla]
         })
@@ -645,7 +675,7 @@ module.exports.postActivities = async (req,res) => {
             llP_distribution,
             solarlight_trap,
             upazillaId,
-            dd_id: upazillaInfo.dd_id,
+            dd_id: upazillaInfo.ddId,
             start_time : startRange,
             end_time : endRange
         })
