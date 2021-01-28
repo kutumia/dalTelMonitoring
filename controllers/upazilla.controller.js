@@ -380,6 +380,7 @@ module.exports.fieldDayForm = async (req, res) => {
 };
 
 module.exports.fieldDayFormPost = async (req, res) => {
+  console.log(req);
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/fieldDay/" + req.file.filename;
