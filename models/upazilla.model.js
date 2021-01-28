@@ -1,3 +1,4 @@
+var DD = require('./dd.model');
 module.exports = (sequelize, Sequelize) => {
     const upazilla = sequelize.define("upazilla", {
       id: {
@@ -11,8 +12,12 @@ module.exports = (sequelize, Sequelize) => {
       password: {
         type: Sequelize.STRING
       },
-      dd_id: {
-        type: Sequelize.INTEGER
+      ddId: {
+        type: Sequelize.INTEGER,
+        reference:{
+          model: DD,
+          key: 'id'
+        }
       },
       pd_id: {
         type: Sequelize.INTEGER

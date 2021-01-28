@@ -26,8 +26,18 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
+                                        <select class="form-control" id="exampleFormControlSelect1" name="upazillaId">
+                                            <option> Choose an উপজেলা </option>
+                                            <% ddArray.map((dd,key) => { %>
+                                                <option value=<%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="exampleFormControlSelect1" class="col-md-3">উপজেলা</label>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="upazilla_id">
+                                        <select class="form-control" id="exampleFormControlSelect1" name="upazillaId">
                                             <option> Choose an উপজেলা </option>
                                             <% upazillas.map((upazilla,key) => { %>
                                                  <option value=<%= upazilla.id %> > <%= key+1 %> . <%= upazilla.uname %> </option>

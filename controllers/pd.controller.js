@@ -599,11 +599,10 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
 //activities
 module.exports.activities = async(req,res) => {
     try {
-        const activitiess = await activities.findAll({
+        const activityArray = await activities.findAll({
             include: [upazilla]
         })
-        console.log("activities",activitiess)
-        res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'' })
+        res.render('pd/activities/activities',{ title: 'কার্যক্রম',success:'',activityArray:activityArray })
     }
     catch (e) {
         console.log(e)
@@ -611,8 +610,11 @@ module.exports.activities = async(req,res) => {
 }
 module.exports.addActivities = async(req,res) => {
     try{
-        const upazillas = await upazilla.findAll()
-        res.render('pd/activities/activitiesForm',{ title: 'Form',success:'', upazillas: upazillas })
+        // const upazillas = await upazilla.findAll()
+        const ddArray = await dd.findAll({
+            include: [upazilla]
+        })
+        res.render('pd/activities/activitiesForm',{ title: 'Form',success:'', ddArray: ddArray })
     }
     catch (e) {
         console.log(e)
@@ -620,9 +622,9 @@ module.exports.addActivities = async(req,res) => {
 }
 module.exports.postActivities = async (req,res) => {
     try{
-        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazilla_id} = req.body;
+        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
 
-        const upazillaInfo = await upazilla.findByPk(upazilla_id)
+        const upazillaInfo = await upazilla.findByPk(upazillaId)
 
         var startRange = "";
         var endRange = "";
@@ -642,7 +644,7 @@ module.exports.postActivities = async (req,res) => {
             farmer_awards,
             llP_distribution,
             solarlight_trap,
-            upazilla_id,
+            upazillaId,
             dd_id: upazillaInfo.dd_id,
             start_time : startRange,
             end_time : endRange

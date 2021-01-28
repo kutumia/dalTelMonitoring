@@ -12,9 +12,40 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <a href="/pd/addActivities" class="btn btn-danger">Add Activities</a><br>
-                            <h1>Response activities</h1>
+                        <a href="/pd/addActivities" class="btn btn-danger">Add Activities</a>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col"> উপজেলা </th>
+                                            <th scope="col"> মাঠ প্রদর্শনী </th>
+                                            <th scope="col"> মাঠ দিবস	</th>
+                                            <th scope="col"> কৃষক প্রশিক্ষণ </th>
+                                            <th scope="col"> কৃষি মেলা	</th>
+                                            <th scope="col"> কৃষক পুরষকার বিতরণ দিবস	</th>
+                                            <th scope="col"> এলএলপি বিতরণ </th>
+                                            <th scope="col"> সৌর আলোর ফাদ বিতরণ </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% activityArray.map((activity,key) => { %>
+                                            <tr>
+                                                <th scope="row"><%= key+1 %></th>
+                                                <td><%= activity.upazilla.uname %></td>
+                                                <td><%= activity.field_exhibition %></td>
+                                                <td><%= activity.field_day %></td>
+                                                <td><%= activity.farmer_training %></td>
+                                                <td><%= activity.agricultural_fair %></td>
+                                                <td><%= activity.farmer_awards %></td>
+                                                <td><%= activity.llP_distribution %></td>
+                                                <td><%= activity.solarlight_trap %></td>
+                                            </tr>
+                                        <%  }) %>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

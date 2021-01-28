@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
         solarlight_trap : {
             type: Sequelize.STRING
         },
-        upazilla_id : {
+        upazillaId : {
             type: Sequelize.INTEGER,
             reference:{
                 model: Upazilla,
