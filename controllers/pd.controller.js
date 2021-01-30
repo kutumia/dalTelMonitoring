@@ -644,7 +644,7 @@ module.exports.filterActivities = async (req,res) => {
         totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
 
-        activityPercentage.push( (totalDoneActivitySum * 100) / totalActivitySum )
+        activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
 
     console.log(upazillas,activityPercentage)
