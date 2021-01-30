@@ -32,11 +32,9 @@
                                                 <option value="" disabled selected hidden>
                                                     Choose a batch no.
                                                 </option>
-                                                <% activities.forEach((activity) => { 
-                                                    for(let step=0; step< parseInt( activity.field_day ); step++) { %>
-                                                        <option value=""><%= title %> <%= step+1 %> </option>
-                                                    <% }
-                                                 }); %> 
+                                                    <%for(let step=0; step< parseInt( activities.field_day ); step++) { %>
+                                                        <option value= <%= title %>-<%= step+1 %> > <%=title%> <%=step+1%> </option>
+                                                    <% } %>
                                             </select>
                                         </div>
                                     </div>

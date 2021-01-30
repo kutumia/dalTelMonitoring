@@ -367,11 +367,28 @@ module.exports.fieldDayYear = async (req, res) => {
     });
 };
 
+//fieldDayForm GET
 module.exports.fieldDayForm = async (req, res) => {
-  const fieldDayActivities = await Activities.findAll({});
-//   console.log(fieldDayActivities);
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const fieldDayActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
+
   res.render("upazilla/fieldDay/fieldDayForm", {
-    title: "মাঠ দিবস",
+    title: "মাঠ-দিবস",
     msg: "",
     success: "",
     user_id: req.session.user_id,
@@ -379,12 +396,12 @@ module.exports.fieldDayForm = async (req, res) => {
   });
 };
 
+//fieldDayForm POST
 module.exports.fieldDayFormPost = async (req, res) => {
-
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
-    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().format("yyyy");
   } else {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
@@ -398,7 +415,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
       end_time : endRange,
     }
   })
-  console.log("activity",activity)
+  // console.log("activity",activity)
 
   const path = req.file && req.file.path;
   if (path) {
@@ -408,7 +425,8 @@ module.exports.fieldDayFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
-    await fieldDay
+    try{
+      const fieldActivity = await fieldDay
       .create({
         name: name,
         description: description,
@@ -416,16 +434,27 @@ module.exports.fieldDayFormPost = async (req, res) => {
         year: year,
         image: imagePath,
         upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/fieldDay");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
       });
+      
+      let fieldDayValue = activity.field_day_done;
+      let incrementedValue = ++fieldDayValue;
+      console.log("increment",incrementedValue);
+      await activity.update(
+        {
+          field_day_done : incrementedValue
+        },
+        { 
+          where: {id : activity.id},
+        }
+      );
+      res.redirect("/upazilla/fieldDay");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }      
   } else {
     console.log("file not uploaded successfully");
   }
+
 };
 //fieldDay controller ends
 
