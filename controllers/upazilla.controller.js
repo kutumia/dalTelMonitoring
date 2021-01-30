@@ -450,11 +450,13 @@ module.exports.fieldDayFormPost = async (req, res) => {
           }
         );
         res.redirect("/upazilla/fieldDay");
-      } catch(err) {
+      } catch(err) {        
         console.log("activity is not updated", err);
       }
     }else {
-      console.log("Field Day activities are overloaded !");
+      req.flash("message", "Abort !!! Already overloaded !");
+      res.redirect("/upazilla/fieldDay/fieldDayForm");
+
     } 
   }else {
     console.log("file not uploaded successfully");
