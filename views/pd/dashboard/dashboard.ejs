@@ -1,0 +1,91 @@
+<%- include('../../includesMonitoring/header')-%>
+<div id="wrapper" class="wrapper" >
+    <%- include('../../includesMonitoring/topbar')-%>
+    <div class="page-wrap">
+        <%- include('../../includesMonitoring/sidebar')-%>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-md-10">
+                        <h1 class="text-center"><%= title %></h1>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
+                                    <select class="form-control" id="dd_id" name="dd_id">
+                                        <option> Choose an জেলা </option>
+                                        <% ddArray.map((dd,key) => { %>
+                                            <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="/pd/addActivities" class="btn btn-danger">Add Activities</a>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div id="output">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row mb-2">
+                    <div class="col-md-12">
+                        <a href="/upazilla/trainedFarmerForm" class="btn btn-success btn-group-sm ">প্রশিক্ষণপ্রাপ্ত কৃষকের তথ্য ফর্ম</a>
+                    </div>
+
+                </div> -->
+
+                <div class="table-responsive" id="output"></div>
+
+
+
+                <!--                    <div id="loading" class="loading"><img src="{{ asset('assets/img/icon/loading.gif') }}" alt=""></div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%- include('../../includesMonitoring/footer')-%>
+<script>
+
+    $(document).ready(function(){
+
+        $('.dropdown a.test').on("click", function(e){
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $('#dd_id').on("change click load",async function () {
+        var dd_id = $('#dd_id').val();
+        const { data } = await axios.post(`/pd/activityDashboardFilter`,{dd_id:dd_id});
+
+        $('#output').empty();
+        if(data){
+            $("#output").html(data);
+            $('#tblCustomers').DataTable();
+        }else {
+            $('#output').empty();
+        }
+    });
+
+    $(document).ready(function() {
+        $('#tblCustomers').DataTable();
+
+    } );
+
+
+
+</script>

@@ -88,9 +88,61 @@ module.exports.pdloginpost=async(req,res)=>{
 };
 
 module.exports.pdDashboard = async(req,res) => {
-    console.log("pddashboard",res.locals.type);
-    res.render('pd/dashboard', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'Welcome' });
+    try {
+        const ddArray = await dd.findAll({
+            include: [upazilla]
+        })
+        const activityArray = await activities.findAll({
+            include: [upazilla]
+        })
+        res.render('pd/dashboard/dashboard',{ title: 'কার্যক্রম',success:'',activityArray:activityArray , ddArray: ddArray})
+    }
+    catch (e) {
+        console.log(e)
+    }
 };
+module.exports.activityDashboardFilter = async (req,res) => {
+    const activityArray = await activities.findAll({
+        where : {
+            dd_id: req.body.dd_id
+        },
+        include: [upazilla]
+    })
+
+    var upazillas = [];
+    var activityPercentage = [];
+
+    var totalActivitySum = 0;
+    var totalDoneActivitySum = 0;
+
+    activityArray.map((activity,key) => {
+        upazillas.push(activity.upazilla.uname);
+        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.field_day;
+        totalActivitySum = totalActivitySum + activity.farmer_training;
+        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.farmer_awards;
+        totalActivitySum = totalActivitySum + activity.llP_distribution;
+        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+
+        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+
+        activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
+    })
+
+    console.log(upazillas,activityPercentage)
+
+    res.render("pd/dashboard/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
+            res.send(html);
+        }
+    );
+}
 //logIn controller end
 
 //signUp controller
@@ -598,7 +650,6 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
 
 //activities
 module.exports.fetchUpazilla = async(req,res) => {
-    console.log("dd_ids",req.body.dd_id)
     try {
         const upazillaArray = await upazilla.findAll({
             where : {
