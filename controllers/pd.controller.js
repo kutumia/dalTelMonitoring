@@ -104,7 +104,7 @@ module.exports.pdDashboard = async(req,res) => {
 module.exports.activityDashboardFilter = async (req,res) => {
     const activityArray = await activities.findAll({
         where : {
-            dd_id: req.body.dd_id
+            ddId: req.body.dd_id
         },
         include: [upazilla]
     })
@@ -664,7 +664,7 @@ module.exports.fetchUpazilla = async(req,res) => {
 module.exports.filterActivities = async (req,res) => {
     const activityArray = await activities.findAll({
         where : {
-            dd_id: req.body.dd_id
+            ddId: req.body.dd_id
         },
         include: [upazilla]
     })
@@ -765,7 +765,7 @@ module.exports.postActivities = async (req,res) => {
                 llP_distribution,
                 solarlight_trap,
                 upazillaId,
-                dd_id: upazillaInfo.ddId,
+                ddId: upazillaInfo.ddId,
                 start_time : startRange,
                 end_time : endRange
             })
@@ -781,10 +781,15 @@ module.exports.postActivities = async (req,res) => {
 }
 module.exports.editActivity = async (req,res) => {
     try{
-        const activity = await activities.findByPk(req.params.id)
+        console.log("triggered")
+        const {id} = req.params;
+        const activity = await activities.findByPk(id,{
+            include: [upazilla,dd]
+        })
         const ddArray = await dd.findAll({
             include: [upazilla]
         })
+        console.log(activity, ddArray.length)
         res.render('pd/activities/activitiesFormEdit',{ title: 'Form',success:'', ddArray: ddArray, activity: activity })
     }
     catch (e) {

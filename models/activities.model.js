@@ -1,4 +1,5 @@
 var Upazilla = require('./upazilla.model');
+var District = require('./dd.model');
 module.exports = (sequelize, Sequelize) => {
     const activities = sequelize.define("activities", {
         id: {
@@ -69,8 +70,12 @@ module.exports = (sequelize, Sequelize) => {
                 key: 'id'
             }
         },
-        dd_id:{
-            type: Sequelize.INTEGER
+        ddId:{
+            type: Sequelize.INTEGER,
+            reference:{
+                model: District,
+                key: 'id'
+            }
         },
         start_time : {
             type: Sequelize.STRING

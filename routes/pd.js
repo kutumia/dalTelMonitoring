@@ -3,7 +3,7 @@ const router = express.Router();
 // const { Router } = require("express");
 const app=express();
 
-const {editActivity,activityDashboardFilter,filterActivities,fetchUpazilla,activities,addActivities,postActivities,fieldDay,fieldDayFilter,farmerTraining,farmerTrainingFilter,farmerPrize,farmerPrizeFilter,dashboardMonitoring,pdsignup,pdsignuppost,pdlogin,pdloginpost,pdDashboard,farmerTrainingDistrictFilter,
+const {editActivity,postActivity,activityDashboardFilter,filterActivities,fetchUpazilla,activities,addActivities,postActivities,fieldDay,fieldDayFilter,farmerTraining,farmerTrainingFilter,farmerPrize,farmerPrizeFilter,dashboardMonitoring,pdsignup,pdsignuppost,pdlogin,pdloginpost,pdDashboard,farmerTrainingDistrictFilter,
     fieldDayDistrictFilter,farmerPrizeDistrictFilter,saaoTraining,saaoTrainingFilter,saaoTrainingDistrictFilter,review,reviewFilter,reviewDistrictFilter,bij,bijFilter,bijDistrictFilter,motivational,motivationalFilter,motivationalDistrictFilter} = require('../controllers/pd.controller');
     
 router.get('/login',pdlogin);
@@ -52,6 +52,7 @@ router.post('/postActivities',postActivities);
 router.post('/fetchUpazilla',fetchUpazilla);
 router.post('/filterActivities',filterActivities);
 router.get('/editActivity/:id',editActivity);
+router.post('/postActivity/:id',postActivity);
 
 
 module.exports = router;

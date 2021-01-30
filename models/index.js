@@ -33,6 +33,7 @@ db.saaoTraining = require("./saaoTraining.model.js")(sequelize, Sequelize);
 db.activities = require("./activities.model")(sequelize,Sequelize);
 
 db.activities.belongsTo(db.upazilla);
+db.activities.belongsTo(db.dd);
 db.dd.hasMany(db.upazilla,{ foreignKey: 'ddId' }, {onDelete: 'CASCADE'});
 db.upazilla.belongsTo(db.dd);
 

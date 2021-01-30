@@ -19,7 +19,7 @@
                                 </p>
                             </div>
                             <div class="panel-body" >
-                                <form action="/pd/postActivities" id="FieldTrialForm" class="form-horizontal" method="post"  role="form">
+                                <form action="/pd/postActivity/<%= activity.id %>" id="FieldTrialForm" class="form-horizontal" method="post"  role="form">
                                     <div id="signupalert" style="display:none" class="alert alert-danger">
                                         <p>Error:</p>
                                         <span></span>
@@ -36,6 +36,7 @@
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
                                         <select class="form-control" id="dd_id" name="dd_id">
+                                            <option value="<%= activity.dd.id %>"><%= activity.dd.uname %></option>
                                             <option> Choose an জেলা </option>
                                             <% ddArray.map((dd,key) => { %>
                                                 <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
@@ -46,7 +47,7 @@
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect12" class="col-md-3">উপজেলা</label>
                                         <select class="form-control" id="upazillaId" name="upazillaId">
-
+                                            <option value="<%= activity.upazilla.id %>"><%= activity.upazilla.uname %></option>
                                         </select>
                                     </div>
 
