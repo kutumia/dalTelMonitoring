@@ -88,9 +88,59 @@ module.exports.pdloginpost=async(req,res)=>{
 };
 
 module.exports.pdDashboard = async(req,res) => {
-    console.log("pddashboard",res.locals.type);
-    res.render('pd/dashboard', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'Welcome' });
+    try {
+        const ddArray = await dd.findAll({
+            include: [upazilla]
+        })
+        const activityArray = await activities.findAll({
+            include: [upazilla]
+        })
+        res.render('pd/dashboard/dashboard',{ title: 'কার্যক্রম',success:'',activityArray:activityArray , ddArray: ddArray})
+    }
+    catch (e) {
+        console.log(e)
+    }
 };
+module.exports.activityDashboardFilter = async (req,res) => {
+    const activityArray = await activities.findAll({
+        where : {
+            dd_id: req.body.dd_id
+        },
+        include: [upazilla]
+    })
+
+    var upazillas = [];
+    var activityPercentage = [];
+
+    var totalActivitySum = 0;
+    var totalDoneActivitySum = 0;
+
+    activityArray.map((activity,key) => {
+        upazillas.push(activity.upazilla.uname);
+        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.field_day;
+        totalActivitySum = totalActivitySum + activity.farmer_training;
+        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.farmer_awards;
+        totalActivitySum = totalActivitySum + activity.llP_distribution;
+        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+
+        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+
+        activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
+    })
+
+    res.render("pd/dashboard/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
+            res.send(html);
+        }
+    );
+}
 //logIn controller end
 
 //signUp controller
@@ -598,7 +648,6 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
 
 //activities
 module.exports.fetchUpazilla = async(req,res) => {
-    console.log("dd_ids",req.body.dd_id)
     try {
         const upazillaArray = await upazilla.findAll({
             where : {
@@ -644,10 +693,8 @@ module.exports.filterActivities = async (req,res) => {
         totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
 
-        activityPercentage.push( (totalDoneActivitySum * 100) / totalActivitySum )
+        activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
-
-    console.log(upazillas,activityPercentage)
 
     res.render("pd/activities/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
@@ -684,8 +731,6 @@ module.exports.postActivities = async (req,res) => {
     try{
         const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
 
-        const upazillaInfo = await upazilla.findByPk(upazillaId)
-
         var startRange = "";
         var endRange = "";
         if (res.locals.moment().format("M") < 7) {
@@ -696,24 +741,65 @@ module.exports.postActivities = async (req,res) => {
             endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
         }
 
-        const activityPost = await activities.create({
-            field_exhibition,
-            field_day,
-            farmer_training,
-            agricultural_fair,
-            farmer_awards,
-            llP_distribution,
-            solarlight_trap,
-            upazillaId,
-            dd_id: upazillaInfo.ddId,
-            start_time : startRange,
-            end_time : endRange
-        })
+        const fieldDayActivities = await activities.findOne({
+            where : {
+                upazillaId : upazillaId,
+                start_time : startRange,
+                end_time : endRange,
+            }
+        });
 
-        res.redirect('/pd/activities')
+        if (fieldDayActivities){
+            req.flash("message", "Already added in this economic year against this upazilla");
+            res.redirect('/pd/addActivities')
+        }
+        else{
+            const upazillaInfo = await upazilla.findByPk(upazillaId)
+
+            const activityPost = await activities.create({
+                field_exhibition,
+                field_day,
+                farmer_training,
+                agricultural_fair,
+                farmer_awards,
+                llP_distribution,
+                solarlight_trap,
+                upazillaId,
+                dd_id: upazillaInfo.ddId,
+                start_time : startRange,
+                end_time : endRange
+            })
+            req.flash("message", "Added Successfully");
+            res.redirect('/pd/activities')
+        }
+
+
     }
     catch (e) {
         console.log(e)
     }
+}
+module.exports.editActivity = async (req,res) => {
+    try{
+        const activity = await activities.findByPk(req.params.id)
+        const ddArray = await dd.findAll({
+            include: [upazilla]
+        })
+        res.render('pd/activities/activitiesFormEdit',{ title: 'Form',success:'', ddArray: ddArray, activity: activity })
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+module.exports.postActivity = async (req,res) => {
+    const updateActivity = await rajossho.update(
+        {
+            jan2: jan2,
+            total: total,
+        },
+        {
+            where: { id: req.params.id },
+        }
+    );
 }
 //activities

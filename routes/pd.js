@@ -3,12 +3,13 @@ const router = express.Router();
 // const { Router } = require("express");
 const app=express();
 
-const {filterActivities,fetchUpazilla,activities,addActivities,postActivities,fieldDay,fieldDayFilter,farmerTraining,farmerTrainingFilter,farmerPrize,farmerPrizeFilter,dashboardMonitoring,pdsignup,pdsignuppost,pdlogin,pdloginpost,pdDashboard,farmerTrainingDistrictFilter,
+const {editActivity,activityDashboardFilter,filterActivities,fetchUpazilla,activities,addActivities,postActivities,fieldDay,fieldDayFilter,farmerTraining,farmerTrainingFilter,farmerPrize,farmerPrizeFilter,dashboardMonitoring,pdsignup,pdsignuppost,pdlogin,pdloginpost,pdDashboard,farmerTrainingDistrictFilter,
     fieldDayDistrictFilter,farmerPrizeDistrictFilter,saaoTraining,saaoTrainingFilter,saaoTrainingDistrictFilter,review,reviewFilter,reviewDistrictFilter,bij,bijFilter,bijDistrictFilter,motivational,motivationalFilter,motivationalDistrictFilter} = require('../controllers/pd.controller');
     
 router.get('/login',pdlogin);
 router.post('/logins',pdloginpost);
 router.get('/dashboard',pdDashboard);
+router.post('/activityDashboardFilter',activityDashboardFilter);
 router.get('/dashboardMonitoring',dashboardMonitoring);
 
 
@@ -50,6 +51,7 @@ router.get('/addActivities',addActivities);
 router.post('/postActivities',postActivities);
 router.post('/fetchUpazilla',fetchUpazilla);
 router.post('/filterActivities',filterActivities);
+router.get('/editActivity/:id',editActivity);
 
 
 module.exports = router;
