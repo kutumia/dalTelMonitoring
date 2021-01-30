@@ -6,6 +6,7 @@ var logger = require("morgan");
 var session = require("express-session");
 var localStorage = require("local-storage");
 var dotenv = require("dotenv");
+var flash = require("express-flash");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -26,6 +27,7 @@ app.use(
   })
 );
 // app.use(logger('dev'));
+app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

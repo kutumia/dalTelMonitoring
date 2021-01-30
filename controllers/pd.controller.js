@@ -136,8 +136,6 @@ module.exports.activityDashboardFilter = async (req,res) => {
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
 
-    console.log(upazillas,activityPercentage)
-
     res.render("pd/dashboard/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
         }
@@ -698,8 +696,6 @@ module.exports.filterActivities = async (req,res) => {
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
 
-    console.log(upazillas,activityPercentage)
-
     res.render("pd/activities/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
         }
@@ -735,8 +731,6 @@ module.exports.postActivities = async (req,res) => {
     try{
         const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
 
-        const upazillaInfo = await upazilla.findByPk(upazillaId)
-
         var startRange = "";
         var endRange = "";
         if (res.locals.moment().format("M") < 7) {
@@ -747,24 +741,65 @@ module.exports.postActivities = async (req,res) => {
             endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
         }
 
-        const activityPost = await activities.create({
-            field_exhibition,
-            field_day,
-            farmer_training,
-            agricultural_fair,
-            farmer_awards,
-            llP_distribution,
-            solarlight_trap,
-            upazillaId,
-            dd_id: upazillaInfo.ddId,
-            start_time : startRange,
-            end_time : endRange
-        })
+        const fieldDayActivities = await activities.findOne({
+            where : {
+                upazillaId : upazillaId,
+                start_time : startRange,
+                end_time : endRange,
+            }
+        });
 
-        res.redirect('/pd/activities')
+        if (fieldDayActivities){
+            req.flash("message", "Already added in this economic year against this upazilla");
+            res.redirect('/pd/addActivities')
+        }
+        else{
+            const upazillaInfo = await upazilla.findByPk(upazillaId)
+
+            const activityPost = await activities.create({
+                field_exhibition,
+                field_day,
+                farmer_training,
+                agricultural_fair,
+                farmer_awards,
+                llP_distribution,
+                solarlight_trap,
+                upazillaId,
+                dd_id: upazillaInfo.ddId,
+                start_time : startRange,
+                end_time : endRange
+            })
+            req.flash("message", "Added Successfully");
+            res.redirect('/pd/activities')
+        }
+
+
     }
     catch (e) {
         console.log(e)
     }
+}
+module.exports.editActivity = async (req,res) => {
+    try{
+        const activity = await activities.findByPk(req.params.id)
+        const ddArray = await dd.findAll({
+            include: [upazilla]
+        })
+        res.render('pd/activities/activitiesFormEdit',{ title: 'Form',success:'', ddArray: ddArray, activity: activity })
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+module.exports.postActivity = async (req,res) => {
+    const updateActivity = await rajossho.update(
+        {
+            jan2: jan2,
+            total: total,
+        },
+        {
+            where: { id: req.params.id },
+        }
+    );
 }
 //activities
