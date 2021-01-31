@@ -414,7 +414,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
       start_time : startRange,
       end_time : endRange,
     }
-  })
+  });
   // console.log("activity",activity)
 
   const path = req.file && req.file.path;
@@ -425,33 +425,40 @@ module.exports.fieldDayFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
-    try{
-      const fieldActivity = await fieldDay
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      });
-      
-      let fieldDayValue = activity.field_day_done;
-      let incrementedValue = ++fieldDayValue;
-      console.log("increment",incrementedValue);
-      await activity.update(
-        {
-          field_day_done : incrementedValue
-        },
-        { 
-          where: {id : activity.id},
-        }
-      );
-      res.redirect("/upazilla/fieldDay");
-    } catch(err) {
-      console.log("activity is not updated", err);
-    }      
-  } else {
+
+    if(activity.field_day_done < activity.field_day){
+      try{
+        const fieldActivity = await fieldDay
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        });
+        
+        let fieldDayValue = activity.field_day_done;
+        let incrementedValue = ++fieldDayValue;
+        console.log("increment",incrementedValue);
+        await activity.update(
+          {
+            field_day_done : incrementedValue
+          },
+          { 
+            where: {id : activity.id},
+          }
+        );
+        res.redirect("/upazilla/fieldDay");
+      } catch(err) {        
+        console.log("activity is not updated", err);
+      }
+    }else {
+      req.flash("message", "Abort !!! Already overloaded !");
+      res.redirect("/upazilla/fieldDay/fieldDayForm");
+
+    } 
+  }else {
     console.log("file not uploaded successfully");
   }
 
