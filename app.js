@@ -66,7 +66,7 @@ db.sequelize.sync().catch((error) => console.log(error.message));
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Drop and re-sync db.");
-});
+}).catch(error=>console.log(error.message))
 
 const port = process.env.PORT || 8000;
 app.listen(port, function () {
