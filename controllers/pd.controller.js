@@ -797,14 +797,44 @@ module.exports.editActivity = async (req,res) => {
     }
 }
 module.exports.postActivity = async (req,res) => {
-    const updateActivity = await rajossho.update(
-        {
-            jan2: jan2,
-            total: total,
-        },
-        {
-            where: { id: req.params.id },
+    try{
+        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
+
+        var startRange = "";
+        var endRange = "";
+        if (res.locals.moment().format("M") < 7) {
+            startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+            endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+        } else {
+            startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+            endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
         }
-    );
+        const upazillaInfo = await upazilla.findByPk(upazillaId)
+
+        const activityPost = await activities.update(
+            {
+                field_exhibition,
+                field_day,
+                farmer_training,
+                agricultural_fair,
+                farmer_awards,
+                llP_distribution,
+                solarlight_trap,
+                upazillaId,
+                ddId: upazillaInfo.ddId,
+                start_time : startRange,
+                end_time : endRange
+            },
+            {
+                where: { id: req.params.id },
+            }
+        )
+        req.flash("message", "Added Successfully");
+        res.redirect('/pd/activities')
+
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
 //activities
