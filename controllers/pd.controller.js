@@ -117,21 +117,21 @@ module.exports.activityDashboardFilter = async (req,res) => {
 
     activityArray.map((activity,key) => {
         upazillas.push(activity.upazilla.uname);
-        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.saao_training;
         totalActivitySum = totalActivitySum + activity.field_day;
         totalActivitySum = totalActivitySum + activity.farmer_training;
-        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.review;
         totalActivitySum = totalActivitySum + activity.farmer_awards;
-        totalActivitySum = totalActivitySum + activity.llP_distribution;
-        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+        totalActivitySum = totalActivitySum + activity.bij;
+        totalActivitySum = totalActivitySum + activity.motivational;
 
-        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.saao_training_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.review_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.bij_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.motivational_done;
 
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
@@ -222,7 +222,7 @@ module.exports.fieldDayFilter=async(req,res)=>{
 module.exports.fieldDayDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -267,7 +267,7 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
 module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -313,7 +313,7 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
 module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -358,7 +358,7 @@ module.exports.fieldDayFilter=async(req,res)=>{
 module.exports.fieldDayDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -403,7 +403,7 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
 module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -449,7 +449,7 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
 module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -495,7 +495,7 @@ module.exports.saaoTrainingFilter=async(req,res)=>{
 module.exports.saaoTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -541,7 +541,7 @@ module.exports.reviewFilter=async(req,res)=>{
 module.exports.reviewDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -587,7 +587,7 @@ module.exports.bijFilter=async(req,res)=>{
 module.exports.bijDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -633,7 +633,7 @@ module.exports.motivationalFilter=async(req,res)=>{
 module.exports.motivationalDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -677,24 +677,26 @@ module.exports.filterActivities = async (req,res) => {
 
     activityArray.map((activity,key) => {
         upazillas.push(activity.upazilla.uname);
-        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.saao_training;
         totalActivitySum = totalActivitySum + activity.field_day;
         totalActivitySum = totalActivitySum + activity.farmer_training;
-        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.review;
         totalActivitySum = totalActivitySum + activity.farmer_awards;
-        totalActivitySum = totalActivitySum + activity.llP_distribution;
-        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+        totalActivitySum = totalActivitySum + activity.bij;
+        totalActivitySum = totalActivitySum + activity.motivational;
 
-        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.saao_training_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.review_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.bij_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.motivational_done;
 
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
+
+    console.log(upazillas,activityPercentage);
 
     res.render("pd/activities/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
@@ -729,7 +731,7 @@ module.exports.addActivities = async(req,res) => {
 }
 module.exports.postActivities = async (req,res) => {
     try{
-        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
+        const {saao_training,field_day,farmer_training,review,farmer_awards,bij,motivational,upazillaId} = req.body;
 
         var startRange = "";
         var endRange = "";
@@ -757,13 +759,13 @@ module.exports.postActivities = async (req,res) => {
             const upazillaInfo = await upazilla.findByPk(upazillaId)
 
             const activityPost = await activities.create({
-                field_exhibition,
+                saao_training,
                 field_day,
                 farmer_training,
-                agricultural_fair,
+                review,
                 farmer_awards,
-                llP_distribution,
-                solarlight_trap,
+                bij,
+                motivational,
                 upazillaId,
                 ddId: upazillaInfo.ddId,
                 start_time : startRange,
@@ -772,8 +774,6 @@ module.exports.postActivities = async (req,res) => {
             req.flash("message", "Added Successfully");
             res.redirect('/pd/activities')
         }
-
-
     }
     catch (e) {
         console.log(e)

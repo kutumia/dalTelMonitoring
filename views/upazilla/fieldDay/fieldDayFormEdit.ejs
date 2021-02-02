@@ -13,13 +13,13 @@
           >
             <div class="panel panel-info">
               <div class="panel-heading">
-                <div class="panel-title">
-                  <h2>এসএএও প্রশিক্ষণ তথ্য ফর্ম</h2>
-                </div>
+                <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
+                
               </div>
               <div class="panel-body">
+                
                 <form
-                  action="/upazilla/saaoTrainingFormPost"
+                  action="/upazilla/fieldDayFormUpdatePost/<%= output.id %>"
                   id="FieldTrialForm"
                   class="form-horizontal"
                   method="post"
@@ -34,26 +34,47 @@
                     <p>Error:</p>
                     <span></span>
                   </div>
+                  <% if(messages.message){ %>
+                  <div
+                    class="alert alert-warning alert-dismissible fade show"
+                    role="alert"
+                  >
+                    <strong><%= messages.message %></strong>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="alert"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <% } %>
 
+                  <!-- Batch Name -->
                   <div class="form-group">
                     <label for="name" class="col-md-3 control-label"
                       >ব্যাচ নং/নাম</label
                     >
                     <div class="col-md-9">
-                        <select name="name">
-                            <option value="" disabled selected hidden>
-                              Choose a batch no.
-                            </option>
-                            <%for(let step=0; step< parseInt( activities.saao_training
-                            ); step++) { %>
-                            <option 
-                              value= "<%=title %> - <%= step+1 %>" > <%=title%> <%=step+1%>
-                            </option>
-                            <% } %>
-                          </select>
+                      <select name="name">
+                        <option value="<%= output.name %>" disabled selected hidden>
+                          <%= output.name %>
+                        </option>
+
+                        <% for(let step=0; step< parseInt( activities.field_day
+                        ); step++) { %>
+
+                        <option value="<%=title %>
+                          - <%= step+1 %>" > <%=title%> <%=step+1%>
+                        </option>
+
+                        <% } %>
+                      </select>
                     </div>
                   </div>
 
+                  <!-- Details -->
                   <div class="form-group">
                     <label for="description" class="col-md-3 control-label"
                       >বিস্তারিত</label
@@ -63,11 +84,12 @@
                         type="text"
                         class="form-control"
                         name="description"
-                        placeholder="বিস্তারিত"
+                        value="<%= output.description %>"
                       />
                     </div>
                   </div>
 
+                  <!-- Date  -->
                   <div class="form-group">
                     <label for="date" class="col-md-3 control-label"
                       >তারিখ</label
@@ -77,11 +99,15 @@
                         type="date"
                         class="form-control"
                         name="date"
-                        placeholder="তারিখ"
+                        value="<%= output.date %>"
                       />
                     </div>
                   </div>
 
+                  <!-- images -->
+                  <div>
+                    <img style="width: 100px; " src="<%= output.image %>" alt="">
+                  </div>
                   <div class="form-group">
                     <label>Choose</label>
                     <input
@@ -93,6 +119,7 @@
                     />
                   </div>
 
+                  <!-- year  -->
                   <div class="form-group">
                     <label for="year" class="col-md-3 control-label">বছর</label>
                     <div class="col-md-9">
@@ -100,7 +127,7 @@
                         type="text"
                         class="form-control"
                         name="year"
-                        placeholder="বছর"
+                        value="<%= output.year %>"
                       />
                     </div>
                   </div>
@@ -109,13 +136,14 @@
                     <label for="year" class="col-md-3 control-label"
                       >userid</label
                     >
+                    <% console.log("frotn",output.upazilla_id)%>
                     <div class="col-md-9">
                       <input
                         type="text"
                         class="form-control"
-                        name="user_id"
+                        name="upazilla_id"
                         placeholder="id"
-                        value="<%= user_id %>"
+                        value="<%= output.upazilla_id %>"
                       />
                     </div>
                   </div>
@@ -131,8 +159,6 @@
                       />
                     </div>
                   </div>
-
-                  <%- include('../../includesMonitoring/footer')-%>
                 </form>
               </div>
             </div>
@@ -142,3 +168,5 @@
     </div>
   </div>
 </div>
+
+<%- include('../../includesMonitoring/footer')-%>

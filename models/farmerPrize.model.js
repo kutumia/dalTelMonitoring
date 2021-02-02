@@ -1,5 +1,6 @@
+var Upazilla = require('./upazilla.model');
 module.exports = (sequelize, Sequelize) => {
-  const farmerPrize = sequelize.define("farmerPrize", {
+  const farmerprize = sequelize.define("farmerprize", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -20,10 +21,14 @@ module.exports = (sequelize, Sequelize) => {
     year: {
       type: Sequelize.INTEGER,
     },
-    upazilla_id: {
+    upazillaId: {
       type: Sequelize.INTEGER,
+      reference:{
+        model: Upazilla,
+        key: 'id'
+      }
     },
   });
 
-  return farmerPrize;
+  return farmerprize;
 };
