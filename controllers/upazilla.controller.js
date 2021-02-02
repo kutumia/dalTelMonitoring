@@ -287,8 +287,8 @@ module.exports.upazillasignuppost = async (req, res) => {
         const createupazilla = await upazilla.create({
           uname: uname,
           password: hashedPassword,
-          dd_id: dds,
-          pd_id: 1,
+          ddId: dds,
+          pdId: 1,
         });
         res.render("upazilla/signup", {
           title:
@@ -323,7 +323,7 @@ module.exports.fieldDay = async (req, res) => {
   
   await fieldDay
     .findAll({
-      where: { upazilla: req.session.user_id },
+      where: { upazillaId: req.session.user_id },
     })
     .then((data) => {
       // console.log("inside");
@@ -348,7 +348,7 @@ module.exports.fieldDay = async (req, res) => {
 module.exports.fieldDayYear = async (req, res) => {
   await fieldDay
     .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
+      where: { year: req.body.year, upazillaId: req.session.user_id },
     })
     .then((data) => {
       res.render(
@@ -395,8 +395,40 @@ module.exports.fieldDayForm = async (req, res) => {
     activities: fieldDayActivities
   });
 };
+// @GET - /fieldDayFormEdit
+module.exports.fieldDayFormEdit = async (req, res) => {
+  try
+  {
+    var startRange = "";
+    var endRange = "";
+    if (res.locals.moment().format("M") < 7) {
+      startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+      endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    } else {
+      startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+      endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+    }
+
+    const fieldDayActivities = await Activities.findOne({
+      where : {
+        upazillaId : req.session.user_id,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
+    const editData = await fieldDay.findByPk(req.params.id);
+    res.render("upazilla/fieldDay/fieldDayFormEdit", {
+      output: editData,
+      activities: fieldDayActivities,
+      title: "মাঠ-দিবস"
+    });
+  } catch(err){
+    console.log(`Error in Edit ${err}`);
+  }
+}; 
 // @POST - fieldDayFormPost
 module.exports.fieldDayFormPost = async (req, res) => {
+  // console.log("user Id",req.body.user_id)
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -427,14 +459,14 @@ module.exports.fieldDayFormPost = async (req, res) => {
 
     if(activity.field_day_done < activity.field_day){
       try{
-        const fieldActivity = await fieldDay
+        await fieldDay
         .create({
           name: name,
           description: description,
           date: date,
           year: year,
           image: imagePath,
-          upazilla_id: user_id,
+          upazillaId: user_id,
         });
         
         let fieldDayValue = activity.field_day_done;
@@ -461,39 +493,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
   }
 
 };
-// @GET - /fieldDayFormEdit
-module.exports.fieldDayFormEdit = async (req, res) => {
-  try
-  {
-    var startRange = "";
-    var endRange = "";
-    if (res.locals.moment().format("M") < 7) {
-      startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
-      endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    } else {
-      startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-      endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-    }
-
-    const fieldDayActivities = await Activities.findOne({
-      where : {
-        upazillaId : req.session.user_id,
-        start_time : startRange,
-        end_time : endRange,
-      }
-    });
-    const editData = await fieldDay.findByPk(req.params.id);
-    console.log("sdsds",editData);
-    res.render("upazilla/fieldDay/fieldDayFormEdit", {
-      output: editData,
-      activities: fieldDayActivities,
-      title: "মাঠ-দিবস",
-    });
-  } catch(err){
-    console.log(`Error in Edit ${err}`);
-
-  }
-}; 
 // @POST - /fieldDayFormUpdatePost
 module.exports.fieldDayFormUpdatePost = async (req, res) => {
   console.log("updating...",req.body);
@@ -507,7 +506,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
 
-  console.log("user_id",req.body.upazilla_id);
+  // console.log("user_id",req.body.upazilla_id);
 
   const activity = await Activities.findOne({
     where : {
@@ -535,7 +534,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazilla_id: user_id,
+          upazillaId: user_id,
         },
         { 
           where: {id : activity.id},
@@ -674,6 +673,22 @@ module.exports.farmerTrainingForm = async (req, res) => {
 
 //@POST - /farmerTrainingFormPost
 module.exports.farmerTrainingFormPost = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+  const activity = await Activities.findOne({
+    where : {
+      upazillaId : req.body.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/farmerTraining/" + req.file.filename;
@@ -682,6 +697,7 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
+    
     await farmerTraining
       .create({
         name: name,

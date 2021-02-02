@@ -1,3 +1,4 @@
+var Upazilla = require('./upazilla.model');
 module.exports = (sequelize, Sequelize) => {
     const motivational = sequelize.define("motivational", {
       id: {
@@ -20,8 +21,12 @@ module.exports = (sequelize, Sequelize) => {
       year: {
         type: Sequelize.INTEGER
       },
-      upazilla_id: {
-        type: Sequelize.INTEGER
+      upazillaId: {
+        type: Sequelize.INTEGER,
+        reference:{
+          model: Upazilla,
+          key: 'id'
+        }
       }
     });
   

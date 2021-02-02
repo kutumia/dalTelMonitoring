@@ -101,14 +101,13 @@ module.exports.ddsignup=async(req,res)=>{
 };
 module.exports.ddsignuppost=async(req,res)=>{
     try {
-        const{ads,uname,password,confirmPassword}=req.body;
-        const ddata=await ad.findAll();
+        const{uname,password,confirmPassword}=req.body;
         const data = await dd.findAll({ where: {uname: uname} })
         if(data.length > 0){
-            res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'ERROR: The dd is already enrolled!',records: ddata })
+            res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'ERROR: The dd is already enrolled!',records: data })
         }
         else if(password !== confirmPassword){
-            return res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'ERROR: Passwords do not match!',records: ddata })
+            return res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'ERROR: Passwords do not match!' })
         }
         else{
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -117,10 +116,9 @@ module.exports.ddsignuppost=async(req,res)=>{
                 const createdd = await dd.create({
                     uname: uname,
                     password:hashedPassword,
-                    ad_id:ads,
-                    pd_id:1
-                    })
-                res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'dd Registered Successfully!',records: ddata })
+                    pdId:1
+                })
+                res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'dd Registered Successfully!' })
             }
             catch (err) {
                 console.log(err);

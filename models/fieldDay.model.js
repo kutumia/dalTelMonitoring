@@ -1,5 +1,6 @@
+var Upazilla = require('./upazilla.model');
 module.exports = (sequelize, Sequelize) => {
-    const fieldDay = sequelize.define("fieldDay", {
+    const fieldday = sequelize.define("fieldday", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -20,10 +21,14 @@ module.exports = (sequelize, Sequelize) => {
       year: {
         type: Sequelize.INTEGER
       },
-      upazilla_id: {
-        type: Sequelize.INTEGER
+      upazillaId: {
+        type: Sequelize.INTEGER,
+        reference:{
+          model: Upazilla,
+          key: 'id'
+        }
       }
     });
   
-    return fieldDay;
+    return fieldday;
   };
