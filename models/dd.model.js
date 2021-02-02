@@ -8,11 +8,11 @@ module.exports = (sequelize, Sequelize) => {
     uname: {
       type: Sequelize.STRING,
     },
-    password: {
+    district: {
       type: Sequelize.STRING,
     },
-    ad_id: {
-      type: Sequelize.INTEGER,
+    password: {
+      type: Sequelize.STRING,
     },
     pd_id: {
       type: Sequelize.INTEGER,
