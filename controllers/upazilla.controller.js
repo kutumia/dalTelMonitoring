@@ -317,7 +317,8 @@ module.exports.dashboardMonitoring = async (req, res) => {
 };
 //dashboard controller
 
-//fieldDay controller
+//fieldDay controller starts------------------------------------------------
+// @GET - fieldDay
 module.exports.fieldDay = async (req, res) => {
   
   await fieldDay
@@ -343,7 +344,7 @@ module.exports.fieldDay = async (req, res) => {
 
   //  records:result
 };
-
+// @GET - fieldDayYear
 module.exports.fieldDayYear = async (req, res) => {
   await fieldDay
     .findAll({
@@ -366,8 +367,7 @@ module.exports.fieldDayYear = async (req, res) => {
       });
     });
 };
-
-//fieldDayForm GET
+// @GET - /fieldDayForm
 module.exports.fieldDayForm = async (req, res) => {
   var startRange = "";
   var endRange = "";
@@ -395,40 +395,7 @@ module.exports.fieldDayForm = async (req, res) => {
     activities: fieldDayActivities
   });
 };
-
-//@GET - /fieldDayFormEdit
-module.exports.fieldDayFormEdit = async (req, res) => {
-  try
-  {
-    var startRange = "";
-    var endRange = "";
-    if (res.locals.moment().format("M") < 7) {
-      startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
-      endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    } else {
-      startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-      endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-    }
-
-    const fieldDayActivities = await Activities.findOne({
-      where : {
-        upazillaId : req.session.user_id,
-        start_time : startRange,
-        end_time : endRange,
-      }
-    });
-    const editData = await fieldDay.findByPk(req.params.id);
-    res.render("upazilla/fieldDay/fieldDayFormEdit", {
-      output: editData,
-      activities: fieldDayActivities,
-      title: "মাঠ-দিবস",
-    });
-  } catch(err){
-    console.log(`Error in Edit ${err}`);
-  }
-}; 
-
-//@POST - fieldDayForm
+// @POST - fieldDayFormPost
 module.exports.fieldDayFormPost = async (req, res) => {
   var startRange = "";
   var endRange = "";
@@ -472,7 +439,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
         
         let fieldDayValue = activity.field_day_done;
         let incrementedValue = ++fieldDayValue;
-        console.log("increment",incrementedValue);
+        // console.log("increment",incrementedValue);
         await activity.update(
           {
             field_day_done : incrementedValue
@@ -494,10 +461,42 @@ module.exports.fieldDayFormPost = async (req, res) => {
   }
 
 };
+// @GET - /fieldDayFormEdit
+module.exports.fieldDayFormEdit = async (req, res) => {
+  try
+  {
+    var startRange = "";
+    var endRange = "";
+    if (res.locals.moment().format("M") < 7) {
+      startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+      endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    } else {
+      startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+      endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+    }
 
-//@POST - /fieldDayFormUpdatePost
+    const fieldDayActivities = await Activities.findOne({
+      where : {
+        upazillaId : req.session.user_id,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
+    const editData = await fieldDay.findByPk(req.params.id);
+    console.log("sdsds",editData);
+    res.render("upazilla/fieldDay/fieldDayFormEdit", {
+      output: editData,
+      activities: fieldDayActivities,
+      title: "মাঠ-দিবস",
+    });
+  } catch(err){
+    console.log(`Error in Edit ${err}`);
+
+  }
+}; 
+// @POST - /fieldDayFormUpdatePost
 module.exports.fieldDayFormUpdatePost = async (req, res) => {
-  console.log("updating...");
+  console.log("updating...",req.body);
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -508,9 +507,11 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
 
+  console.log("user_id",req.body.upazilla_id);
+
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.user_id,
+      upazillaId : req.body.upazilla_id,
       start_time : startRange,
       end_time : endRange,
     }
@@ -553,22 +554,49 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
   }
 
 };
-
-//@GET - /fieldDayCardDelete
+// @GET - /fieldDayCardDelete
 module.exports.fieldDayCardDelete = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const activity = await Activities.findOne({
+    where : {
+      upazillaId : req.body.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   const deleteData = await fieldDay.findByPk(req.params.id);
   try{
     deleteData.destroy();
+    let fieldDayValue = activity.field_day_done;
+    let decrementedValue = --fieldDayValue;
+    // console.log("increment",incrementedValue);
+    await activity.update(
+      {
+        field_day_done : decrementedValue
+      },
+      { 
+        where: {id : activity.id},
+      }
+    );
+    res.redirect("/upazilla/fieldDay");
   } catch(err){
     console.log(err);
   }
-
 }
 
+//fieldDay controller ends ------------------------------------------------------
 
-//fieldDay controller ends
+//farmerTraining controller starts --------------------------------------------
 
-//farmerTraining controller
 module.exports.farmerTraining = async (req, res) => {
   await farmerTraining
     .findAll({
@@ -615,14 +643,36 @@ module.exports.farmerTrainingYear = async (req, res) => {
       });
     });
 };
+
+//@GET - /farmerTrainingForm
 module.exports.farmerTrainingForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const farmerTrainingActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   res.render("upazilla/farmerTraining/farmerTrainingForm", {
     title: "কৃষক প্রশিক্ষণ",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: farmerTrainingActivities
   });
 };
+
+//@POST - /farmerTrainingFormPost
 module.exports.farmerTrainingFormPost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
@@ -651,9 +701,10 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
     console.log("file not uploaded successfully");
   }
 };
-//farmerTraining controller ends
+//farmerTraining controller ends ----------------------------------
 
-//farmerPrize controller
+//farmerPrize controller starts-------------------------------
+
 module.exports.farmerPrize = async (req, res) => {
   await farmerPrize
     .findAll({
@@ -678,6 +729,7 @@ module.exports.farmerPrize = async (req, res) => {
 
   //  records:result
 };
+
 module.exports.farmerPrizeYear = async (req, res) => {
   await farmerPrize
     .findAll({
@@ -700,12 +752,32 @@ module.exports.farmerPrizeYear = async (req, res) => {
       });
     });
 };
+
+// @GET - /farmerPrizeForm
 module.exports.farmerPrizeForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const farmerPrizeActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   res.render("upazilla/farmerPrize/farmerPrizeForm", {
     title: "কৃষক পুরষ্কার তথ্য",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: farmerPrizeActivities
   });
 };
 module.exports.farmerPrizeFormPost = async (req, res) => {
@@ -736,9 +808,10 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
     console.log("file not uploaded successfully");
   }
 };
-//farmerPrize controller ends
+//farmerPrize controller ends---------------------------------------
 
-//saaoTraining controller --------------------------------------
+//saaoTraining controller  starts--------------------------------------
+
 module.exports.saaoTraining = async (req, res) => {
   await saaoTraining
     .findAll({
@@ -785,12 +858,32 @@ module.exports.saaoTrainingYear = async (req, res) => {
       });
     });
 };
+
+// @GET - /saaoTrainingForm
 module.exports.saaoTrainingForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const saaoTrainingActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   res.render("upazilla/saaoTraining/saaoTrainingForm", {
     title: "এসএএও প্রশিক্ষণ তথ্য",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: saaoTrainingActivities
   });
 };
 module.exports.saaoTrainingFormPost = async (req, res) => {
@@ -824,6 +917,7 @@ module.exports.saaoTrainingFormPost = async (req, res) => {
 //saaoTraining controller ends ----------------------------------
 
 //review controller----------------------------------------------
+
 module.exports.review = async (req, res) => {
   await review
     .findAll({
@@ -870,12 +964,32 @@ module.exports.reviewYear = async (req, res) => {
       });
     });
 };
+
+//@GET - /reviewForm
 module.exports.reviewForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const reviewFormActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   res.render("upazilla/review/reviewForm", {
     title: "রিভিউ ডিস্কাশন তথ্য",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: reviewFormActivities
   });
 };
 module.exports.reviewFormPost = async (req, res) => {
@@ -909,6 +1023,7 @@ module.exports.reviewFormPost = async (req, res) => {
 //review controller ends----------------------------------------
 
 //bij controller-----------------------------------------------
+
 module.exports.bij = async (req, res) => {
   await bij
     .findAll({
@@ -955,14 +1070,35 @@ module.exports.bijYear = async (req, res) => {
       });
     });
 };
+
+// @GET - /bijForm
 module.exports.bijForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const bijFormActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   res.render("upazilla/bij/bijForm", {
     title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: bijFormActivities
   });
 };
+
 module.exports.bijFormPost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
@@ -993,7 +1129,8 @@ module.exports.bijFormPost = async (req, res) => {
 };
 //bij controller ends--------------------------------------------
 
-//motivational controller
+//motivational controller starts ------------------------------------
+
 module.exports.motivational = async (req, res) => {
   await motivational
     .findAll({
@@ -1040,12 +1177,32 @@ module.exports.motivationalYear = async (req, res) => {
       });
     });
 };
+
+//@GET - /motivationalForm
 module.exports.motivationalForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const motivationalFormActivities = await Activities.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   res.render("upazilla/motivational/motivationalForm", {
     title: "মোটিভেশনাল ট্যুর তথ্য",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: motivationalFormActivities
   });
 };
 module.exports.motivationalFormPost = async (req, res) => {
@@ -1076,4 +1233,4 @@ module.exports.motivationalFormPost = async (req, res) => {
     console.log("file not uploaded successfully");
   }
 };
-//motivational controller ends
+//motivational controller ends---------------------------------------------
