@@ -757,13 +757,13 @@ module.exports.postActivities = async (req,res) => {
             const upazillaInfo = await upazilla.findByPk(upazillaId)
 
             const activityPost = await activities.create({
-                field_exhibition,
+                saao_training,
                 field_day,
                 farmer_training,
-                agricultural_fair,
+                review,
                 farmer_awards,
-                llP_distribution,
-                solarlight_trap,
+                bij,
+                motivational,
                 upazillaId,
                 ddId: upazillaInfo.ddId,
                 start_time : startRange,
