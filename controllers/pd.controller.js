@@ -222,7 +222,7 @@ module.exports.fieldDayFilter=async(req,res)=>{
 module.exports.fieldDayDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -267,7 +267,7 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
 module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -313,7 +313,7 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
 module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -358,7 +358,7 @@ module.exports.fieldDayFilter=async(req,res)=>{
 module.exports.fieldDayDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -403,7 +403,7 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
 module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -449,7 +449,7 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
 module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -495,7 +495,7 @@ module.exports.saaoTrainingFilter=async(req,res)=>{
 module.exports.saaoTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -541,7 +541,7 @@ module.exports.reviewFilter=async(req,res)=>{
 module.exports.reviewDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -587,7 +587,7 @@ module.exports.bijFilter=async(req,res)=>{
 module.exports.bijDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }
@@ -633,7 +633,7 @@ module.exports.motivationalFilter=async(req,res)=>{
 module.exports.motivationalDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {dd_id: req.body.district}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
         console.log("inside");
         res.send(upazillass)
     }

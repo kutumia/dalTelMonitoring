@@ -24,7 +24,7 @@ const express = require("express");
 //multer setup for fieldDay image
 var storagefieldDay = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/fieldDay");
+    cb(null, "./public/upload/fieldDay");
   },
   filename: function (req, file, cb) {
     cb(
@@ -251,18 +251,12 @@ module.exports.upazillasignup = async (req, res) => {
       });
     })
     .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/signup", {
-        title:
-          "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
-        msg: "",
-        records: err,
-      });
+      console.log("outside",err);
     });
 };
 module.exports.upazillasignuppost = async (req, res) => {
   try {
-    const { dds, uname, password, confirmPassword } = req.body;
+    const { dds, uname,upazillas, password, confirmPassword } = req.body;
     const ddata = await dd.findAll();
     const data = await upazilla.findAll({ where: { uname: uname } });
 
@@ -286,6 +280,7 @@ module.exports.upazillasignuppost = async (req, res) => {
       try {
         const createupazilla = await upazilla.create({
           uname: uname,
+          upazilla:upazillas,
           password: hashedPassword,
           ddId: dds,
           pdId: 1,

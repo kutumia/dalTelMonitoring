@@ -10,6 +10,9 @@ module.exports = (sequelize, Sequelize) => {
       uname: {
         type: Sequelize.STRING
       },
+      upazilla: {
+        type: Sequelize.STRING
+      },
       password: {
         type: Sequelize.STRING
       },

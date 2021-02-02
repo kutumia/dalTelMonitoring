@@ -101,7 +101,7 @@ module.exports.ddsignup=async(req,res)=>{
 };
 module.exports.ddsignuppost=async(req,res)=>{
     try {
-        const{uname,password,confirmPassword}=req.body;
+        const{district,uname,password,confirmPassword}=req.body;
         const data = await dd.findAll({ where: {uname: uname} })
         if(data.length > 0){
             res.render('dd/signup',{title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'ERROR: The dd is already enrolled!',records: data })
@@ -114,6 +114,7 @@ module.exports.ddsignuppost=async(req,res)=>{
             console.log(hashedPassword);
             try{
                 const createdd = await dd.create({
+                    district:district,
                     uname: uname,
                     password:hashedPassword,
                     pdId:1
@@ -151,7 +152,7 @@ module.exports.dashboardMonitoring = async(req,res) => {
 //fieldDay controller
 module.exports.fieldDay=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'',upazillas:upazillass });
     }
@@ -180,7 +181,7 @@ module.exports.fieldDayFilter=async(req,res)=>{
 //farmerTraining controller
 module.exports.farmerTraining=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'',upazillas:upazillass });
     }
@@ -211,7 +212,7 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
 //farmerPrize controller
 module.exports.farmerPrize=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'',upazillas:upazillass });
     }
@@ -240,7 +241,7 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
 //saaoTraining controller
 module.exports.saaoTraining=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/saaoTraining/saaoTraining', { title: 'এসএএও প্রশিক্ষণ তথ্য',success:'',upazillas:upazillass });
     }
@@ -270,7 +271,7 @@ module.exports.saaoTrainingFilter=async(req,res)=>{
 //motivational controller
 module.exports.motivational=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/motivational/motivational', { title: 'মোটিভেশনাল ট্যুর তথ্য',success:'',upazillas:upazillass });
     }
@@ -300,7 +301,7 @@ module.exports.motivationalFilter=async(req,res)=>{
 //review controller
 module.exports.review=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/review/review', { title: 'রিভিউ ডিস্কাশন তথ্য',success:'',upazillas:upazillass });
     }
@@ -330,7 +331,7 @@ module.exports.reviewFilter=async(req,res)=>{
 //bij controller
 module.exports.bij=async(req,res)=>{
     try{
-        var upazillass=await upazilla.findAll({where: {dd_id: req.session.user_id}});
+        var upazillass=await upazilla.findAll({where: {ddId: req.session.user_id}});
         console.log("inside");
         res.render('dd/bij/bij', { title: 'বীজ প্রত্যয়ন প্রতিবেদন তথ্য',success:'',upazillas:upazillass });
     }
