@@ -140,15 +140,13 @@ var uploadmotivational = multer({
 }).single("newsUp");
 exports.uploadmotivational = uploadmotivational;
 
-//logIn controller start
+//logIn controller starts
 module.exports.upazillatable = async (req, res) => {
   res.json({ message: "hello upazilla" });
 };
-
 module.exports.allupazilla = async (req, res) => {
   res.json({ message: "hello upazilla" });
 };
-
 module.exports.upazillalogin = async (req, res) => {
   res.render("upazilla/login", {
     title:
@@ -157,7 +155,6 @@ module.exports.upazillalogin = async (req, res) => {
   });
   res.send("log");
 };
-
 module.exports.upazillaloginpost = async (req, res) => {
   try {
     const uname = req.body.uname;
@@ -226,7 +223,6 @@ module.exports.upazillaloginpost = async (req, res) => {
     console.log(error);
   }
 };
-
 module.exports.upazillaDashboard = async (req, res) => {
   console.log("upazilladashboard", res.locals.type);
   res.render("upazilla/dashboard", {
@@ -235,9 +231,9 @@ module.exports.upazillaDashboard = async (req, res) => {
     msg: "Welcome",
   });
 };
-//logIn controller end
+//logIn controller ends
 
-//signUp controller
+//signUp controller starts
 module.exports.upazillasignup = async (req, res) => {
   await dd
     .findAll()
@@ -299,7 +295,7 @@ module.exports.upazillasignuppost = async (req, res) => {
     console.log(error);
   }
 };
-//signUp controller end
+//signUp controller ends
 
 //dashboard controller
 module.exports.dashboardMonitoring = async (req, res) => {
@@ -310,12 +306,10 @@ module.exports.dashboardMonitoring = async (req, res) => {
     msg: "Welcome",
   });
 };
-//dashboard controller
 
 //fieldDay controller starts------------------------------------------------
 // @GET - fieldDay
-module.exports.fieldDay = async (req, res) => {
-  
+module.exports.fieldDay = async (req, res) => {  
   await fieldDay
     .findAll({
       where: { upazillaId: req.session.user_id },
@@ -423,7 +417,6 @@ module.exports.fieldDayFormEdit = async (req, res) => {
 }; 
 // @POST - fieldDayFormPost
 module.exports.fieldDayFormPost = async (req, res) => {
-  // console.log("user Id",req.body.user_id)
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -433,7 +426,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
-
   const activity = await Activities.findOne({
     where : {
       upazillaId : req.body.user_id,
@@ -441,8 +433,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
       end_time : endRange,
     }
   });
-  // console.log("activity",activity)
-
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/fieldDay/" + req.file.filename;
@@ -451,7 +441,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
-
     if(activity.field_day_done < activity.field_day){
       try{
         await fieldDay
@@ -463,10 +452,8 @@ module.exports.fieldDayFormPost = async (req, res) => {
           image: imagePath,
           upazillaId: user_id,
         });
-        
         let fieldDayValue = activity.field_day_done;
         let incrementedValue = ++fieldDayValue;
-        // console.log("increment",incrementedValue);
         await activity.update(
           {
             field_day_done : incrementedValue
@@ -486,7 +473,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
   }else {
     console.log("file not uploaded successfully");
   }
-
 };
 // @POST - /fieldDayFormUpdatePost
 module.exports.fieldDayFormUpdatePost = async (req, res) => {
@@ -590,7 +576,7 @@ module.exports.fieldDayCardDelete = async (req, res) => {
 //fieldDay controller ends ------------------------------------------------------
 
 //farmerTraining controller starts --------------------------------------------
-
+//@GET - /farmerTraining
 module.exports.farmerTraining = async (req, res) => {
   await farmerTraining
     .findAll({
@@ -615,6 +601,7 @@ module.exports.farmerTraining = async (req, res) => {
 
   //  records:result
 };
+//@GET - /farmerTrainingYear
 module.exports.farmerTrainingYear = async (req, res) => {
   await farmerTraining
     .findAll({
@@ -637,7 +624,6 @@ module.exports.farmerTrainingYear = async (req, res) => {
       });
     });
 };
-
 //@GET - /farmerTrainingForm
 module.exports.farmerTrainingForm = async (req, res) => {
   var startRange = "";
@@ -665,7 +651,6 @@ module.exports.farmerTrainingForm = async (req, res) => {
     activities: farmerTrainingActivities
   });
 };
-
 //@POST - /farmerTrainingFormPost
 module.exports.farmerTrainingFormPost = async (req, res) => {
   var startRange = "";
@@ -692,22 +677,35 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
-    
-    await farmerTraining
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
+    if(activity.farmer_training_done < activity.farmer_training){
+      try{
+        await farmerTraining
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazillaId: user_id,
+        });       
+        let farmerTrainingValue = activity.farmer_training_done;
+        let incrementedValue = ++farmerTrainingValue;
+        await activity.update(
+          {
+            farmer_training_done : incrementedValue
+          },
+          { 
+            where: {id : activity.id},
+          }
+        );
         res.redirect("/upazilla/farmerTraining");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+      } catch(err){
+        console.log("Activities are not updated !", err);
+      } 
+    } else {
+      req.flash("message", "Abort !!! Already overloaded !");
+      res.redirect("/upazilla/farmerTraining/farmerTrainingForm");
+    }
   } else {
     console.log("file not uploaded successfully");
   }
@@ -715,7 +713,7 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
 //farmerTraining controller ends ----------------------------------
 
 //farmerPrize controller starts-------------------------------
-
+// @GET - /farmerPrize
 module.exports.farmerPrize = async (req, res) => {
   await farmerPrize
     .findAll({
@@ -740,7 +738,7 @@ module.exports.farmerPrize = async (req, res) => {
 
   //  records:result
 };
-
+// @GET - /farmerPrizeYear
 module.exports.farmerPrizeYear = async (req, res) => {
   await farmerPrize
     .findAll({
@@ -763,7 +761,6 @@ module.exports.farmerPrizeYear = async (req, res) => {
       });
     });
 };
-
 // @GET - /farmerPrizeForm
 module.exports.farmerPrizeForm = async (req, res) => {
   var startRange = "";
@@ -791,7 +788,24 @@ module.exports.farmerPrizeForm = async (req, res) => {
     activities: farmerPrizeActivities
   });
 };
+// @POST - /farmerPrizeFormPost
 module.exports.farmerPrizeFormPost = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+  const activity = await Activities.findOne({
+    where : {
+      upazillaId : req.body.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/farmerPrize/" + req.file.filename;
@@ -800,21 +814,35 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
-    await farmerPrize
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
+    if(activity.farmer_awards_done < activity.farmer_awards){
+      try{
+        await farmerPrize
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazillaId: user_id,
+        });
+        let farmerPrizeValue = activity.farmer_awards_done;
+        let incrementedValue = ++farmerPrize;
+        await activity.update(
+          {
+            farmer_awards_done : incrementedValue
+          },
+          { 
+            where: {id : activity.id},
+          }
+        );
         res.redirect("/upazilla/farmerPrize");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+      } catch(err){
+        console.log("activity is not updated", err);
+      }
+    } else {
+      req.flash("message", "Abort !!! Already overloaded !");
+      res.redirect("/upazilla/farmerPrize/farmerPrizeForm");
+    }
   } else {
     console.log("file not uploaded successfully");
   }
