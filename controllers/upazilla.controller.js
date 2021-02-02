@@ -320,7 +320,7 @@ module.exports.fieldDay = async (req, res) => {
       where: { upazilla: req.session.user_id },
     })
     .then((data) => {
-      console.log("inside");
+      // console.log("inside");
       res.render("upazilla/fieldDay/fieldDay", {
         title: "মাঠ দিবস ",
         success: "",
@@ -328,7 +328,7 @@ module.exports.fieldDay = async (req, res) => {
       });
     })
     .catch((err) => {
-      console.log("outside");
+      // console.log("outside");
       res.render("upazilla/fieldDay/fieldDay", {
         title: "মাঠ দিবস ",
         success: "",
@@ -384,15 +384,48 @@ module.exports.fieldDayForm = async (req, res) => {
 
   res.render("upazilla/fieldDay/fieldDayForm", {
     title: "মাঠ-দিবস",
-    msg: "",
+    msg: "", 
     success: "",
     user_id: req.session.user_id,
     activities: fieldDayActivities
   });
 };
 
-//fieldDayForm POST
+//@GET - /fieldDayFormEdit
+module.exports.fieldDayFormEdit = async (req, res) => {
+  try
+  {
+    var startRange = "";
+    var endRange = "";
+    if (res.locals.moment().format("M") < 7) {
+      startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+      endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    } else {
+      startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+      endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+    }
+
+    const fieldDayActivities = await Activities.findOne({
+      where : {
+        upazillaId : req.session.user_id,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
+    const editData = await fieldDay.findByPk(req.params.id);
+    res.render("upazilla/fieldDay/fieldDayFormEdit", {
+      output: editData,
+      activities: fieldDayActivities,
+      title: "মাঠ-দিবস"
+    });
+  } catch(err){
+    console.log(`Error in Edit ${err}`);
+  }
+}; 
+
+//@POST - fieldDayForm
 module.exports.fieldDayFormPost = async (req, res) => {
+  console.log("user Id",req.body.user_id)
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -451,13 +484,84 @@ module.exports.fieldDayFormPost = async (req, res) => {
     }else {
       req.flash("message", "Abort !!! Already overloaded !");
       res.redirect("/upazilla/fieldDay/fieldDayForm");
-
     } 
   }else {
     console.log("file not uploaded successfully");
   }
 
 };
+
+//@POST - /fieldDayFormUpdatePost
+module.exports.fieldDayFormUpdatePost = async (req, res) => {
+  console.log("updating...");
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const activity = await Activities.findOne({
+    where : {
+      upazillaId : req.body.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
+
+  const path = req.file && req.file.path;
+  if (path) {
+    var imagePath = "/fieldDay/" + req.file.filename;
+    var name = req.body.name;
+    var description = req.body.description;
+    var date = req.body.date;
+    var year = req.body.year;
+    var user_id = req.body.user_id;
+
+    if(activity.field_day_done < activity.field_day){
+      try{
+        await fieldDay
+        .update({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        },
+        { 
+          where: {id : activity.id},
+        });
+        
+        res.redirect("/upazilla/fieldDay");
+      } catch(err) {        
+        console.log("activity is not updated", err);
+      }
+    } else {
+      req.flash("message", "Abort !!! Already overloaded !");
+      res.redirect("/upazilla/fieldDay/fieldDayForm");
+    } 
+  } else {
+    console.log("file not uploaded successfully");
+  }
+
+};
+
+//@GET - /fieldDayCardDelete
+module.exports.fieldDayCardDelete = async (req, res) => {
+  const deleteData = await fieldDay.findByPk(req.params.id);
+  try{
+    deleteData.destroy();
+  } catch(err){
+    console.log(err);
+  }
+
+}
+
+
 //fieldDay controller ends
 
 //farmerTraining controller

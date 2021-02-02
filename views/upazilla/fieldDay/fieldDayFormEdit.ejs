@@ -14,11 +14,11 @@
             <div class="panel panel-info">
               <div class="panel-heading">
                 <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
-                <p><% if(success !=''){ %> <%= success %> <% } %></p>
+                
               </div>
               <div class="panel-body">
                 <form
-                  action="/upazilla/fieldDayFormPost"
+                  action="/upazilla/fieldDayFormUpdatePost/<%= output.id %>"
                   id="FieldTrialForm"
                   class="form-horizontal"
                   method="post"
@@ -50,25 +50,30 @@
                   </div>
                   <% } %>
 
+                  <!-- Batch Name -->
                   <div class="form-group">
                     <label for="name" class="col-md-3 control-label"
                       >ব্যাচ নং/নাম</label
                     >
                     <div class="col-md-9">
                       <select name="name">
-                        <option value="" disabled selected hidden>
-                          Choose a batch no.
+                        <option value="<%= output.name %>" disabled selected hidden>
+                          <%= output.name %>
                         </option>
-                        <%for(let step=0; step< parseInt( activities.field_day
+
+                        <% for(let step=0; step< parseInt( activities.field_day
                         ); step++) { %>
-                        <option value= "<%=title %>
+
+                        <option value="<%=title %>
                           - <%= step+1 %>" > <%=title%> <%=step+1%>
                         </option>
+
                         <% } %>
                       </select>
                     </div>
                   </div>
 
+                  <!-- Details -->
                   <div class="form-group">
                     <label for="description" class="col-md-3 control-label"
                       >বিস্তারিত</label
@@ -78,11 +83,12 @@
                         type="text"
                         class="form-control"
                         name="description"
-                        placeholder="বিস্তারিত"
+                        value="<%= output.description %>"
                       />
                     </div>
                   </div>
 
+                  <!-- Date  -->
                   <div class="form-group">
                     <label for="date" class="col-md-3 control-label"
                       >তারিখ</label
@@ -92,11 +98,15 @@
                         type="date"
                         class="form-control"
                         name="date"
-                        placeholder="তারিখ"
+                        value="<%= output.date %>"
                       />
                     </div>
                   </div>
 
+                  <!-- images -->
+                  <div>
+                    <img style="width: 100px; " src="<%= output.image %>" alt="">
+                  </div>
                   <div class="form-group">
                     <label>Choose</label>
                     <input
@@ -108,6 +118,7 @@
                     />
                   </div>
 
+                  <!-- year  -->
                   <div class="form-group">
                     <label for="year" class="col-md-3 control-label">বছর</label>
                     <div class="col-md-9">
@@ -115,7 +126,7 @@
                         type="text"
                         class="form-control"
                         name="year"
-                        placeholder="বছর"
+                        value="<%= output.year %>"
                       />
                     </div>
                   </div>

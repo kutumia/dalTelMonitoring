@@ -772,8 +772,6 @@ module.exports.postActivities = async (req,res) => {
             req.flash("message", "Added Successfully");
             res.redirect('/pd/activities')
         }
-
-
     }
     catch (e) {
         console.log(e)

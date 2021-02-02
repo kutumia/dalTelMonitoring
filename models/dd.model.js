@@ -1,3 +1,4 @@
+var PD = require('./pd.model');
 module.exports = (sequelize, Sequelize) => {
   const dd = sequelize.define("dd", {
     id: {
@@ -14,10 +15,13 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
     },
-    pd_id: {
+    pdId: {
       type: Sequelize.INTEGER,
+      reference:{
+        model: PD,
+        key: 'id'
+      }
     },
   });
-
   return dd;
 };
