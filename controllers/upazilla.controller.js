@@ -325,7 +325,6 @@ module.exports.fieldDay = async (req, res) => {
       where: { upazilla: req.session.user_id },
     })
     .then((data) => {
-      console.log("inside");
       res.render("upazilla/fieldDay/fieldDay", {
         title: "মাঠ দিবস ",
         success: "",
@@ -333,17 +332,13 @@ module.exports.fieldDay = async (req, res) => {
       });
     })
     .catch((err) => {
-      console.log("outside");
       res.render("upazilla/fieldDay/fieldDay", {
         title: "মাঠ দিবস ",
         success: "",
         records: err,
       });
     });
-
-  //  records:result
 };
-
 module.exports.fieldDayYear = async (req, res) => {
   await fieldDay
     .findAll({
@@ -366,7 +361,6 @@ module.exports.fieldDayYear = async (req, res) => {
       });
     });
 };
-
 //fieldDayForm GET
 module.exports.fieldDayForm = async (req, res) => {
   var startRange = "";
@@ -395,7 +389,6 @@ module.exports.fieldDayForm = async (req, res) => {
     activities: fieldDayActivities
   });
 };
-
 //fieldDayForm POST
 module.exports.fieldDayFormPost = async (req, res) => {
   var startRange = "";
@@ -455,7 +448,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
       }
     }else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/fieldDay/fieldDayForm");
+      res.redirect("/upazilla/fieldDayForm");
 
     } 
   }else {
@@ -513,11 +506,30 @@ module.exports.farmerTrainingYear = async (req, res) => {
     });
 };
 module.exports.farmerTrainingForm = async (req, res) => {
+  var startRange = "";
+  var endRange = "";
+  if (res.locals.moment().format("M") < 7) {
+    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+  } else {
+    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  const activitiesFind = await farmerTraining.findOne({
+    where : {
+      upazillaId : req.session.user_id,
+      start_time : startRange,
+      end_time : endRange,
+    }
+  });
+
   res.render("upazilla/farmerTraining/farmerTrainingForm", {
     title: "কৃষক প্রশিক্ষণ",
     msg: "",
     success: "",
     user_id: req.session.user_id,
+    activities: activitiesFind
   });
 };
 module.exports.farmerTrainingFormPost = async (req, res) => {
