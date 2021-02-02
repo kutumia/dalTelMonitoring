@@ -117,21 +117,21 @@ module.exports.activityDashboardFilter = async (req,res) => {
 
     activityArray.map((activity,key) => {
         upazillas.push(activity.upazilla.uname);
-        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.saao_training;
         totalActivitySum = totalActivitySum + activity.field_day;
         totalActivitySum = totalActivitySum + activity.farmer_training;
-        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.review;
         totalActivitySum = totalActivitySum + activity.farmer_awards;
-        totalActivitySum = totalActivitySum + activity.llP_distribution;
-        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+        totalActivitySum = totalActivitySum + activity.bij;
+        totalActivitySum = totalActivitySum + activity.motivational;
 
-        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.saao_training_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.review_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.bij_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.motivational_done;
 
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
@@ -695,6 +695,8 @@ module.exports.filterActivities = async (req,res) => {
 
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
+
+    console.log(upazillas,activityPercentage);
 
     res.render("pd/activities/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
