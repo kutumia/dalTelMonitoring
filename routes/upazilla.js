@@ -71,11 +71,7 @@ router.get("/fieldDayCardDelete/:id", fieldDayCardDelete);
 router.get("/farmerTraining", farmerTraining);
 router.post("/farmerTrainingYear", farmerTrainingYear);
 router.get("/farmerTrainingForm", farmerTrainingForm);
-router.post(
-  "/farmerTrainingFormPost",
-  uploadfarmerTraining,
-  farmerTrainingFormPost
-);
+router.post("/farmerTrainingFormPost", uploadfarmerTraining, farmerTrainingFormPost);
 
 router.get("/farmerPrize", farmerPrize);
 router.post("/farmerPrizeYear", farmerPrizeYear);

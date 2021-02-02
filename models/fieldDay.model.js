@@ -21,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
       year: {
         type: Sequelize.INTEGER
       },
-      upazilla_id: {
+      upazillaId: {
         type: Sequelize.INTEGER,
         reference:{
           model: Upazilla,

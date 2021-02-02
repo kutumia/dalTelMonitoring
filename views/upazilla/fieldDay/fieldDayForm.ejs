@@ -14,7 +14,6 @@
             <div class="panel panel-info">
               <div class="panel-heading">
                 <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
-                <p><% if(success !=''){ %> <%= success %> <% } %></p>
               </div>
               <div class="panel-body">
                 <form
@@ -61,8 +60,8 @@
                         </option>
                         <%for(let step=0; step< parseInt( activities.field_day
                         ); step++) { %>
-                        <option value= "<%=title %>
-                          - <%= step+1 %>" > <%=title%> <%=step+1%>
+                        <option 
+                          value= "<%=title %> - <%= step+1 %>" > <%=title%> <%=step+1%>
                         </option>
                         <% } %>
                       </select>
