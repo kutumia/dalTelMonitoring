@@ -7,10 +7,10 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement:true
         },
-        field_exhibition: {
+        saao_training: {
             type: Sequelize.INTEGER
         },
-        field_exhibition_done: {
+        saao_training_done: {
             type: Sequelize.INTEGER,
             allowNull: false,
             defaultValue: 0
@@ -31,10 +31,10 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             defaultValue: 0
         },
-        agricultural_fair: {
+        review: {
             type: Sequelize.INTEGER
         },
-        agricultural_fair_done: {
+        review_done: {
             type: Sequelize.INTEGER,
             allowNull: false,
             defaultValue: 0
@@ -47,18 +47,18 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             defaultValue: 0
         },
-        llP_distribution : {
+        bij : {
             type: Sequelize.INTEGER
         },
-        llP_distribution_done : {
+        bij_done : {
             type: Sequelize.INTEGER,
             allowNull: false,
             defaultValue: 0
         },
-        solarlight_trap : {
+        motivational : {
             type: Sequelize.INTEGER
         },
-        solarlight_trap_done : {
+        motivational_done : {
             type: Sequelize.INTEGER,
             allowNull: false,
             defaultValue: 0

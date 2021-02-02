@@ -421,7 +421,7 @@ module.exports.fieldDayFormEdit = async (req, res) => {
     res.render("upazilla/fieldDay/fieldDayFormEdit", {
       output: editData,
       activities: fieldDayActivities,
-      title: "মাঠ-দিবস",
+      title: "মাঠ-দিবস"
     });
   } catch(err){
     console.log(`Error in Edit ${err}`);
@@ -430,6 +430,7 @@ module.exports.fieldDayFormEdit = async (req, res) => {
 
 //@POST - fieldDayForm
 module.exports.fieldDayFormPost = async (req, res) => {
+  console.log("user Id",req.body.user_id)
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
