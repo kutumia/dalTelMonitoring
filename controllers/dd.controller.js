@@ -164,7 +164,7 @@ module.exports.fieldDay=async(req,res)=>{
 };
 module.exports.fieldDayFilter=async(req,res)=>{
     await fieldDay.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('dd/fieldDay/fieldDayTable', {records: data} ,function(err, html) {
@@ -175,6 +175,31 @@ module.exports.fieldDayFilter=async(req,res)=>{
         res.render('dd/fieldDay/fieldDayYear', { title: 'মাঠ দিবস ',success:'', records: err });
     })
 
+};
+module.exports.fieldDayCardOpen = async (req, res) => {
+  
+    var ddata=await fieldDay.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await fieldDay
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/fieldDay/fieldDayGallery", {
+          title: "মাঠ দিবস ",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //fieldDay controller ends
 
@@ -194,7 +219,7 @@ module.exports.farmerTraining=async(req,res)=>{
 };
 module.exports.farmerTrainingFilter=async(req,res)=>{
     await farmerTraining.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('dd/farmerTraining/farmerTrainingTable', {records: data} ,function(err, html) {
@@ -205,6 +230,31 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
         res.render('dd/farmerTraining/farmerTrainingYear', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', records: err });
     })
 
+};
+module.exports.farmerTrainingCardOpen = async (req, res) => {
+  
+    var ddata=await farmerTraining.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await farmerTraining
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/farmerTraining/farmerTrainingGallery", {
+          title: "কৃষক প্রশিক্ষণ তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //farmerTraining controller ends
 
@@ -225,7 +275,7 @@ module.exports.farmerPrize=async(req,res)=>{
 };
 module.exports.farmerPrizeFilter=async(req,res)=>{
     await farmerPrize.findAll({
-        where: {year: req.body.year,upazilla_id:req.body.upazilla}
+        where: {year: req.body.year,upazillaId:req.body.upazilla}
     })
     .then(data => {
         res.render('dd/farmerPrize/farmerPrizeTable', {records: data} ,function(err, html) {
@@ -236,6 +286,31 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
         res.render('dd/farmerPrize/farmerPrizeYear', { title: 'কৃষক পুরষ্কার তথ্য',success:'', records: err });
     })
 
+};
+module.exports.farmerPrizeCardOpen = async (req, res) => {
+  
+    var ddata=await farmerPrize.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await farmerPrize
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/farmerPrize/farmerPrizeGallery", {
+          title: "কৃষক পুরষ্কার তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //farmerPrize controller ends
 //saaoTraining controller
@@ -254,7 +329,7 @@ module.exports.saaoTraining=async(req,res)=>{
 };
 module.exports.saaoTrainingFilter=async(req,res)=>{
     await saaoTraining.findAll({
-        where: {year: req.body.year,upazilla_id:req.body.upazilla}
+        where: {year: req.body.year,upazillaId:req.body.upazilla}
     })
     .then(data => {
         res.render('dd/saaoTraining/saaoTrainingTable', {records: data} ,function(err, html) {
@@ -265,6 +340,31 @@ module.exports.saaoTrainingFilter=async(req,res)=>{
         res.render('dd/saaoTraining/saaoTrainingYear', { title: 'এসএএও প্রশিক্ষণ তথ্য',success:'', records: err });
     })
 
+};
+module.exports.saaoTrainingCardOpen = async (req, res) => {
+  
+    var ddata=await saaoTraining.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await saaoTraining
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/saaoTraining/saaoTrainingGallery", {
+          title: "এসএএও প্রশিক্ষণ তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //saaoTraining controller ends
 
@@ -284,7 +384,7 @@ module.exports.motivational=async(req,res)=>{
 };
 module.exports.motivationalFilter=async(req,res)=>{
     await motivational.findAll({
-        where: {year: req.body.year,upazilla_id:req.body.upazilla}
+        where: {year: req.body.year,upazillaId:req.body.upazilla}
     })
     .then(data => {
         res.render('dd/motivational/motivationalTable', {records: data} ,function(err, html) {
@@ -295,6 +395,31 @@ module.exports.motivationalFilter=async(req,res)=>{
         res.render('dd/motivational/motivationalYear', { title: 'মোটিভেশনাল ট্যুর তথ্য',success:'', records: err });
     })
 
+};
+module.exports.motivationalCardOpen = async (req, res) => {
+  
+    var ddata=await motivational.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await motivational
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/motivational/motivationalGallery", {
+          title: "মোটিভেশনাল ট্যুর",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //motivational controller ends
 
@@ -314,7 +439,7 @@ module.exports.review=async(req,res)=>{
 };
 module.exports.reviewFilter=async(req,res)=>{
     await review.findAll({
-        where: {year: req.body.year,upazilla_id:req.body.upazilla}
+        where: {year: req.body.year,upazillaId:req.body.upazilla}
     })
     .then(data => {
         res.render('dd/review/reviewTable', {records: data} ,function(err, html) {
@@ -325,6 +450,31 @@ module.exports.reviewFilter=async(req,res)=>{
         res.render('dd/review/reviewYear', { title: 'রিভিউ ডিস্কাশন তথ্য',success:'', records: err });
     })
 
+};
+module.exports.reviewCardOpen = async (req, res) => {
+  
+    var ddata=await review.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await review
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/review/reviewGallery", {
+          title: "রিভিউ ডিস্কাশন",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //review controller ends
 
@@ -344,7 +494,7 @@ module.exports.bij=async(req,res)=>{
 };
 module.exports.bijFilter=async(req,res)=>{
     await bij.findAll({
-        where: {year: req.body.year,upazilla_id:req.body.upazilla}
+        where: {year: req.body.year,upazillaId:req.body.upazilla}
     })
     .then(data => {
         res.render('dd/bij/bijTable', {records: data} ,function(err, html) {
@@ -355,6 +505,31 @@ module.exports.bijFilter=async(req,res)=>{
         res.render('dd/bij/bijYear', { title: 'বীজ প্রত্যয়ন প্রতিবেদন তথ্য',success:'', records: err });
     })
 
+};
+module.exports.bijCardOpen = async (req, res) => {
+  
+    var ddata=await fieldDay.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await bij
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("dd/bij/bijGallery", {
+          title: "বীজ প্রত্যয়ন প্রতিবেদন",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //bij controller ends
 

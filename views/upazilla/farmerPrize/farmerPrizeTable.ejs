@@ -9,10 +9,11 @@
                 <h4 class="card-title"><%= row.name %></h4>
                 <p class="card-text"><%= row.description %></p>
                 <p class="card-text"><%= row.date%></p>
-                <a href="/open/<%= row.id %>" class="btn btn-success" style="text-decoration:none;"><i class="fa fa-search-plus"></i> Open   </a>
-                <a href="/edit/<%= row.id %>" class="btn btn-primary" style="text-decoration:none;"> <i class="fa fa-edit"></i> Edit  </a>
-                <a href="/delete/<%= row.id %>" class="btn btn-danger"  style="text-decoration:none;"> <i class="fa fa-trash"></i> Delete</a>
+                <a  href="/upazilla/farmerPrizeCardOpen/<%= row.id %>" class="btn btn-success" style="text-decoration:none;"><i class="fa fa-search-plus"></i> Open </a>
+                <a href="/upazilla/farmerPrizeFormEdit/<%= row.id %>" class="btn btn-primary" style="text-decoration:none;"> <i class="fa fa-edit"></i> Edit  </a>
+                <a href="/upazilla/farmerPrizeCardDelete/<%= row.id %>" class="btn btn-danger"  style="text-decoration:none;"> <i class="fa fa-trash"></i> Delete</a>
               </div>
+              
         </div>
       </div>
     

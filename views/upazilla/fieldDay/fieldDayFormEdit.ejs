@@ -65,8 +65,7 @@
                         <% for(let step=0; step< parseInt( activities.field_day
                         ); step++) { %>
 
-                        <option value="<%=title %>
-                          - <%= step+1 %>" > <%=title%> <%=step+1%>
+                        <option value="<%= step+1 %>" > <%=title%> <%=step+1%>
                         </option>
 
                         <% } %>
@@ -136,14 +135,14 @@
                     <label for="year" class="col-md-3 control-label"
                       >userid</label
                     >
-                    <% console.log("frotn",output.upazilla_id)%>
+                    <% console.log("frotn",output.upazillaId)%>
                     <div class="col-md-9">
                       <input
                         type="text"
                         class="form-control"
-                        name="upazilla_id"
+                        name="upazillaId"
                         placeholder="id"
-                        value="<%= output.upazilla_id %>"
+                        value="<%= output.upazillaId %>"
                       />
                     </div>
                   </div>

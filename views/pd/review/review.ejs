@@ -17,6 +17,7 @@
                                         <div class="col-md-3">
                                             <label for="district">Choose a District:</label>
                                                 <select id="district" name="district">
+                                                    <option value="">District</option>
                                                     <% district.forEach(function(row){ %>
                                                         <option value="<%= row.id %>"><%= row.uname %></option>
                                                     <% }) %>
@@ -106,7 +107,7 @@
         var district = $('#district').val();
         $.ajax({
             type: "POST",
-            url: "/pd/fieldDayDistrictFilter",
+            url: "/pd/reviewDistrictFilter",
             data: {district: district},
             datatype: "json",
             beforeSend: function() {
@@ -141,7 +142,7 @@
         var upazilla = $('#upazilla').val();
         $.ajax({
             type: "POST",
-            url: "/pd/fieldDayFilter",
+            url: "/pd/reviewFilter",
             data: {year: year,upazilla:upazilla},
             datatype: "json",
             beforeSend: function() {
@@ -166,7 +167,7 @@
         var upazilla = $('#upazilla').val();
         $.ajax({
             type: "POST",
-            url: "/pd/fieldDayFilter",
+            url: "/pd/reviewFilter",
             data: {year: year,upazilla:upazilla},
             datatype: "json",
             beforeSend: function() {
