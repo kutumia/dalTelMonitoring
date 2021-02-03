@@ -481,7 +481,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
       }
     }else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/fieldDay/fieldDayForm");
+      res.redirect("/upazilla/fieldDayForm");
     }
   }else {
     console.log("file not uploaded successfully");
@@ -505,7 +505,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
 
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.upazilla_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -514,11 +514,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/fieldDay/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
 
     if(activity.field_day_done < activity.field_day){
       try{
@@ -529,10 +525,10 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
                   date: date,
                   year: year,
                   image: imagePath,
-                  upazillaId: user_id,
+                  upazillaId: upazillaId,
                 },
                 {
-                  where: {id : activity.id},
+                  where: {id : req.params.id},
                 });
 
         res.redirect("/upazilla/fieldDay");
@@ -544,12 +540,30 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
       res.redirect("/upazilla/fieldDay/fieldDayForm");
     }
   } else {
-    console.log("file not uploaded successfully");
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await fieldDay
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/fieldDay");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }
   }
 
 };
 // @GET - /fieldDayCardDelete
 module.exports.fieldDayCardDelete = async (req, res) => {
+  console.log("delete",req.params.id)
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -560,17 +574,19 @@ module.exports.fieldDayCardDelete = async (req, res) => {
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
 
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await fieldDay.findByPk(req.params.id);
+
   try{
+    const deleteData = await fieldDay.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let fieldDayValue = activity.field_day_done;
+    console.log("fieldDayValuess",activity)
     let decrementedValue = --fieldDayValue;
     // console.log("increment",incrementedValue);
     await activity.update(
