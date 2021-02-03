@@ -1,0 +1,172 @@
+<%- include('../../includesMonitoring/header')-%>
+<div class="wrapper">
+  <%- include('../../includesMonitoring/topbar')-%>
+  <div class="page-wrap">
+    <%- include('../../includesMonitoring/sidebar')-%>
+    <div class="main-content">
+      <div class="container-fluid">
+        <div class="row clearfix">
+          <div
+            id="signupbox"
+            style="margin-top: 50px"
+            class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2"
+          >
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
+                
+              </div>
+              <div class="panel-body">
+                
+                <form
+                  action="/upazilla/motivationalFormUpdatePost/<%= output.id %>"
+                  id="FieldTrialForm"
+                  class="form-horizontal"
+                  method="post"
+                  role="form"
+                  enctype="multipart/form-data"
+                >
+                  <div
+                    id="signupalert"
+                    style="display: none"
+                    class="alert alert-danger"
+                  >
+                    <p>Error:</p>
+                    <span></span>
+                  </div>
+                  <% if(messages.message){ %>
+                  <div
+                    class="alert alert-warning alert-dismissible fade show"
+                    role="alert"
+                  >
+                    <strong><%= messages.message %></strong>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="alert"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <% } %>
+
+                  <!-- Batch Name -->
+                  <div class="form-group">
+                    <label for="name" class="col-md-3 control-label"
+                      >ব্যাচ নং/নাম</label
+                    >
+                    <div class="col-md-9">
+                      <select name="name">
+                        <option value="<%= output.name %>" disabled selected hidden>
+                          <%= output.name %>
+                        </option>
+
+                        <% for(let step=0; step< parseInt( activities.motivational
+                        ); step++) { %>
+
+                        <option value="<%=title %>
+                          - <%= step+1 %>" > <%=title%> <%=step+1%>
+                        </option>
+
+                        <% } %>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Details -->
+                  <div class="form-group">
+                    <label for="description" class="col-md-3 control-label"
+                      >বিস্তারিত</label
+                    >
+                    <div class="col-md-9">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="description"
+                        value="<%= output.description %>"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Date  -->
+                  <div class="form-group">
+                    <label for="date" class="col-md-3 control-label"
+                      >তারিখ</label
+                    >
+                    <div class="col-md-9">
+                      <input
+                        type="date"
+                        class="form-control"
+                        name="date"
+                        value="<%= output.date %>"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- images -->
+                  <div>
+                    <img style="width: 100px; " src="<%= output.image %>" alt="">
+                  </div>
+                  <div class="form-group">
+                    <label>Choose</label>
+                    <input
+                      type="file"
+                      id="filename"
+                      class="form-control"
+                      name="newsUp"
+                      required
+                    />
+                  </div>
+
+                  <!-- year  -->
+                  <div class="form-group">
+                    <label for="year" class="col-md-3 control-label">বছর</label>
+                    <div class="col-md-9">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="year"
+                        value="<%= output.year %>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="year" class="col-md-3 control-label"
+                      >userid</label
+                    >
+                    <% console.log("frotn",output.upazilla_id)%>
+                    <div class="col-md-9">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="upazillaId"
+                        placeholder="id"
+                        value="<%= output.upazillaId %>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <!-- Button -->
+                    <div class="col-md-offset-3 col-md-9">
+                      <input
+                        type="submit"
+                        name="submit"
+                        value="submit"
+                        class="btn btn-primary"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../includesMonitoring/footer')-%>
