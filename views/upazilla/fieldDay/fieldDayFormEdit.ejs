@@ -20,10 +20,8 @@
                 
                 <form
                   action="/upazilla/fieldDayFormUpdatePost/<%= output.id %>"
-                  id="FieldTrialForm"
                   class="form-horizontal"
                   method="post"
-                  role="form"
                   enctype="multipart/form-data"
                 >
                   <div
@@ -65,8 +63,7 @@
                         <% for(let step=0; step< parseInt( activities.field_day
                         ); step++) { %>
 
-                        <option value="<%=title %>
-                          - <%= step+1 %>" > <%=title%> <%=step+1%>
+                        <option value="<%= step+1 %>" > <%=title%> <%=step+1%>
                         </option>
 
                         <% } %>
@@ -106,7 +103,7 @@
 
                   <!-- images -->
                   <div>
-                    <img style="width: 100px; " src="<%= output.image %>" alt="">
+                    <img style="width: 100px; " src="/upload/<%= output.image %>" alt="">
                   </div>
                   <div class="form-group">
                     <label>Choose</label>
@@ -115,7 +112,6 @@
                       id="filename"
                       class="form-control"
                       name="newsUp"
-                      required
                     />
                   </div>
 
@@ -136,14 +132,13 @@
                     <label for="year" class="col-md-3 control-label"
                       >userid</label
                     >
-                    <% console.log("frotn",output.upazilla_id)%>
                     <div class="col-md-9">
                       <input
                         type="text"
                         class="form-control"
-                        name="upazilla_id"
+                        name="upazillaId"
                         placeholder="id"
-                        value="<%= output.upazilla_id %>"
+                        value="<%= output.upazillaId %>"
                       />
                     </div>
                   </div>

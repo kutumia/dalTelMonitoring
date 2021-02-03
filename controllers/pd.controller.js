@@ -117,21 +117,21 @@ module.exports.activityDashboardFilter = async (req,res) => {
 
     activityArray.map((activity,key) => {
         upazillas.push(activity.upazilla.uname);
-        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.saao_training;
         totalActivitySum = totalActivitySum + activity.field_day;
         totalActivitySum = totalActivitySum + activity.farmer_training;
-        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.review;
         totalActivitySum = totalActivitySum + activity.farmer_awards;
-        totalActivitySum = totalActivitySum + activity.llP_distribution;
-        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+        totalActivitySum = totalActivitySum + activity.bij;
+        totalActivitySum = totalActivitySum + activity.motivational;
 
-        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.saao_training_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.review_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.bij_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.motivational_done;
 
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
@@ -207,7 +207,7 @@ module.exports.fieldDay=async(req,res)=>{
 };
 module.exports.fieldDayFilter=async(req,res)=>{
     await fieldDay.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/fieldDay/fieldDayTable', {records: data} ,function(err, html) {
@@ -233,6 +233,31 @@ module.exports.fieldDayDistrictFilter=async(req,res)=>{
      
 
 };
+module.exports.fieldDayCardOpen = async (req, res) => {
+  
+    var ddata=await fieldDay.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await fieldDay
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/fieldDay/fieldDayGallery", {
+          title: "মাঠ দিবস ",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
+};
 //fieldDay controller ends
 
 //farmerTraining controller
@@ -252,7 +277,7 @@ module.exports.farmerTraining=async(req,res)=>{
 };
 module.exports.farmerTrainingFilter=async(req,res)=>{
     await farmerTraining.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/farmerTraining/farmerTrainingTable', {records: data} ,function(err, html) {
@@ -278,6 +303,31 @@ module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
      
 
 };
+module.exports.farmerTrainingCardOpen = async (req, res) => {
+  
+    var ddata=await farmerTraining.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await farmerTraining
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/farmerTraining/farmerTrainingGallery", {
+          title: "কৃষক প্রশিক্ষণ তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
+};
 //farmerTraining controller ends
 
 //farmerPrize controller
@@ -298,7 +348,7 @@ module.exports.farmerPrize=async(req,res)=>{
 };
 module.exports.farmerPrizeFilter=async(req,res)=>{
     await farmerPrize.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/farmerPrize/farmerPrizeTable', {records: data} ,function(err, html) {
@@ -324,6 +374,31 @@ module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
      
 
 };
+module.exports.farmerPrizeCardOpen = async (req, res) => {
+  
+    var ddata=await farmerPrize.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await farmerPrize
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/farmerPrize/farmerPrizeGallery", {
+          title: "কৃষক পুরষ্কার তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
+};
 //farmerPrize controller ends
 
 //fieldDay controller
@@ -343,7 +418,7 @@ module.exports.fieldDay=async(req,res)=>{
 };
 module.exports.fieldDayFilter=async(req,res)=>{
     await fieldDay.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/fieldDay/fieldDayTable', {records: data} ,function(err, html) {
@@ -388,7 +463,7 @@ module.exports.farmerTraining=async(req,res)=>{
 };
 module.exports.farmerTrainingFilter=async(req,res)=>{
     await farmerTraining.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/farmerTraining/farmerTrainingTable', {records: data} ,function(err, html) {
@@ -434,7 +509,7 @@ module.exports.farmerPrize=async(req,res)=>{
 };
 module.exports.farmerPrizeFilter=async(req,res)=>{
     await farmerPrize.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/farmerPrize/farmerPrizeTable', {records: data} ,function(err, html) {
@@ -480,7 +555,7 @@ module.exports.saaoTraining=async(req,res)=>{
 };
 module.exports.saaoTrainingFilter=async(req,res)=>{
     await saaoTraining.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/saaoTraining/saaoTrainingTable', {records: data} ,function(err, html) {
@@ -506,6 +581,31 @@ module.exports.saaoTrainingDistrictFilter=async(req,res)=>{
      
 
 };
+module.exports.saaoTrainingCardOpen = async (req, res) => {
+  
+    var ddata=await saaoTraining.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await saaoTraining
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/saaoTraining/saaoTrainingGallery", {
+          title: "এসএএও প্রশিক্ষণ তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
+};
 //saaoTraining controller ends
 
 //review controller
@@ -526,7 +626,7 @@ module.exports.review=async(req,res)=>{
 };
 module.exports.reviewFilter=async(req,res)=>{
     await review.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/review/reviewTable', {records: data} ,function(err, html) {
@@ -552,6 +652,31 @@ module.exports.reviewDistrictFilter=async(req,res)=>{
      
 
 };
+module.exports.reviewCardOpen = async (req, res) => {
+  
+    var ddata=await review.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await review
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/review/reviewGallery", {
+          title: "রিভিউ ডিস্কাশন",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
+};
 //review controller ends
 
 //bij controller
@@ -572,7 +697,7 @@ module.exports.bij=async(req,res)=>{
 };
 module.exports.bijFilter=async(req,res)=>{
     await bij.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/bij/bijTable', {records: data} ,function(err, html) {
@@ -598,6 +723,31 @@ module.exports.bijDistrictFilter=async(req,res)=>{
      
 
 };
+module.exports.bijCardOpen = async (req, res) => {
+  
+    var ddata=await fieldDay.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await bij
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/bij/bijGallery", {
+          title: "বীজ প্রত্যয়ন প্রতিবেদন",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
+};
 //bij controller ends
 
 //motivational controller
@@ -618,7 +768,7 @@ module.exports.motivational=async(req,res)=>{
 };
 module.exports.motivationalFilter=async(req,res)=>{
     await motivational.findAll({
-        where: {year: req.body.year,upazilla_id: req.body.upazilla}
+        where: {year: req.body.year,upazillaId: req.body.upazilla}
     })
     .then(data => {
         res.render('pd/motivational/motivationalTable', {records: data} ,function(err, html) {
@@ -643,6 +793,31 @@ module.exports.motivationalDistrictFilter=async(req,res)=>{
     }
      
 
+};
+module.exports.motivationalCardOpen = async (req, res) => {
+  
+    var ddata=await motivational.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    await motivational
+      .findAll({
+        where: { upazillaId:upazilla,batch:batchNum,year:year },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("pd/motivational/motivationalGallery", {
+          title: "মোটিভেশনাল ট্যুর",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    //  records:result
 };
 //motivational controller ends
 
@@ -677,24 +852,26 @@ module.exports.filterActivities = async (req,res) => {
 
     activityArray.map((activity,key) => {
         upazillas.push(activity.upazilla.uname);
-        totalActivitySum = totalActivitySum + activity.field_exhibition;
+        totalActivitySum = totalActivitySum + activity.saao_training;
         totalActivitySum = totalActivitySum + activity.field_day;
         totalActivitySum = totalActivitySum + activity.farmer_training;
-        totalActivitySum = totalActivitySum + activity.agricultural_fair;
+        totalActivitySum = totalActivitySum + activity.review;
         totalActivitySum = totalActivitySum + activity.farmer_awards;
-        totalActivitySum = totalActivitySum + activity.llP_distribution;
-        totalActivitySum = totalActivitySum + activity.solarlight_trap;
+        totalActivitySum = totalActivitySum + activity.bij;
+        totalActivitySum = totalActivitySum + activity.motivational;
 
-        totalDoneActivitySum = totalDoneActivitySum + activity.field_exhibition_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.saao_training_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.field_day_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_training_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.agricultural_fair_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.review_done;
         totalDoneActivitySum = totalDoneActivitySum + activity.farmer_awards_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.llP_distribution_done;
-        totalDoneActivitySum = totalDoneActivitySum + activity.solarlight_trap_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.bij_done;
+        totalDoneActivitySum = totalDoneActivitySum + activity.motivational_done;
 
         activityPercentage.push( ( (totalDoneActivitySum * 100) / totalActivitySum ).toFixed(2) )
     })
+
+    console.log(upazillas,activityPercentage);
 
     res.render("pd/activities/activityTable", { records: activityArray, xAxis : JSON.stringify(upazillas), yAxis: JSON.stringify(activityPercentage) }, function (err, html) {
             res.send(html);
@@ -729,7 +906,7 @@ module.exports.addActivities = async(req,res) => {
 }
 module.exports.postActivities = async (req,res) => {
     try{
-        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
+        const {saao_training,field_day,farmer_training,review,farmer_awards,bij,motivational,upazillaId} = req.body;
 
         var startRange = "";
         var endRange = "";

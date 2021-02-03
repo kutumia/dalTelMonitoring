@@ -17,6 +17,7 @@
                                         <div class="col-md-3">
                                             <label for="district">Choose a District:</label>
                                                 <select id="district" name="district">
+                                                    <option value="">District</option>
                                                     <% district.forEach(function(row){ %>
                                                         <option value="<%= row.id %>"><%= row.uname %></option>
                                                     <% }) %>
