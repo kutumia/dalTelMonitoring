@@ -1215,7 +1215,7 @@ module.exports.saaoTrainingForm = async (req, res) => {
           upazillaId: user_id,
         });
         let farmerPrizeValue = activity.farmer_awards_done;
-        let incrementedValue = ++farmerPrize;
+        let incrementedValue = ++farmerPrizeValue;
         await activity.update(
           {
             farmer_awards_done : incrementedValue
