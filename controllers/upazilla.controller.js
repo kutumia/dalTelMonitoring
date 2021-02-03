@@ -28,8 +28,8 @@ var storagefieldDay = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -45,8 +45,8 @@ var storagefarmerTraining = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -62,8 +62,8 @@ var storagefarmerPrize = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -79,8 +79,8 @@ var storagesaaoTraining = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -96,8 +96,8 @@ var storagereview = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -113,8 +113,8 @@ var storagebij = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -130,8 +130,8 @@ var storagemotivational = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -152,7 +152,7 @@ module.exports.allupazilla = async (req, res) => {
 module.exports.upazillalogin = async (req, res) => {
   res.render("upazilla/login", {
     title:
-      "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+        "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
     msg: "",
   });
   res.send("log");
@@ -163,44 +163,44 @@ module.exports.upazillaloginpost = async (req, res) => {
     const uname = req.body.uname;
     const password = req.body.password;
     upazilla
-      .findAll({ where: { uname: uname } })
-      .then((data) => {
-        if (data.length > 0) {
-          bcrypt.compare(password, data[0].password, function (err, result) {
-            if (result == true) {
-              req.session.type = "upazilla";
-              req.session.user_id = data[0].id;
-              const id = req.session.user_id;
-              // res.locals.type = req.session.type;
-              // res.locals.user_id = req.session.user_id;
-              console.log("session=", req.session.type, res.locals);
-              // const token=jwt.sign({id},process.env.JWT_SECRET,token{
-              //     expiresIn:process.env.JWT_EXPIRES_IN
-              // });
-              // console.log("the token is :"+)
-              res.redirect("/upazilla/dashboard");
-            } else {
-              return res.status(200).render("upazilla/login", {
-                title:
+        .findAll({ where: { uname: uname } })
+        .then((data) => {
+          if (data.length > 0) {
+            bcrypt.compare(password, data[0].password, function (err, result) {
+              if (result == true) {
+                req.session.type = "upazilla";
+                req.session.user_id = data[0].id;
+                const id = req.session.user_id;
+                // res.locals.type = req.session.type;
+                // res.locals.user_id = req.session.user_id;
+                console.log("session=", req.session.type, res.locals);
+                // const token=jwt.sign({id},process.env.JWT_SECRET,token{
+                //     expiresIn:process.env.JWT_EXPIRES_IN
+                // });
+                // console.log("the token is :"+)
+                res.redirect("/upazilla/dashboard");
+              } else {
+                return res.status(200).render("upazilla/login", {
+                  title:
+                      "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+                  msg: "Please provide a username and password",
+                });
+              }
+            });
+          } else {
+            return res.status(200).render("upazilla/login", {
+              title:
                   "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
-                msg: "Please provide a username and password",
-              });
-            }
+              msg: "Please provide a username and password",
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+                err.message || "Some error occurred while retrieving tutorials.",
           });
-        } else {
-          return res.status(200).render("upazilla/login", {
-            title:
-              "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
-            msg: "Please provide a username and password",
-          });
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving tutorials.",
         });
-      });
     // upazilla.findAll({ where: {uname: uname} })
     // .then(data => {
     //     if(data.length > 0){
@@ -231,7 +231,7 @@ module.exports.upazillaDashboard = async (req, res) => {
   console.log("upazilladashboard", res.locals.type);
   res.render("upazilla/dashboard", {
     title:
-      "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+        "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
     msg: "Welcome",
   });
 };
@@ -240,19 +240,19 @@ module.exports.upazillaDashboard = async (req, res) => {
 //signUp controller
 module.exports.upazillasignup = async (req, res) => {
   await dd
-    .findAll()
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/signup", {
-        title:
-          "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
-        msg: "",
-        records: data,
+      .findAll()
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/signup", {
+          title:
+              "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+          msg: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside",err);
       });
-    })
-    .catch((err) => {
-      console.log("outside",err);
-    });
 };
 module.exports.upazillasignuppost = async (req, res) => {
   try {
@@ -263,14 +263,14 @@ module.exports.upazillasignuppost = async (req, res) => {
     if (data.length > 0) {
       res.render("upazilla/signup", {
         title:
-          "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+            "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
         msg: "ERROR: The upazilla is already enrolled!",
         records: ddata,
       });
     } else if (password !== confirmPassword) {
       res.render("upazilla/signup", {
         title:
-          "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+            "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
         msg: "ERROR: Passwords do not match!",
         records: ddata,
       });
@@ -287,7 +287,7 @@ module.exports.upazillasignuppost = async (req, res) => {
         });
         res.render("upazilla/signup", {
           title:
-            "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
+              "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ",
           msg: "upazilla Registered Successfully!",
           records: ddata,
         });
@@ -306,7 +306,7 @@ module.exports.dashboardMonitoring = async (req, res) => {
   console.log("dashboardMonitoring", res.locals.type);
   res.render("upazilla/dashboard", {
     title:
-      "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প",
+        "কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প",
     msg: "Welcome",
   });
 };
@@ -315,52 +315,52 @@ module.exports.dashboardMonitoring = async (req, res) => {
 //fieldDay controller starts------------------------------------------------
 // @GET - fieldDay
 module.exports.fieldDay = async (req, res) => {
-  
+
   await fieldDay
-    .findAll({
-      where: { upazillaId: req.session.user_id },
-    })
-    .then((data) => {
-      // console.log("inside");
-      res.render("upazilla/fieldDay/fieldDay", {
-        title: "মাঠ দিবস ",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazillaId: req.session.user_id },
+      })
+      .then((data) => {
+        // console.log("inside");
+        res.render("upazilla/fieldDay/fieldDay", {
+          title: "মাঠ দিবস ",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        // console.log("outside");
+        res.render("upazilla/fieldDay/fieldDay", {
+          title: "মাঠ দিবস ",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      // console.log("outside");
-      res.render("upazilla/fieldDay/fieldDay", {
-        title: "মাঠ দিবস ",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 // @GET - fieldDayYear
 module.exports.fieldDayYear = async (req, res) => {
   await fieldDay
-    .findAll({
-      where: { year: req.body.year, upazillaId: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/fieldDay/fieldDayTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/fieldDay/fieldDayYear", {
-        title: "মাঠ দিবস ",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazillaId: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/fieldDay/fieldDayTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/fieldDay/fieldDayYear", {
+          title: "মাঠ দিবস ",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 // @GET - /fieldDayForm
 module.exports.fieldDayForm = async (req, res) => {
@@ -384,7 +384,7 @@ module.exports.fieldDayForm = async (req, res) => {
 
   res.render("upazilla/fieldDay/fieldDayForm", {
     title: "মাঠ-দিবস",
-    msg: "", 
+    msg: "",
     success: "",
     user_id: req.session.user_id,
     activities: fieldDayActivities
@@ -420,7 +420,7 @@ module.exports.fieldDayFormEdit = async (req, res) => {
   } catch(err){
     console.log(`Error in Edit ${err}`);
   }
-}; 
+};
 // @POST - fieldDayFormPost
 module.exports.fieldDayFormPost = async (req, res) => {
   // console.log("user Id",req.body.user_id)
@@ -455,34 +455,34 @@ module.exports.fieldDayFormPost = async (req, res) => {
     if(activity.field_day_done < activity.field_day){
       try{
         await fieldDay
-        .create({
-          name: name,
-          description: description,
-          date: date,
-          year: year,
-          image: imagePath,
-          upazillaId: user_id,
-        });
-        
+            .create({
+              name: name,
+              description: description,
+              date: date,
+              year: year,
+              image: imagePath,
+              upazillaId: user_id,
+            });
+
         let fieldDayValue = activity.field_day_done;
         let incrementedValue = ++fieldDayValue;
         // console.log("increment",incrementedValue);
         await activity.update(
-          {
-            field_day_done : incrementedValue
-          },
-          { 
-            where: {id : activity.id},
-          }
+            {
+              field_day_done : incrementedValue
+            },
+            {
+              where: {id : activity.id},
+            }
         );
         res.redirect("/upazilla/fieldDay");
-      } catch(err) {        
+      } catch(err) {
         console.log("activity is not updated", err);
       }
     }else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/fieldDay/fieldDayForm");
-    } 
+      res.redirect("/upazilla/fieldDayForm");
+    }
   }else {
     console.log("file not uploaded successfully");
   }
@@ -505,7 +505,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
 
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.upazilla_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -514,42 +514,56 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/fieldDay/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
 
     if(activity.field_day_done < activity.field_day){
       try{
         await fieldDay
-        .update({
-          name: name,
-          description: description,
-          date: date,
-          year: year,
-          image: imagePath,
-          upazillaId: user_id,
-        },
-        { 
-          where: {id : activity.id},
-        });
-        
+            .update({
+                  name: name,
+                  description: description,
+                  date: date,
+                  year: year,
+                  image: imagePath,
+                  upazillaId: upazillaId,
+                },
+                {
+                  where: {id : req.params.id},
+                });
+
         res.redirect("/upazilla/fieldDay");
-      } catch(err) {        
+      } catch(err) {
         console.log("activity is not updated", err);
       }
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
       res.redirect("/upazilla/fieldDay/fieldDayForm");
-    } 
+    }
   } else {
-    console.log("file not uploaded successfully");
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await fieldDay
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/fieldDay");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }
   }
 
 };
 // @GET - /fieldDayCardDelete
 module.exports.fieldDayCardDelete = async (req, res) => {
+  console.log("delete",req.params.id)
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -560,26 +574,28 @@ module.exports.fieldDayCardDelete = async (req, res) => {
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
 
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await fieldDay.findByPk(req.params.id);
+
   try{
+    const deleteData = await fieldDay.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let fieldDayValue = activity.field_day_done;
+    console.log("fieldDayValuess",activity)
     let decrementedValue = --fieldDayValue;
     // console.log("increment",incrementedValue);
     await activity.update(
-      {
-        field_day_done : decrementedValue
-      },
-      { 
-        where: {id : activity.id},
-      }
+        {
+          field_day_done : decrementedValue
+        },
+        {
+          where: {id : activity.id},
+        }
     );
     res.redirect("/upazilla/fieldDay");
   } catch(err){
@@ -593,49 +609,49 @@ module.exports.fieldDayCardDelete = async (req, res) => {
 
 module.exports.farmerTraining = async (req, res) => {
   await farmerTraining
-    .findAll({
-      where: { upazilla: req.session.user_id },
-    })
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/farmerTraining/farmerTraining", {
-        title: "কৃষক প্রশিক্ষণ তথ্য",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazilla: req.session.user_id },
+      })
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/farmerTraining/farmerTraining", {
+          title: "কৃষক প্রশিক্ষণ তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside");
+        res.render("upazilla/farmerTraining/farmerTraining", {
+          title: "কৃষক প্রশিক্ষণ তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/farmerTraining/farmerTraining", {
-        title: "কৃষক প্রশিক্ষণ তথ্য",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 module.exports.farmerTrainingYear = async (req, res) => {
   await farmerTraining
-    .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/farmerTraining/farmerTrainingTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/farmerTraining/farmerTrainingYear", {
-        title: "কৃষক প্রশিক্ষণ তথ্য",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazilla_id: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/farmerTraining/farmerTrainingTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/farmerTraining/farmerTrainingYear", {
+          title: "কৃষক প্রশিক্ষণ তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 
 //@GET - /farmerTrainingForm
@@ -692,22 +708,22 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
     var date = req.body.date;
     var year = req.body.year;
     var user_id = req.body.user_id;
-    
+
     await farmerTraining
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/farmerTraining");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        })
+        .then((data) => {
+          res.redirect("/upazilla/farmerTraining");
+        })
+        .catch((err) => {
+          console.log("file not uploaded successfully");
+        });
   } else {
     console.log("file not uploaded successfully");
   }
@@ -718,50 +734,50 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
 
 module.exports.farmerPrize = async (req, res) => {
   await farmerPrize
-    .findAll({
-      where: { upazilla: req.session.user_id },
-    })
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/farmerPrize/farmerPrize", {
-        title: "কৃষক পুরষ্কার তথ্য",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazilla: req.session.user_id },
+      })
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/farmerPrize/farmerPrize", {
+          title: "কৃষক পুরষ্কার তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside");
+        res.render("upazilla/farmerPrize/farmerPrize", {
+          title: "কৃষক পুরষ্কার তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/farmerPrize/farmerPrize", {
-        title: "কৃষক পুরষ্কার তথ্য",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 
 module.exports.farmerPrizeYear = async (req, res) => {
   await farmerPrize
-    .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/farmerPrize/farmerPrizeTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/farmerPrize/farmerPrizeYear", {
-        title: "কৃষক পুরষ্কার তথ্য",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazilla_id: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/farmerPrize/farmerPrizeTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/farmerPrize/farmerPrizeYear", {
+          title: "কৃষক পুরষ্কার তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 
 // @GET - /farmerPrizeForm
@@ -801,20 +817,20 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
     var year = req.body.year;
     var user_id = req.body.user_id;
     await farmerPrize
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/farmerPrize");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        })
+        .then((data) => {
+          res.redirect("/upazilla/farmerPrize");
+        })
+        .catch((err) => {
+          console.log("file not uploaded successfully");
+        });
   } else {
     console.log("file not uploaded successfully");
   }
@@ -825,49 +841,49 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
 
 module.exports.saaoTraining = async (req, res) => {
   await saaoTraining
-    .findAll({
-      where: { upazilla: req.session.user_id },
-    })
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/saaoTraining/saaoTraining", {
-        title: "এসএএও প্রশিক্ষণ তথ্য",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazilla: req.session.user_id },
+      })
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/saaoTraining/saaoTraining", {
+          title: "এসএএও প্রশিক্ষণ তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside");
+        res.render("upazilla/saaoTraining/saaoTraining", {
+          title: "এসএএও প্রশিক্ষণ তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/saaoTraining/saaoTraining", {
-        title: "এসএএও প্রশিক্ষণ তথ্য",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 module.exports.saaoTrainingYear = async (req, res) => {
   await saaoTraining
-    .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/saaoTraining/saaoTrainingTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/saaoTraining/saaoTrainingYear", {
-        title: "এসএএও প্রশিক্ষণ তথ্য",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazilla_id: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/saaoTraining/saaoTrainingTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/saaoTraining/saaoTrainingYear", {
+          title: "এসএএও প্রশিক্ষণ তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 
 // @GET - /saaoTrainingForm
@@ -907,20 +923,20 @@ module.exports.saaoTrainingFormPost = async (req, res) => {
     var year = req.body.year;
     var user_id = req.body.user_id;
     await saaoTraining
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/saaoTraining");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        })
+        .then((data) => {
+          res.redirect("/upazilla/saaoTraining");
+        })
+        .catch((err) => {
+          console.log("file not uploaded successfully");
+        });
   } else {
     console.log("file not uploaded successfully");
   }
@@ -931,49 +947,49 @@ module.exports.saaoTrainingFormPost = async (req, res) => {
 
 module.exports.review = async (req, res) => {
   await review
-    .findAll({
-      where: { upazilla: req.session.user_id },
-    })
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/review/review", {
-        title: "রিভিউ ডিস্কাশন তথ্য",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazilla: req.session.user_id },
+      })
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/review/review", {
+          title: "রিভিউ ডিস্কাশন তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside");
+        res.render("upazilla/review/review", {
+          title: "রিভিউ ডিস্কাশন তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/review/review", {
-        title: "রিভিউ ডিস্কাশন তথ্য",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 module.exports.reviewYear = async (req, res) => {
   await review
-    .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/review/reviewTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/review/reviewYear", {
-        title: "রিভিউ ডিস্কাশন তথ্য",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazilla_id: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/review/reviewTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/review/reviewYear", {
+          title: "রিভিউ ডিস্কাশন তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 
 //@GET - /reviewForm
@@ -1013,20 +1029,20 @@ module.exports.reviewFormPost = async (req, res) => {
     var year = req.body.year;
     var user_id = req.body.user_id;
     await review
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/review");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        })
+        .then((data) => {
+          res.redirect("/upazilla/review");
+        })
+        .catch((err) => {
+          console.log("file not uploaded successfully");
+        });
   } else {
     console.log("file not uploaded successfully");
   }
@@ -1037,49 +1053,49 @@ module.exports.reviewFormPost = async (req, res) => {
 
 module.exports.bij = async (req, res) => {
   await bij
-    .findAll({
-      where: { upazilla: req.session.user_id },
-    })
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/bij/bij", {
-        title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazilla: req.session.user_id },
+      })
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/bij/bij", {
+          title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside");
+        res.render("upazilla/bij/bij", {
+          title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/bij/bij", {
-        title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 module.exports.bijYear = async (req, res) => {
   await bij
-    .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/bij/bijTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/bij/bijYear", {
-        title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazilla_id: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/bij/bijTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/bij/bijYear", {
+          title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 
 // @GET - /bijForm
@@ -1120,20 +1136,20 @@ module.exports.bijFormPost = async (req, res) => {
     var year = req.body.year;
     var user_id = req.body.user_id;
     await bij
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/bij");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        })
+        .then((data) => {
+          res.redirect("/upazilla/bij");
+        })
+        .catch((err) => {
+          console.log("file not uploaded successfully");
+        });
   } else {
     console.log("file not uploaded successfully");
   }
@@ -1144,49 +1160,49 @@ module.exports.bijFormPost = async (req, res) => {
 
 module.exports.motivational = async (req, res) => {
   await motivational
-    .findAll({
-      where: { upazilla: req.session.user_id },
-    })
-    .then((data) => {
-      console.log("inside");
-      res.render("upazilla/motivational/motivational", {
-        title: "মোটিভেশনাল ট্যুর তথ্য",
-        success: "",
-        records: data,
+      .findAll({
+        where: { upazilla: req.session.user_id },
+      })
+      .then((data) => {
+        console.log("inside");
+        res.render("upazilla/motivational/motivational", {
+          title: "মোটিভেশনাল ট্যুর তথ্য",
+          success: "",
+          records: data,
+        });
+      })
+      .catch((err) => {
+        console.log("outside");
+        res.render("upazilla/motivational/motivational", {
+          title: "মোটিভেশনাল ট্যুর তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log("outside");
-      res.render("upazilla/motivational/motivational", {
-        title: "মোটিভেশনাল ট্যুর তথ্য",
-        success: "",
-        records: err,
-      });
-    });
 
   //  records:result
 };
 module.exports.motivationalYear = async (req, res) => {
   await motivational
-    .findAll({
-      where: { year: req.body.year, upazilla_id: req.session.user_id },
-    })
-    .then((data) => {
-      res.render(
-        "upazilla/motivational/motivationalTable",
-        { records: data },
-        function (err, html) {
-          res.send(html);
-        }
-      );
-    })
-    .catch((err) => {
-      res.render("upazilla/motivational/motivationalYear", {
-        title: "মোটিভেশনাল ট্যুর তথ্য",
-        success: "",
-        records: err,
+      .findAll({
+        where: { year: req.body.year, upazilla_id: req.session.user_id },
+      })
+      .then((data) => {
+        res.render(
+            "upazilla/motivational/motivationalTable",
+            { records: data },
+            function (err, html) {
+              res.send(html);
+            }
+        );
+      })
+      .catch((err) => {
+        res.render("upazilla/motivational/motivationalYear", {
+          title: "মোটিভেশনাল ট্যুর তথ্য",
+          success: "",
+          records: err,
+        });
       });
-    });
 };
 
 //@GET - /motivationalForm
@@ -1226,20 +1242,20 @@ module.exports.motivationalFormPost = async (req, res) => {
     var year = req.body.year;
     var user_id = req.body.user_id;
     await motivational
-      .create({
-        name: name,
-        description: description,
-        date: date,
-        year: year,
-        image: imagePath,
-        upazilla_id: user_id,
-      })
-      .then((data) => {
-        res.redirect("/upazilla/motivational");
-      })
-      .catch((err) => {
-        console.log("file not uploaded successfully");
-      });
+        .create({
+          name: name,
+          description: description,
+          date: date,
+          year: year,
+          image: imagePath,
+          upazilla_id: user_id,
+        })
+        .then((data) => {
+          res.redirect("/upazilla/motivational");
+        })
+        .catch((err) => {
+          console.log("file not uploaded successfully");
+        });
   } else {
     console.log("file not uploaded successfully");
   }

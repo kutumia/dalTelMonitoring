@@ -65,7 +65,7 @@ router.post("/fieldDayYear", fieldDayYear);
 router.get("/fieldDayForm", fieldDayForm);
 router.post("/fieldDayFormPost", uploadfieldDay, fieldDayFormPost);
 router.get("/fieldDayFormEdit/:id", fieldDayFormEdit);
-router.post("/fieldDayFormUpdatePost/:id", fieldDayFormUpdatePost);
+router.post("/fieldDayFormUpdatePost/:id", uploadfieldDay, fieldDayFormUpdatePost);
 router.get("/fieldDayCardDelete/:id", fieldDayCardDelete);
 
 router.get("/farmerTraining", farmerTraining);
