@@ -1,53 +1,37 @@
 <%- include('../../includesMonitoring/header')-%>
 <div class="wrapper">
-  <%- include('../../includesMonitoring/topbar')-%>
-  <div class="page-wrap">
-    <%- include('../../includesMonitoring/sidebar')-%>
-    <div class="main-content">
-      <div class="container-fluid">
-        <div class="row clearfix">
-          <div
-            id="signupbox"
-            style="margin-top: 50px"
-            class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2"
-          >
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
-              </div>
-              <div class="panel-body">
-                <form
-                  action="/upazilla/fieldDayFormPost"
-                  id="FieldTrialForm"
-                  class="form-horizontal"
-                  method="post"
-                  role="form"
-                  enctype="multipart/form-data"
-                >
-                  <div
-                    id="signupalert"
-                    style="display: none"
-                    class="alert alert-danger"
-                  >
-                    <p>Error:</p>
-                    <span></span>
-                  </div>
-                  <% if(messages.message){ %>
-                  <div
-                    class="alert alert-warning alert-dismissible fade show"
-                    role="alert"
-                  >
-                    <strong><%= messages.message %></strong>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="alert"
-                      aria-label="Close"
+    <%- include('../../includesMonitoring/topbar')-%>
+    <div class="page-wrap">
+        <%- include('../../includesMonitoring/sidebar')-%>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div
+                            id="signupbox"
+                            style="margin-top: 50px"
+                            class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2"
                     >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <% } %>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
+                            </div>
+                            <div class="panel-body">
+                                <form
+                                        action="/upazilla/fieldDayFormPost"
+                                        id="FieldTrialForm"
+                                        class="form-horizontal"
+                                        method="post"
+                                        role="form"
+                                        enctype="multipart/form-data"
+                                >
+                                    <div
+                                            id="signupalert"
+                                            style="display: none"
+                                            class="alert alert-danger"
+                                    >
+                                        <p>Error:</p>
+                                        <span></span>
+                                    </div>
 
                   <div class="form-group">
                     <label for="name" class="col-md-3 control-label"
@@ -68,44 +52,44 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label for="description" class="col-md-3 control-label"
-                      >বিস্তারিত</label
-                    >
-                    <div class="col-md-9">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="description"
-                        placeholder="বিস্তারিত"
-                      />
-                    </div>
-                  </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-md-3 control-label"
+                                        >বিস্তারিত</label
+                                        >
+                                        <div class="col-md-9">
+                                            <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    name="description"
+                                                    placeholder="বিস্তারিত"
+                                            />
+                                        </div>
+                                    </div>
 
-                  <div class="form-group">
-                    <label for="date" class="col-md-3 control-label"
-                      >তারিখ</label
-                    >
-                    <div class="col-md-9">
-                      <input
-                        type="date"
-                        class="form-control"
-                        name="date"
-                        placeholder="তারিখ"
-                      />
-                    </div>
-                  </div>
+                                    <div class="form-group">
+                                        <label for="date" class="col-md-3 control-label"
+                                        >তারিখ</label
+                                        >
+                                        <div class="col-md-9">
+                                            <input
+                                                    type="date"
+                                                    class="form-control"
+                                                    name="date"
+                                                    placeholder="তারিখ"
+                                            />
+                                        </div>
+                                    </div>
 
-                  <div class="form-group">
-                    <label>Choose</label>
-                    <input
-                      type="file"
-                      id="filename"
-                      class="form-control"
-                      name="newsUp"
-                      required
-                    />
-                  </div>
+                                    <div class="form-group">
+                                        <label>Choose</label>
+                                        <input
+                                                type="file"
+                                                id="filename"
+                                                class="form-control"
+                                                name="newsUp"
+                                                required
+                                        />
+                                    </div>
 
                   <div class="form-group">
                                         <div class="col-md-9">
@@ -129,25 +113,25 @@
                         value="<%= user_id %>"
                       />
 
-                  <div class="form-group">
-                    <!-- Button -->
-                    <div class="col-md-offset-3 col-md-9">
-                      <input
-                        type="submit"
-                        name="submit"
-                        value="submit"
-                        class="btn btn-primary"
-                      />
+                                    <div class="form-group">
+                                        <!-- Button -->
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <input
+                                                    type="submit"
+                                                    name="submit"
+                                                    value="submit"
+                                                    class="btn btn-primary"
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </form>
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <%- include('../../includesMonitoring/footer')-%>

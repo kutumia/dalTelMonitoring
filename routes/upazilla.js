@@ -74,7 +74,7 @@ const {
   // motivationalFormEdit,
   // motivationalFormUpdatePost,
   // motivationalCardDelete,
-  motivationalCardOpen,
+  motivationalCardOpen
 } = require("../controllers/upazilla.controller");
 router.get("/", allupazilla);
 router.get("/login", upazillalogin);
@@ -91,7 +91,7 @@ router.get("/fieldDayForm", fieldDayForm);
 router.post("/fieldDayFormPost", uploadfieldDay, fieldDayFormPost);
 router.get("/fieldDayCardOpen/:id", fieldDayCardOpen);
 router.get("/fieldDayFormEdit/:id", fieldDayFormEdit);
-router.post("/fieldDayFormUpdatePost/:id", fieldDayFormUpdatePost);
+router.post("/fieldDayFormUpdatePost/:id", uploadfieldDay, fieldDayFormUpdatePost);
 router.get("/fieldDayCardDelete/:id", fieldDayCardDelete);
 
 router.get("/farmerTraining", farmerTraining);
