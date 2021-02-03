@@ -29,13 +29,13 @@ var storagefieldDay = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(
         null,
-        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        Date.now() + path.extname(file.originalname)
     );
   },
 });
 var uploadfieldDay = multer({
   storage: storagefieldDay,
-}).single("newsUp");
+}).array("newsUp",12);
 exports.uploadfieldDay = uploadfieldDay;
 
 //multer setup for farmerTraining image
@@ -251,7 +251,7 @@ module.exports.upazillasignup = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside",err);
+        console.log(err);
       });
 };
 module.exports.upazillasignuppost = async (req, res) => {
@@ -329,12 +329,7 @@ module.exports.fieldDay = async (req, res) => {
         });
       })
       .catch((err) => {
-        // console.log("outside");
-        res.render("upazilla/fieldDay/fieldDay", {
-          title: "মাঠ দিবস ",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -355,11 +350,7 @@ module.exports.fieldDayYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/fieldDay/fieldDayYear", {
-          title: "মাঠ দিবস ",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 // @GET - /fieldDayForm
@@ -443,14 +434,15 @@ module.exports.fieldDayFormPost = async (req, res) => {
   });
   // console.log("activity",activity)
 
-  const path = req.file && req.file.path;
+  const path = req.files ;
   if (path) {
-    var imagePath = "/fieldDay/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    let imageArray = [];
+    path.map((image) => {
+      const imagePathName = "/upload/fieldDay/" + image.filename;
+      imageArray.push(imagePathName)
+    })
+    var imagePath = JSON.stringify(imageArray);
+    const{name,description,date,year,user_id} = req.body
 
     if(activity.field_day_done < activity.field_day){
       try{
@@ -466,7 +458,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
 
         let fieldDayValue = activity.field_day_done;
         let incrementedValue = ++fieldDayValue;
-        // console.log("increment",incrementedValue);
         await activity.update(
             {
               field_day_done : incrementedValue
@@ -490,7 +481,6 @@ module.exports.fieldDayFormPost = async (req, res) => {
 };
 // @POST - /fieldDayFormUpdatePost
 module.exports.fieldDayFormUpdatePost = async (req, res) => {
-  console.log("updating...",req.body);
   var startRange = "";
   var endRange = "";
   if (res.locals.moment().format("M") < 7) {
@@ -621,12 +611,7 @@ module.exports.farmerTraining = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside");
-        res.render("upazilla/farmerTraining/farmerTraining", {
-          title: "কৃষক প্রশিক্ষণ তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -646,11 +631,7 @@ module.exports.farmerTrainingYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/farmerTraining/farmerTrainingYear", {
-          title: "কৃষক প্রশিক্ষণ তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 
@@ -746,12 +727,7 @@ module.exports.farmerPrize = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside");
-        res.render("upazilla/farmerPrize/farmerPrize", {
-          title: "কৃষক পুরষ্কার তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -772,11 +748,7 @@ module.exports.farmerPrizeYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/farmerPrize/farmerPrizeYear", {
-          title: "কৃষক পুরষ্কার তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 
@@ -853,12 +825,7 @@ module.exports.saaoTraining = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside");
-        res.render("upazilla/saaoTraining/saaoTraining", {
-          title: "এসএএও প্রশিক্ষণ তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -878,11 +845,7 @@ module.exports.saaoTrainingYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/saaoTraining/saaoTrainingYear", {
-          title: "এসএএও প্রশিক্ষণ তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 
@@ -959,12 +922,7 @@ module.exports.review = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside");
-        res.render("upazilla/review/review", {
-          title: "রিভিউ ডিস্কাশন তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -984,11 +942,7 @@ module.exports.reviewYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/review/reviewYear", {
-          title: "রিভিউ ডিস্কাশন তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 
@@ -1065,12 +1019,7 @@ module.exports.bij = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside");
-        res.render("upazilla/bij/bij", {
-          title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -1090,11 +1039,7 @@ module.exports.bijYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/bij/bijYear", {
-          title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 
@@ -1172,12 +1117,7 @@ module.exports.motivational = async (req, res) => {
         });
       })
       .catch((err) => {
-        console.log("outside");
-        res.render("upazilla/motivational/motivational", {
-          title: "মোটিভেশনাল ট্যুর তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 
   //  records:result
@@ -1197,11 +1137,7 @@ module.exports.motivationalYear = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.render("upazilla/motivational/motivationalYear", {
-          title: "মোটিভেশনাল ট্যুর তথ্য",
-          success: "",
-          records: err,
-        });
+        console.log(err);
       });
 };
 
