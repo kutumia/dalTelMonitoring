@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING,
     },
+    batch: {
+      type: Sequelize.STRING
+    },
     description: {
       type: Sequelize.STRING,
     },

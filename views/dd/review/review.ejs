@@ -94,7 +94,7 @@
         var upazilla = $('#upazilla').val();
         $.ajax({
             type: "POST",
-            url: "/dd/farmerTrainingFilter",
+            url: "/dd/reviewFilter",
             data: {year: year,upazilla:upazilla},
             datatype: "json",
             beforeSend: function() {
@@ -119,7 +119,7 @@
         var upazilla = $('#upazilla').val();
         $.ajax({
             type: "POST",
-            url: "/dd/farmerTrainingFilter",
+            url: "/dd/reviewFilter",
             data: {year: year,upazilla:upazilla},
             datatype: "json",
             beforeSend: function() {
