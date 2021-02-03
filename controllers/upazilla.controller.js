@@ -20,7 +20,8 @@ const bcrypt = require("bcryptjs");
 const { request, response } = require("express");
 const express = require("express");
 
-//multer controller starts
+//multer controller starts--------------------------------------------------------
+
 //multer setup for fieldDay image
 var storagefieldDay = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -139,8 +140,9 @@ var uploadmotivational = multer({
   storage: storagemotivational,
 }).single("newsUp");
 exports.uploadmotivational = uploadmotivational;
+//multer controller ends--------------------------------------------------------
 
-//logIn controller starts
+//logIn controller starts-------------------------------------------------------
 module.exports.upazillatable = async (req, res) => {
   res.json({ message: "hello upazilla" });
 };
@@ -231,9 +233,9 @@ module.exports.upazillaDashboard = async (req, res) => {
     msg: "Welcome",
   });
 };
-//logIn controller ends
+//logIn controller ends-----------------------------------------------------------
 
-//signUp controller starts
+//signUp controller starts--------------------------------------------------------
 module.exports.upazillasignup = async (req, res) => {
   await dd
     .findAll()
@@ -295,7 +297,7 @@ module.exports.upazillasignuppost = async (req, res) => {
     console.log(error);
   }
 };
-//signUp controller ends
+//signUp controller ends------------------------------------------------------------
 
 //dashboard controller
 module.exports.dashboardMonitoring = async (req, res) => {
@@ -315,7 +317,6 @@ module.exports.fieldDay = async (req, res) => {
       where: { upazillaId: req.session.user_id },
     })
     .then((data) => {
-      // console.log("inside");
       res.render("upazilla/fieldDay/fieldDay", {
         title: "মাঠ দিবস ",
         success: "",
@@ -323,15 +324,12 @@ module.exports.fieldDay = async (req, res) => {
       });
     })
     .catch((err) => {
-      // console.log("outside");
       res.render("upazilla/fieldDay/fieldDay", {
         title: "মাঠ দিবস ",
         success: "",
         records: err,
       });
     });
-
-  //  records:result
 };
 // @GET - fieldDayYear
 module.exports.fieldDayYear = async (req, res) => {
@@ -467,7 +465,7 @@ module.exports.fieldDayFormPost = async (req, res) => {
       }
     }else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/fieldDay/fieldDayForm");
+      res.redirect("/upazilla/fieldDayForm");
     } 
   }else {
     console.log("file not uploaded successfully");
@@ -486,7 +484,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.upazilla_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -494,11 +492,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/fieldDay/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await fieldDay
         .update({
@@ -507,17 +501,34 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         });        
         res.redirect("/upazilla/fieldDay");
       } catch(err) {        
         console.log("activity is not updated", err);
       }
   } else {
-    console.log("file not uploaded successfully");
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await fieldDay
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/fieldDay");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }
   }
 
 };
@@ -545,7 +556,6 @@ module.exports.fieldDayCardDelete = async (req, res) => {
     deleteData.destroy();
     let fieldDayValue = activity.field_day_done;
     let decrementedValue = --fieldDayValue;
-    // console.log("increment",incrementedValue);
     await activity.update(
       {
         field_day_done : decrementedValue
@@ -690,7 +700,7 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
       } 
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/farmerTraining/farmerTrainingForm");
+      res.redirect("/upazilla/farmerTrainingForm");
     }
   } else {
     console.log("file not uploaded successfully");
@@ -738,7 +748,7 @@ module.exports.farmerTrainingFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.upazilla_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -746,11 +756,7 @@ module.exports.farmerTrainingFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/farmerTraining/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await farmerTraining
         .update({
@@ -759,19 +765,34 @@ module.exports.farmerTrainingFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         });        
-        res.redirect("/upazilla/");
+        res.redirect("/upazilla/farmerTraining");
       } catch(err) {        
         console.log("activity is not updated", err);
       }
   } else {
-    console.log("file not uploaded successfully");
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await farmerTraining
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+      res.redirect("/upazilla/farmerTraining");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }  
   }
-
 };
 // @GET - /farmerTrainingCardDelete
 module.exports.farmerTrainingCardDelete = async (req, res) => {
@@ -783,16 +804,16 @@ module.exports.farmerTrainingCardDelete = async (req, res) => {
   } else {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await farmerTraining.findByPk(req.params.id);
+  }  
   try{
+    const deleteData = await farmerTraining.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let farmerTrainingValue = activity.farmer_training_done;
     let decrementedValue = --farmerTrainingValue;
@@ -804,7 +825,7 @@ module.exports.farmerTrainingCardDelete = async (req, res) => {
         where: {id : activity.id},
       }
     );
-    res.redirect("/upazilla/");
+    res.redirect("/upazilla/farmerTraining");
   } catch(err){
     console.log(err);
   }
@@ -940,7 +961,7 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
       }
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/farmerPrize/farmerPrizeForm");
+      res.redirect("/upazilla/farmerPrizeForm");
     }
   } else {
     console.log("file not uploaded successfully");
@@ -988,7 +1009,7 @@ module.exports.farmerPrizeFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.user_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -996,11 +1017,7 @@ module.exports.farmerPrizeFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/farmerPrize/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await farmerPrize
         .update({
@@ -1009,18 +1026,34 @@ module.exports.farmerPrizeFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         });
         res.redirect("/upazilla/farmerPrize");
       } catch(err){
         console.log("activity is not updated", err);
       }
   } else {
-    console.log("file not uploaded successfully");
-  }
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await farmerPrize
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/farmerPrize");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }  }
 };
 // @GET - /farmerPrizeCardDelete
 module.exports.farmerPrizeCardDelete = async (req, res) => {
@@ -1033,16 +1066,15 @@ module.exports.farmerPrizeCardDelete = async (req, res) => {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
   }
-
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await farmerPrize.findByPk(req.params.id);
   try{
+    const deleteData = await farmerPrize.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let farmerPrizeValue = activity.farmer_awards_done;
     let decrementedValue = --farmerPrizeValue;
@@ -1055,11 +1087,11 @@ module.exports.farmerPrizeCardDelete = async (req, res) => {
         where: {id : activity.id},
       }
     );
-    res.redirect("/upazilla/");
+    res.redirect("/upazilla/farmerPrize");
   } catch(err){
     console.log(err);
   }
-}
+};
 //farmerPrize controller ends---------------------------------------
 
 //saaoTraining controller  starts--------------------------------------
@@ -1191,7 +1223,7 @@ module.exports.saaoTrainingFormPost = async (req, res) => {
       }
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/saaoTraining/saaoTrainingForm");
+      res.redirect("/upazilla/saaoTrainingForm");
     }
   } else {
     console.log("file not uploaded successfully");
@@ -1240,7 +1272,7 @@ module.exports.saaoTrainingFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.user_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -1248,11 +1280,7 @@ module.exports.saaoTrainingFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/saaoTraining/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await saaoTraining
         .update({
@@ -1261,10 +1289,10 @@ module.exports.saaoTrainingFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         }
         );
         res.redirect("/upazilla/saaoTraining");
@@ -1272,7 +1300,23 @@ module.exports.saaoTrainingFormUpdatePost = async (req, res) => {
         console.log("activity is not updated", err);
       }
   } else {
-    console.log("file not uploaded successfully");
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await saaoTraining
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+      res.redirect("/upazilla/saaoTraining");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }
   }
 };
 // @GET - /saaoTrainingCardDelete
@@ -1285,17 +1329,16 @@ module.exports.saaoTrainingCardDelete = async (req, res) => {
   } else {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await saaoTraining.findByPk(req.params.id);
+  }  
   try{
+    const deleteData = await saaoTraining.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let saaoTrainingValue = activity.saao_training_done;
     let decrementedValue = --saaoTrainingValue;
@@ -1307,11 +1350,11 @@ module.exports.saaoTrainingCardDelete = async (req, res) => {
         where: {id : activity.id},
       }
     );
-    res.redirect("/upazilla/");
+    res.redirect("/upazilla/saaoTraining");
   } catch(err){
     console.log(err);
   }
-}
+};
 //saaoTraining controller ends ----------------------------------
 
 //review controller----------------------------------------------
@@ -1443,7 +1486,7 @@ module.exports.reviewFormPost = async (req, res) => {
       }
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/review/reviewForm");
+      res.redirect("/upazilla/reviewForm");
     }    
   } else {
     console.log("file not uploaded successfully");
@@ -1492,7 +1535,7 @@ module.exports.reviewFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.user_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -1500,11 +1543,7 @@ module.exports.reviewFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/review/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await review
         .update({
@@ -1513,10 +1552,10 @@ module.exports.reviewFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         }
         );
         res.redirect("/upazilla/review");
@@ -1524,8 +1563,24 @@ module.exports.reviewFormUpdatePost = async (req, res) => {
         console.log("activity is not updated", err);
       }  
   } else {
-    console.log("file not uploaded successfully");
-  }
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await review
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/review");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }  }
 };
 // @GET - /reviewCardDelete
 module.exports.reviewCardDelete = async (req, res) => {
@@ -1537,16 +1592,16 @@ module.exports.reviewCardDelete = async (req, res) => {
   } else {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await review.findByPk(req.params.id);
+  }    
   try{
+    const deleteData = await review.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let reviewValue = activity.review_done;
     let decrementedValue = --reviewValue;
@@ -1558,7 +1613,7 @@ module.exports.reviewCardDelete = async (req, res) => {
         where: {id : activity.id},
       }
     );
-    res.redirect("/upazilla");
+    res.redirect("/upazilla/review");
   } catch(err){
     console.log(err);
   }
@@ -1688,13 +1743,13 @@ module.exports.bijFormPost = async (req, res) => {
             where: {id : activity.id},
           }
         );
-        res.redirect("/upazilla/");
+        res.redirect("/upazilla/bij");
       } catch(err){
         console.log("activity is not updated", err);
       }
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/");
+      res.redirect("/upazilla/bijForm");
     }  
   } else {
     console.log("file not uploaded successfully");
@@ -1743,7 +1798,7 @@ module.exports.bijFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.user_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -1751,11 +1806,7 @@ module.exports.bijFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/bij/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await bij
         .update({
@@ -1764,19 +1815,35 @@ module.exports.bijFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         }
         );
-        res.redirect("/upazilla/");
+        res.redirect("/upazilla/bij");
       } catch(err){
         console.log("activity is not updated", err);
       }  
   } else {
-    console.log("file not uploaded successfully");
-  }
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await bij
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/bij");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }  }
 };
 // @GET - /bijCardDelete
 module.exports.bijCardDelete = async (req, res) => {
@@ -1788,16 +1855,16 @@ module.exports.bijCardDelete = async (req, res) => {
   } else {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await bij.findByPk(req.params.id);
+  }    
   try{
+    const deleteData = await bij.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let bijValue = activity.bij_done;
     let decrementedValue = --bijValue;
@@ -1809,7 +1876,7 @@ module.exports.bijCardDelete = async (req, res) => {
         where: {id : activity.id},
       }
     );
-    res.redirect("/upazilla/");
+    res.redirect("/upazilla/bij");
   } catch(err){
     console.log(err);
   }
@@ -1939,13 +2006,13 @@ module.exports.motivationalFormPost = async (req, res) => {
             where: {id : activity.id},
           }
         );
-        res.redirect("/upazilla/");
+        res.redirect("/upazilla/motivational");
       } catch(err){
         console.log("Activities are not updated", err);
       }
     } else {
       req.flash("message", "Abort !!! Already overloaded !");
-      res.redirect("/upazilla/");
+      res.redirect("/upazilla/motivationalForm");
     }
   } else {
     console.log("file not uploaded successfully");
@@ -1994,7 +2061,7 @@ module.exports.motivationalFormUpdatePost = async (req, res) => {
   }
   const activity = await Activities.findOne({
     where : {
-      upazillaId : req.body.user_id,
+      upazillaId : req.body.upazillaId,
       start_time : startRange,
       end_time : endRange,
     }
@@ -2002,11 +2069,7 @@ module.exports.motivationalFormUpdatePost = async (req, res) => {
   const path = req.file && req.file.path;
   if (path) {
     var imagePath = "/motivational/" + req.file.filename;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
+    const {name,description,date,year,upazillaId} = req.body;
       try{
         await motivational
         .update({
@@ -2015,19 +2078,35 @@ module.exports.motivationalFormUpdatePost = async (req, res) => {
           date: date,
           year: year,
           image: imagePath,
-          upazillaId: user_id,
+          upazillaId: upazillaId,
         },
         { 
-          where: {id : activity.id},
+          where: {id : req.params.id},
         }
         );
-        res.redirect("/upazilla/");
+        res.redirect("/upazilla/motivational");
       } catch(err){
         console.log("Activities are not updated", err);
       }
   } else {
-    console.log("file not uploaded successfully");
-  }
+    const {name,description,date,year,upazillaId} = req.body;
+    try{
+      await motivational
+          .update({
+                name: name,
+                description: description,
+                date: date,
+                year: year,
+                upazillaId: upazillaId,
+              },
+              {
+                where: {id : req.params.id},
+              });
+
+      res.redirect("/upazilla/motivational");
+    } catch(err) {
+      console.log("activity is not updated", err);
+    }  }
 };
 // @GET - /motivationalCardDelete
 module.exports.motivationalCardDelete = async (req, res) => {
@@ -2039,16 +2118,16 @@ module.exports.motivationalCardDelete = async (req, res) => {
   } else {
     startRange = "jul" + "-" + res.locals.moment().format("yyyy");
     endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const deleteData = await motivational.findByPk(req.params.id);
+  }    
   try{
+    const deleteData = await motivational.findByPk(req.params.id);
+    const activity = await Activities.findOne({
+      where : {
+        upazillaId : deleteData.upazillaId,
+        start_time : startRange,
+        end_time : endRange,
+      }
+    });
     deleteData.destroy();
     let motivationalValue = activity.motivational_done;
     let decrementedValue = --motivationalValue;
@@ -2061,9 +2140,9 @@ module.exports.motivationalCardDelete = async (req, res) => {
         where: {id : activity.id},
       }
     );
-    res.redirect("/upazilla/");
+    res.redirect("/upazilla/motivational");
   } catch(err){
     console.log(err);
   }
-}
+};
 //motivational controller ends---------------------------------------------
