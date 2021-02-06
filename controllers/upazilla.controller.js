@@ -310,7 +310,6 @@ module.exports.fieldDayCardOpen = async (req, res) => {
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
-      console.log(data)
       res.render("upazilla/fieldDay/fieldDayGallery", {
         title: "মাঠ দিবস ",
         success: "",
@@ -463,39 +462,33 @@ module.exports.fieldDayFormPost = async (req, res) => {
 };
 // @POST - /fieldDayFormUpdatePost
 module.exports.fieldDayFormUpdatePost = async (req, res) => {
-  var startRange = "";
-  var endRange = "";
-  if (res.locals.moment().format("M") < 7) {
-    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-  } else {
-    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.upazillaId,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const path = req.file && req.file.path;
+
+  const updatedFieldDay = await fieldDay.findByPk(req.params.id)
+
+  const path = req.files ;
+
   if (path) {
-    var imagePath = "/fieldDay/" + req.file.filename;
+    let imagePath = JSON.parse(updatedFieldDay.image);
+
+    path.map((image) => {
+      imagePath.push ( `/upload/fieldDay/${image.filename}` );
+    })
+
     const {name,description,date,year,upazillaId} = req.body;
       try{
-        await fieldDay
+        const data = await fieldDay
         .update({
           name: name,
           description: description,
           date: date,
           year: year,
-          image: imagePath,
+          image: JSON.stringify(imagePath),
           upazillaId: upazillaId,
         },
         { 
           where: {id : req.params.id},
-        });        
+        });
+
         res.redirect("/upazilla/fieldDay");
       } catch(err) {
         console.log(err);
