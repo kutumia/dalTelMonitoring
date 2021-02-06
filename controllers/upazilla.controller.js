@@ -474,16 +474,18 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
       imagePath.push ( `/upload/fieldDay/${image.filename}` );
     })
 
-    const {name,description,date,year,upazillaId} = req.body;
+    const {batch,description,date,year,upazillaId} = req.body;
+    var name = `মাঠ দিবস - ${req.body.batch}`;
       try{
-        const data = await fieldDay
+        await fieldDay
         .update({
-          name: name,
-          description: description,
-          date: date,
-          year: year,
-          image: JSON.stringify(imagePath),
-          upazillaId: upazillaId,
+            name: name,
+            batch:batch,
+            description: description,
+            date: date,
+            year: year,
+            image: JSON.stringify(imagePath),
+            upazillaId: upazillaId
         },
         { 
           where: {id : req.params.id},
@@ -494,11 +496,13 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
         console.log(err);
       }
   } else {
-    const {name,description,date,year,upazillaId} = req.body;
+    const {batch,description,date,year,upazillaId} = req.body;
+    var name = `মাঠ দিবস - ${req.body.batch}`;
     try{
       await fieldDay
           .update({
                 name: name,
+                batch:batch,
                 description: description,
                 date: date,
                 year: year,
