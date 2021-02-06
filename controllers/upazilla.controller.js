@@ -600,14 +600,14 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
   var batchNum=ddata.batch;
   var year=ddata.year;
   await farmerTraining
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
       res.render("upazilla/farmerTraining/farmerTrainingGallery", {
         title: "কৃষক প্রশিক্ষণ তথ্য",
         success: "",
-        records: data,
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
@@ -740,34 +740,26 @@ module.exports.farmerTrainingFormEdit = async (req, res) => {
 };
 // @POST - /farmerTrainingFormUpdatePost
 module.exports.farmerTrainingFormUpdatePost = async (req, res) => {
-  var startRange = "";
-  var endRange = "";
-  if (res.locals.moment().format("M") < 7) {
-    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-  } else {
-    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-  const activity = await Activities.findOne({
-    where : {
-      upazillaId : req.body.upazillaId,
-      start_time : startRange,
-      end_time : endRange,
-    }
-  });
-  const path = req.file && req.file.path;
-  if (path) {
-    var imagePath = "/farmerTraining/" + req.file.filename;
-    const {name,description,date,year,upazillaId} = req.body;
+const updatedFarmerTraining = await farmerTraining.findByPk(req.params.id)
+
+const path = req.files ;
+
+if (path) {
+  let imagePath = JSON.parse(updatedFarmerTraining.image);
+
+  path.map((image) => {
+    imagePath.push ( `/upload/farmerTraining/${image.filename}` );
+  })
+
+  const {name,description,date,year,upazillaId} = req.body;
       try{
-        await farmerTraining
+        const data = await farmerTraining
         .update({
           name: name,
           description: description,
           date: date,
           year: year,
-          image: imagePath,
+          image: JSON.stringify(imagePath),
           upazillaId: upazillaId,
         },
         { 
@@ -795,7 +787,7 @@ module.exports.farmerTrainingFormUpdatePost = async (req, res) => {
     } catch(err) {
       console.log("activity is not updated", err);
     }  
-  }
+  };
 };
 // @GET - /farmerTrainingCardDelete
 module.exports.farmerTrainingCardDelete = async (req, res) => {
@@ -878,14 +870,14 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
   var batchNum=ddata.batch;
   var year=ddata.year;
   await farmerPrize
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
       res.render("upazilla/farmerPrize/farmerPrizeGallery", {
         title: "কৃষক পুরষ্কার তথ্য",
         success: "",
-        records: data,
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
@@ -1128,14 +1120,14 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
   var batchNum=ddata.batch;
   var year=ddata.year;
   await saaoTraining
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
       res.render("upazilla/saaoTraining/saaoTrainingGallery", {
         title: "এসএএও প্রশিক্ষণ তথ্য",
         success: "",
-        records: data,
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
@@ -1440,14 +1432,14 @@ module.exports.reviewCardOpen = async (req, res) => {
   var batchNum=ddata.batch;
   var year=ddata.year;
   await review
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
       res.render("upazilla/review/reviewGallery", {
         title: "রিভিউ ডিস্কাশন তথ্য",
         success: "",
-        records: data,
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
@@ -1722,14 +1714,14 @@ module.exports.bijCardOpen = async (req, res) => {
   var batchNum=ddata.batch;
   var year=ddata.year;
   await bij
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
       res.render("upazilla/bij/bijGallery", {
         title: "বীজ প্রত্যয়ন প্রতিবেদন তথ্য",
         success: "",
-        records: data
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
@@ -2006,14 +1998,14 @@ module.exports.motivationalCardOpen = async (req, res) => {
   var year=ddata.year;
   console.log("batchNum,year",batchNum,year);
   await motivational
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
       res.render("upazilla/motivational/motivationalGallery", {
         title: "মোটিভেশনাল ট্যুর তথ্য",
         success: "",
-        records: data
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
