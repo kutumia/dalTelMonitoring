@@ -19,8 +19,7 @@ const bcrypt = require("bcryptjs");
 
 const { request, response } = require("express");
 const express = require("express");
-
-//multer controller starts--------------------------------------------------------
+//multer controller starts--------------------------------------------------
 
 //multer setup for fieldDay image
 var storagefieldDay = multer.diskStorage({
@@ -140,9 +139,9 @@ var uploadmotivational = multer({
   storage: storagemotivational,
 }).array("newsUp");
 exports.uploadmotivational = uploadmotivational;
-//multer controller ends--------------------------------------------------------
+//multer controller ends----------------------------------------------------
 
-//logIn controller starts-------------------------------------------------------
+//logIn controller starts---------------------------------------------------
 module.exports.upazillatable = async (req, res) => {
   res.json({ message: "hello upazilla" });
 };
@@ -211,9 +210,9 @@ module.exports.upazillaDashboard = async (req, res) => {
     msg: "Welcome",
   });
 };
-//logIn controller ends-----------------------------------------------------------
+//logIn controller ends-----------------------------------------------------
 
-//signUp controller starts--------------------------------------------------------
+//signUp controller starts--------------------------------------------------
 module.exports.upazillasignup = async (req, res) => {
   await dd
       .findAll()
@@ -273,8 +272,7 @@ module.exports.upazillasignuppost = async (req, res) => {
     console.log(error);
   }
 };
-//signUp controller ends------------------------------------------------------------
-
+//signUp controller ends----------------------------------------------------
 //dashboard controller
 module.exports.dashboardMonitoring = async (req, res) => {
   res.render("upazilla/dashboard", {
@@ -308,14 +306,15 @@ module.exports.fieldDayCardOpen = async (req, res) => {
   var batchNum=ddata.batch;
   var year=ddata.year;
   await fieldDay
-    .findAll({
+    .findOne({
       where: { upazillaId: req.session.user_id,batch:batchNum,year:year },
     })
     .then((data) => {
+      console.log(data)
       res.render("upazilla/fieldDay/fieldDayGallery", {
         title: "মাঠ দিবস ",
         success: "",
-        records: data,
+        records: JSON.parse(data.image)
       });
     })
     .catch((err) => {
@@ -561,9 +560,9 @@ module.exports.fieldDayCardDelete = async (req, res) => {
     console.log(err);
   }
 };
-//fieldDay controller ends ------------------------------------------------------
+//fieldDay controller ends --------------------------------------------------
 
-//farmerTraining controller starts --------------------------------------------
+//farmerTraining controller starts ------------------------------------------
 //@GET - /farmerTraining
 module.exports.farmerTraining = async (req, res) => {
   await farmerTraining
@@ -843,7 +842,7 @@ module.exports.farmerTrainingCardDelete = async (req, res) => {
 };
 //farmerTraining controller ends ----------------------------------
 
-//farmerPrize controller starts-------------------------------
+//farmerPrize controller starts------------------------------------
 // @GET - /farmerPrize
 module.exports.farmerPrize = async (req, res) => {
   await farmerPrize
@@ -1090,7 +1089,7 @@ module.exports.farmerPrizeCardDelete = async (req, res) => {
   }
 };
 
-//farmerPrize controller ends---------------------------------------
+//farmerPrize controller ends------------------------------------------
 
 //saaoTraining controller  starts--------------------------------------
 // @GET - /saaoTraining
@@ -1403,9 +1402,9 @@ module.exports.saaoTrainingCardDelete = async (req, res) => {
     console.log(err);
   }
 };
-//saaoTraining controller ends ----------------------------------
+//saaoTraining controller ends ----------------------------------------
 
-//review controller----------------------------------------------
+//review controller----------------------------------------------------
 // @GET - /review
 module.exports.review = async (req, res) => {
   await review
@@ -1683,9 +1682,9 @@ module.exports.reviewCardDelete = async (req, res) => {
     console.log(err);
   }
 }
-//review controller ends----------------------------------------
+//review controller ends-----------------------------------------------
 
-//bij controller-----------------------------------------------
+//bij controller-------------------------------------------------------
 // @GET - /bij
 module.exports.bij = async (req, res) => {
   await bij
@@ -1965,9 +1964,9 @@ module.exports.bijCardDelete = async (req, res) => {
     console.log(err);
   }
 };
-//bij controller ends--------------------------------------------
+//bij controller ends--------------------------------------------------
 
-//motivational controller starts ------------------------------------
+//motivational controller starts --------------------------------------
 // @GET - /motivational
 module.exports.motivational = async (req, res) => {
   await motivational

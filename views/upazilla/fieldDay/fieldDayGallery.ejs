@@ -1,43 +1,34 @@
 <%- include('../../includesMonitoring/header')-%>
-        <div id="wrapper" class="wrapper" >
-            <%- include('../../includesMonitoring/topbar')-%>
-            <div class="page-wrap">
-                <%- include('../../includesMonitoring/sidebar')-%>
-                <div class="main-content">
-                    <div class="container-fluid">
-                        <div class="row clearfix">
-                            <div class="col-md-10">
-                                <h1 class="text-center"><%= title %></h1>
+<div id="wrapper" class="wrapper" >
+    <%- include('../../includesMonitoring/topbar')-%>
+    <div class="page-wrap">
+        <%- include('../../includesMonitoring/sidebar')-%>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-md-10">
+                        <h1 class="text-center"><%= title %></h1>
+                    </div>
+                    <div class="table-responsive" id="output"></div>
+                    <div class="tz-gallery">
+                        <div class="row">
+                            <% records.forEach(function(row,index){ %>
+                            <div class="col-sm-12 col-md-4">
+                                <a class="lightbox" href="<%= row %>">
+                                    <img class="chobi" src="<%= row %>">
+                                </a>
                             </div>
-
-                        <div class="table-responsive" id="output"></div>
-
-                        <div class="tz-gallery">
-                            <div class="row">
-                                <% records.forEach(function(row,index){ %>
-                                <div class="col-sm-12 col-md-4">
-                                    <a class="lightbox" href="<%= row.image %>">
-                                        <img class="chobi" src="<%= row.image %>">
-                                    </a>
-                                </div>
-                                <% }) %>
-                                
-                                
-
-                            </div>
-                    
+                            <% }) %>
                         </div>
-
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-
-   
+    </div>
+</div>
 <%- include('../../includesMonitoring/footer')-%>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
-                        <script>
-                            baguetteBox.run('.tz-gallery');
-                        </script>
+<script>
+    baguetteBox.run('.tz-gallery');
+</script>
