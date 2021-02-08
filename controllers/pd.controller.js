@@ -241,7 +241,7 @@ module.exports.fieldDayCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await fieldDay
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -249,8 +249,7 @@ module.exports.fieldDayCardOpen = async (req, res) => {
         res.render("pd/fieldDay/fieldDayGallery", {
           title: "মাঠ দিবস ",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -311,7 +310,7 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await farmerTraining
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -319,8 +318,7 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
         res.render("pd/farmerTraining/farmerTrainingGallery", {
           title: "কৃষক প্রশিক্ষণ তথ্য",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -382,7 +380,7 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await farmerPrize
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -390,8 +388,7 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
         res.render("pd/farmerPrize/farmerPrizeGallery", {
           title: "কৃষক পুরষ্কার তথ্য",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -401,141 +398,6 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
 };
 //farmerPrize controller ends
 
-//fieldDay controller
-module.exports.fieldDay=async(req,res)=>{
-    try{
-        var districts=await dd.findAll();
-        console.log("inside");
-        res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'',district:districts });
-    }
-    catch(err){
-        console.log("outside",err);
-        res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:''});
-    }
-     
-    //  records:result
-
-};
-module.exports.fieldDayFilter=async(req,res)=>{
-    await fieldDay.findAll({
-        where: {year: req.body.year,upazillaId: req.body.upazilla}
-    })
-    .then(data => {
-        res.render('pd/fieldDay/fieldDayTable', {records: data} ,function(err, html) {
-         res.send(html);
-        });
-    })
-    .catch(err => {
-        res.render('pd/fieldDay/fieldDayYear', { title: 'মাঠ দিবস ',success:'', records: err });
-    })
-
-};
-module.exports.fieldDayDistrictFilter=async(req,res)=>{
-    try{
-        // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
-        res.send(upazillass)
-    }
-    catch(err){
-        console.log("outside",err);
-        res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'', upazillas:err });
-    }
-     
-
-};
-//fieldDay controller ends
-
-//farmerTraining controller
-module.exports.farmerTraining=async(req,res)=>{
-    try{
-        var districts=await dd.findAll();
-        console.log("inside");
-        res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'',district:districts });
-    }
-    catch(err){
-        console.log("outside",err);
-        res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:''});
-    }
-     
-    //  records:result
-
-};
-module.exports.farmerTrainingFilter=async(req,res)=>{
-    await farmerTraining.findAll({
-        where: {year: req.body.year,upazillaId: req.body.upazilla}
-    })
-    .then(data => {
-        res.render('pd/farmerTraining/farmerTrainingTable', {records: data} ,function(err, html) {
-         res.send(html);
-        });
-    })
-    .catch(err => {
-        res.render('pd/farmerTraining/farmerTrainingYear', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', records: err });
-    })
-
-};
-module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
-    try{
-        // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
-        res.send(upazillass)
-    }
-    catch(err){
-        console.log("outside",err);
-        res.render('pd/demonstration/demonstration', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', upazillas:err });
-    }
-     
-
-};
-//farmerTraining controller ends
-
-//farmerPrize controller
-module.exports.farmerPrize=async(req,res)=>{
-    try{
-        var districts=await dd.findAll();
-        console.log("inside");
-        res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'',district:districts });
-    }
-    catch(err){
-        console.log("outside",err);
-        res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:''});
-    }
-     
-     
-    //  records:result
-
-};
-module.exports.farmerPrizeFilter=async(req,res)=>{
-    await farmerPrize.findAll({
-        where: {year: req.body.year,upazillaId: req.body.upazilla}
-    })
-    .then(data => {
-        res.render('pd/farmerPrize/farmerPrizeTable', {records: data} ,function(err, html) {
-         res.send(html);
-        });
-    })
-    .catch(err => {
-        res.render('pd/farmerPrize/farmerPrizeYear', { title: 'কৃষক পুরষ্কার তথ্য',success:'', records: err });
-    })
-
-};
-module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
-    try{
-        // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
-        res.send(upazillass)
-    }
-    catch(err){
-        console.log("outside",err);
-        res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'', upazillas:err });
-    }
-     
-
-};
-//farmerPrize controller ends
 
 //saaoTraining controller
 module.exports.saaoTraining=async(req,res)=>{
@@ -589,7 +451,7 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await saaoTraining
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -597,8 +459,7 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
         res.render("pd/saaoTraining/saaoTrainingGallery", {
           title: "এসএএও প্রশিক্ষণ তথ্য",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -660,7 +521,7 @@ module.exports.reviewCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await review
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -668,8 +529,7 @@ module.exports.reviewCardOpen = async (req, res) => {
         res.render("pd/review/reviewGallery", {
           title: "রিভিউ ডিস্কাশন",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -731,7 +591,7 @@ module.exports.bijCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await bij
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -739,8 +599,7 @@ module.exports.bijCardOpen = async (req, res) => {
         res.render("pd/bij/bijGallery", {
           title: "বীজ প্রত্যয়ন প্রতিবেদন",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -802,7 +661,7 @@ module.exports.motivationalCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await motivational
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -810,8 +669,7 @@ module.exports.motivationalCardOpen = async (req, res) => {
         res.render("pd/motivational/motivationalGallery", {
           title: "মোটিভেশনাল ট্যুর",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);

@@ -239,7 +239,7 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await farmerTraining
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -247,7 +247,7 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
         res.render("dd/farmerTraining/farmerTrainingGallery", {
           title: "কৃষক প্রশিক্ষণ তথ্য",
           success: "",
-          records: data,
+          records: JSON.parse(data.image)
         });
       })
       .catch((err) => {
@@ -295,7 +295,7 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await farmerPrize
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -303,8 +303,7 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
         res.render("dd/farmerPrize/farmerPrizeGallery", {
           title: "কৃষক পুরষ্কার তথ্য",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -349,7 +348,7 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await saaoTraining
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -357,8 +356,7 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
         res.render("dd/saaoTraining/saaoTrainingGallery", {
           title: "এসএএও প্রশিক্ষণ তথ্য",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -404,7 +402,7 @@ module.exports.motivationalCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await motivational
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -412,8 +410,7 @@ module.exports.motivationalCardOpen = async (req, res) => {
         res.render("dd/motivational/motivationalGallery", {
           title: "মোটিভেশনাল ট্যুর",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -459,7 +456,7 @@ module.exports.reviewCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await review
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -467,8 +464,7 @@ module.exports.reviewCardOpen = async (req, res) => {
         res.render("dd/review/reviewGallery", {
           title: "রিভিউ ডিস্কাশন",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
@@ -514,7 +510,7 @@ module.exports.bijCardOpen = async (req, res) => {
     var upazilla=ddata.upazillaId;
     console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await bij
-      .findAll({
+      .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
@@ -522,8 +518,7 @@ module.exports.bijCardOpen = async (req, res) => {
         res.render("dd/bij/bijGallery", {
           title: "বীজ প্রত্যয়ন প্রতিবেদন",
           success: "",
-          records: data,
-        });
+          records: JSON.parse(data.image)        });
       })
       .catch((err) => {
         console.log(err);
