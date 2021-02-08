@@ -475,7 +475,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
     })
 
     const {batch,description,date,year,upazillaId} = req.body;
-    var name = `মাঠ দিবস - ${req.body.batch}`;
+    const name = `মাঠ দিবস - ${req.body.batch}`;
       try{
         await fieldDay
         .update({
@@ -497,7 +497,7 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
       }
   } else {
     const {batch,description,date,year,upazillaId} = req.body;
-    var name = `মাঠ দিবস - ${req.body.batch}`;
+    const name = `মাঠ দিবস - ${req.body.batch}`;
     try{
       await fieldDay
           .update({
