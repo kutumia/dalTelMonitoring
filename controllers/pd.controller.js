@@ -11,13 +11,11 @@ const bij = db.bij;
 const motivational = db.motivational;
 const activities = db.activities;
 
-
 const jwt= require('jsonwebtoken');
 const bcrypt= require('bcryptjs'); 
 
 const { request, response } = require('express');
 const express = require('express');
-
 
 module.exports.pdlogin=async(req,res)=>{
     res.render('pd/login', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'' });
@@ -37,7 +35,6 @@ module.exports.pdloginpost=async(req,res)=>{
                         const id=req.session.user_id;
                         // res.locals.type = req.session.type;
                         // res.locals.user_id = req.session.user_id;
-                        console.log("session=", req.session.type,res.locals);
                         // const token=jwt.sign({id},process.env.JWT_SECRET,token{
                         //     expiresIn:process.env.JWT_EXPIRES_IN
                         // });
@@ -146,7 +143,6 @@ module.exports.activityDashboardFilter = async (req,res) => {
 //signUp controller
 module.exports.pdsignup=async(req,res)=>{
     res.render('pd/signup', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'' });
-    res.send("log");
 };
 module.exports.pdsignuppost=async(req,res)=>{
     try {
@@ -161,7 +157,6 @@ module.exports.pdsignuppost=async(req,res)=>{
         }
         else{
             const hashedPassword = await bcrypt.hash(password, 10);
-            console.log(hashedPassword);
             try{
                 const createpd = await pd.create({
                     uname: uname,
@@ -173,7 +168,6 @@ module.exports.pdsignuppost=async(req,res)=>{
             catch (err) {
                 console.log(err);
             }
-            
         }
     }
     catch(error){
@@ -184,26 +178,19 @@ module.exports.pdsignuppost=async(req,res)=>{
 
 //dashboard controller
 module.exports.dashboardMonitoring = async(req,res) => {
-    console.log("dashboardMonitoring",res.locals.type);
     res.render('pd/dashboardMonitoring', { title: 'কৃষক পর্যায়ে উন্নতমানের ডাল,তেল ও মসলা বীজ উৎপাদন সংরক্ষণ ও বিতরণ (৩য় পর্যায়) প্রকল্প ',msg:'Welcome' });
 };
 //dashboard controller
-
 
 //fieldDay controller
 module.exports.fieldDay=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:''});
     }
-     
-    //  records:result
-
 };
 module.exports.fieldDayFilter=async(req,res)=>{
     await fieldDay.findAll({
@@ -223,11 +210,9 @@ module.exports.fieldDayDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'', upazillas:err });
     }
      
@@ -239,13 +224,11 @@ module.exports.fieldDayCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await fieldDay
       .findAll({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
         res.render("pd/fieldDay/fieldDayGallery", {
           title: "মাঠ দিবস ",
           success: "",
@@ -264,11 +247,9 @@ module.exports.fieldDayCardOpen = async (req, res) => {
 module.exports.farmerTraining=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
         res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:''});
     }
      
@@ -293,11 +274,9 @@ module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/demonstration/demonstration', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', upazillas:err });
     }
      
@@ -309,13 +288,11 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await farmerTraining
       .findAll({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
         res.render("pd/farmerTraining/farmerTrainingGallery", {
           title: "কৃষক প্রশিক্ষণ তথ্য",
           success: "",
@@ -334,11 +311,9 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
 module.exports.farmerPrize=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
         res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:''});
     }
      
@@ -364,11 +339,9 @@ module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'', upazillas:err });
     }
      
@@ -380,13 +353,11 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await farmerPrize
       .findAll({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
         res.render("pd/farmerPrize/farmerPrizeGallery", {
           title: "কৃষক পুরষ্কার তথ্য",
           success: "",
@@ -396,8 +367,6 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-  
-    //  records:result
 };
 //farmerPrize controller ends
 
@@ -405,11 +374,9 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
 module.exports.fieldDay=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:''});
     }
      
@@ -434,15 +401,11 @@ module.exports.fieldDayDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'', upazillas:err });
     }
-     
-
 };
 //fieldDay controller ends
 
@@ -450,16 +413,11 @@ module.exports.fieldDayDistrictFilter=async(req,res)=>{
 module.exports.farmerTraining=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
         res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:''});
     }
-     
-    //  records:result
-
 };
 module.exports.farmerTrainingFilter=async(req,res)=>{
     await farmerTraining.findAll({
@@ -473,21 +431,16 @@ module.exports.farmerTrainingFilter=async(req,res)=>{
     .catch(err => {
         res.render('pd/farmerTraining/farmerTrainingYear', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', records: err });
     })
-
 };
 module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/demonstration/demonstration', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', upazillas:err });
     }
-     
-
 };
 //farmerTraining controller ends
 
@@ -495,17 +448,12 @@ module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
 module.exports.farmerPrize=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
+        
         res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:''});
     }
-     
-     
-    //  records:result
-
 };
 module.exports.farmerPrizeFilter=async(req,res)=>{
     await farmerPrize.findAll({
@@ -519,21 +467,16 @@ module.exports.farmerPrizeFilter=async(req,res)=>{
     .catch(err => {
         res.render('pd/farmerPrize/farmerPrizeYear', { title: 'কৃষক পুরষ্কার তথ্য',success:'', records: err });
     })
-
 };
 module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
     try{
-        // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
+        
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'', upazillas:err });
     }
-     
-
 };
 //farmerPrize controller ends
 
@@ -541,17 +484,11 @@ module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
 module.exports.saaoTraining=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
         res.render('pd/saaoTraining/saaoTraining', { title: 'এসএএও প্রশিক্ষণ তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/saaoTraining/saaoTraining', { title: 'এসএএও প্রশিক্ষণ তথ্য',success:''});
     }
-     
-     
-    //  records:result
-
 };
 module.exports.saaoTrainingFilter=async(req,res)=>{
     await saaoTraining.findAll({
@@ -565,21 +502,18 @@ module.exports.saaoTrainingFilter=async(req,res)=>{
     .catch(err => {
         res.render('pd/saaoTraining/saaoTrainingYear', { title: 'এসএএও প্রশিক্ষণ তথ্য',success:'', records: err });
     })
-
 };
 module.exports.saaoTrainingDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
+        
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
+        
         res.render('pd/saaoTraining/saaoTraining', { title: 'এসএএও প্রশিক্ষণ তথ্য',success:'', upazillas:err });
     }
-     
-
 };
 module.exports.saaoTrainingCardOpen = async (req, res) => {
   
@@ -593,7 +527,7 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
+        // 
         res.render("pd/saaoTraining/saaoTrainingGallery", {
           title: "এসএএও প্রশিক্ষণ তথ্য",
           success: "",
@@ -603,8 +537,6 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-  
-    //  records:result
 };
 //saaoTraining controller ends
 
@@ -612,17 +544,12 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
 module.exports.review=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
+        
         res.render('pd/review/review', { title: 'রিভিউ ডিস্কাশন তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/review/review', { title: 'রিভিউ ডিস্কাশন তথ্য',success:''});
     }
-     
-     
-    //  records:result
-
 };
 module.exports.reviewFilter=async(req,res)=>{
     await review.findAll({
@@ -636,21 +563,17 @@ module.exports.reviewFilter=async(req,res)=>{
     .catch(err => {
         res.render('pd/review/reviewYear', { title: 'রিভিউ ডিস্কাশন তথ্য',success:'', records: err });
     })
-
 };
 module.exports.reviewDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
+        
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
         res.render('pd/review/review', { title: 'রিভিউ ডিস্কাশন তথ্য',success:'', upazillas:err });
     }
-     
-
 };
 module.exports.reviewCardOpen = async (req, res) => {
   
@@ -664,7 +587,7 @@ module.exports.reviewCardOpen = async (req, res) => {
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
+        // 
         res.render("pd/review/reviewGallery", {
           title: "রিভিউ ডিস্কাশন",
           success: "",
@@ -674,8 +597,6 @@ module.exports.reviewCardOpen = async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-  
-    //  records:result
 };
 //review controller ends
 
@@ -683,17 +604,13 @@ module.exports.reviewCardOpen = async (req, res) => {
 module.exports.bij=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
+        
         res.render('pd/bij/bij', { title: 'বীজ প্রত্যয়ন প্রতিবেদন তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
+        
         res.render('pd/bij/bij', { title: 'বীজ প্রত্যয়ন প্রতিবেদন তথ্য',success:''});
     }
-     
-     
-    //  records:result
-
 };
 module.exports.bijFilter=async(req,res)=>{
     await bij.findAll({
@@ -707,21 +624,18 @@ module.exports.bijFilter=async(req,res)=>{
     .catch(err => {
         res.render('pd/bij/bijYear', { title: 'বীজ প্রত্যয়ন প্রতিবেদন তথ্য',success:'', records: err });
     })
-
 };
 module.exports.bijDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
+        
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
+        
         res.render('pd/bij/bij', { title: 'বীজ প্রত্যয়ন প্রতিবেদন তথ্য',success:'', upazillas:err });
     }
-     
-
 };
 module.exports.bijCardOpen = async (req, res) => {
   
@@ -735,7 +649,7 @@ module.exports.bijCardOpen = async (req, res) => {
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
+        // 
         res.render("pd/bij/bijGallery", {
           title: "বীজ প্রত্যয়ন প্রতিবেদন",
           success: "",
@@ -745,8 +659,6 @@ module.exports.bijCardOpen = async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-  
-    //  records:result
 };
 //bij controller ends
 
@@ -754,17 +666,13 @@ module.exports.bijCardOpen = async (req, res) => {
 module.exports.motivational=async(req,res)=>{
     try{
         var districts=await dd.findAll();
-        console.log("inside");
+        
         res.render('pd/motivational/motivational', { title: 'মোটিভেশনাল ট্যুর তথ্য',success:'',district:districts });
     }
     catch(err){
-        console.log("outside",err);
+        
         res.render('pd/motivational/motivational', { title: 'মোটিভেশনাল ট্যুর তথ্য',success:''});
     }
-     
-     
-    //  records:result
-
 };
 module.exports.motivationalFilter=async(req,res)=>{
     await motivational.findAll({
@@ -778,21 +686,18 @@ module.exports.motivationalFilter=async(req,res)=>{
     .catch(err => {
         res.render('pd/motivational/motivationalYear', { title: 'মোটিভেশনাল ট্যুর তথ্য',success:'', records: err });
     })
-
 };
 module.exports.motivationalDistrictFilter=async(req,res)=>{
     try{
         // var dds=await dd.findAll({where: {id: req.body.district}});
         var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        console.log("inside");
+        
         res.send(upazillass)
     }
     catch(err){
-        console.log("outside",err);
+        
         res.render('pd/motivational/motivational', { title: 'মোটিভেশনাল ট্যুর তথ্য',success:'', upazillas:err });
     }
-     
-
 };
 module.exports.motivationalCardOpen = async (req, res) => {
   
@@ -806,7 +711,6 @@ module.exports.motivationalCardOpen = async (req, res) => {
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // console.log("inside");
         res.render("pd/motivational/motivationalGallery", {
           title: "মোটিভেশনাল ট্যুর",
           success: "",
@@ -816,8 +720,6 @@ module.exports.motivationalCardOpen = async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-  
-    //  records:result
 };
 //motivational controller ends
 
@@ -835,7 +737,6 @@ module.exports.fetchUpazilla = async(req,res) => {
         console.log(e)
     }
 }
-
 module.exports.filterActivities = async (req,res) => {
     const activityArray = await activities.findAll({
         where : {
@@ -878,7 +779,6 @@ module.exports.filterActivities = async (req,res) => {
         }
     );
 }
-
 module.exports.activities = async(req,res) => {
     try {
         const ddArray = await dd.findAll({
@@ -906,23 +806,12 @@ module.exports.addActivities = async(req,res) => {
 }
 module.exports.postActivities = async (req,res) => {
     try{
-        const {saao_training,field_day,farmer_training,review,farmer_awards,bij,motivational,upazillaId} = req.body;
-
-        var startRange = "";
-        var endRange = "";
-        if (res.locals.moment().format("M") < 7) {
-            startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
-            endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-        } else {
-            startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-            endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-        }
+        const {saao_training,field_day,farmer_training,review,farmer_awards,bij,motivational,upazillaId,year} = req.body;
 
         const fieldDayActivities = await activities.findOne({
             where : {
                 upazillaId : upazillaId,
-                start_time : startRange,
-                end_time : endRange,
+                year: year
             }
         });
 
@@ -943,8 +832,7 @@ module.exports.postActivities = async (req,res) => {
                 motivational,
                 upazillaId,
                 ddId: upazillaInfo.ddId,
-                start_time : startRange,
-                end_time : endRange
+                year: year
             })
             req.flash("message", "Added Successfully");
             res.redirect('/pd/activities')
@@ -956,7 +844,6 @@ module.exports.postActivities = async (req,res) => {
 }
 module.exports.editActivity = async (req,res) => {
     try{
-        console.log("triggered")
         const {id} = req.params;
         const activity = await activities.findByPk(id,{
             include: [upazilla,dd]
@@ -964,7 +851,6 @@ module.exports.editActivity = async (req,res) => {
         const ddArray = await dd.findAll({
             include: [upazilla]
         })
-        console.log(activity, ddArray.length)
         res.render('pd/activities/activitiesFormEdit',{ title: 'Form',success:'', ddArray: ddArray, activity: activity })
     }
     catch (e) {
@@ -973,7 +859,7 @@ module.exports.editActivity = async (req,res) => {
 }
 module.exports.postActivity = async (req,res) => {
     try{
-        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId} = req.body;
+        const {field_exhibition,field_day,farmer_training,agricultural_fair,farmer_awards,llP_distribution,solarlight_trap,upazillaId,year} = req.body;
 
         var startRange = "";
         var endRange = "";
@@ -997,8 +883,7 @@ module.exports.postActivity = async (req,res) => {
                 solarlight_trap,
                 upazillaId,
                 ddId: upazillaInfo.ddId,
-                start_time : startRange,
-                end_time : endRange
+                year
             },
             {
                 where: { id: req.params.id },
@@ -1006,7 +891,6 @@ module.exports.postActivity = async (req,res) => {
         )
         req.flash("message", "Added Successfully");
         res.redirect('/pd/activities')
-
     }
     catch (e) {
         console.log(e)
