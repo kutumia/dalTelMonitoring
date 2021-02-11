@@ -558,24 +558,12 @@ module.exports.fieldDayFormUpdatePost = async (req, res) => {
 };
 // @GET - /fieldDayCardDelete
 module.exports.fieldDayCardDelete = async (req, res) => {
-  var startRange = "";
-  var endRange = "";
-  if (res.locals.moment().format("M") < 7) {
-    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-  } else {
-    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
-
-
   try{
     const deleteData = await fieldDay.findByPk(req.params.id);
     const activity = await Activities.findOne({
       where : {
         upazillaId : deleteData.upazillaId,
-        start_time : startRange,
-        end_time : endRange,
+        year : req.params.year
       }
     });
     deleteData.destroy();
