@@ -12,11 +12,19 @@
                     <div class="table-responsive" id="output"></div>
                     <div class="tz-gallery">
                         <div class="row">
-                            <% records.forEach(function(row,index){ %>
+                            <%
+                                const images = JSON.parse(records.image)
+                            %>
+                            <% images.forEach(function(row,index){ %>
                             <div class="col-sm-12 col-md-4">
-                                <a class="lightbox" href="<%= row %>">
-                                    <img class="chobi" src="<%= row %>">
-                                </a>
+                                <div class="card">
+                                    <a class="lightbox" href="<%= row %>">
+                                        <img class="chobi" src="<%= row %>">
+                                    </a>
+                                    <div class="card-body text-center">
+                                        <a href="/upazilla/fieldDayImageDelete/<%= records.id %>/<%= index %>" class="btn btn-danger"  style="text-decoration:none;"> <i class="fa fa-trash"></i> Delete</a>
+                                    </div>
+                                </div>
                             </div>
                             <% }) %>
                         </div>

@@ -12,7 +12,8 @@ const {
   fieldDayFormEdit,
   fieldDayFormUpdatePost,
   fieldDayCardDelete,
-  fieldDayCardOpen,  
+  fieldDayCardOpen,
+  fieldDayImageDelete,
 
   farmerTraining,
   farmerTrainingYear,
@@ -99,7 +100,8 @@ router.post("/fieldDayFormPost", uploadfieldDay, fieldDayFormPost);
 router.get("/fieldDayCardOpen/:id", fieldDayCardOpen);
 router.get("/fieldDayFormEdit/:id", fieldDayFormEdit);
 router.post("/fieldDayFormUpdatePost/:id", uploadfieldDay, fieldDayFormUpdatePost);
-router.get("/fieldDayCardDelete/:id", fieldDayCardDelete);
+router.get("/fieldDayCardDelete/:id/:year", fieldDayCardDelete);
+router.get("/fieldDayImageDelete/:fieldDayId/:imageId", fieldDayImageDelete);
 
 router.get("/farmerTraining", farmerTraining);
 router.post("/farmerTrainingYear", farmerTrainingYear);

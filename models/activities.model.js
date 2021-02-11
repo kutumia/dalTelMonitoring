@@ -77,13 +77,9 @@ module.exports = (sequelize, Sequelize) => {
                 key: 'id'
             }
         },
-        start_time : {
-            type: Sequelize.STRING
-        },
-        end_time : {
+        year : {
             type: Sequelize.STRING
         }
     });
-
     return activities;
 };
