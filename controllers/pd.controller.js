@@ -33,12 +33,6 @@ module.exports.pdloginpost=async(req,res)=>{
                         req.session.type = "pd";
                         req.session.user_id = data[0].id;
                         const id=req.session.user_id;
-                        // res.locals.type = req.session.type;
-                        // res.locals.user_id = req.session.user_id;
-                        // const token=jwt.sign({id},process.env.JWT_SECRET,token{
-                        //     expiresIn:process.env.JWT_EXPIRES_IN
-                        // });
-                        // console.log("the token is :"+)
                         res.redirect('/pd/dashboard');
                     }
                     else{
@@ -55,29 +49,6 @@ module.exports.pdloginpost=async(req,res)=>{
                   err.message || "Some error occurred while retrieving tutorials."
               });
             });
-        // upazilla.findAll({ where: {uname: uname} })
-        // .then(data => {
-        //     if(data.length > 0){
-        //         bcrypt.compareSync(password , upazilla.password, function(err, result) {
-        //             if(result== true){
-        //                 res.redirect('/upazilla/dashboard');
-        //             }
-        //             else{
-        //                 res.redirect('/upazilla/dashboard');
-        //             }
-        //         });
-        //     }else{
-        //         return res.status(200).render('upazilla/login', { title: 'Horticulture Wing Central Management Software',msg:'Please provide a username and password' });
-        //     }
-        // })
-        // .catch(err => {
-        //   res.status(500).send({
-        //     message:
-        //       err.message || "Some error occurred while retrieving tutorials."
-        //   });
-        // });
-
-        
     }
     catch(error){
         console.log(error);
