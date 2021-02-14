@@ -6,123 +6,71 @@
         <div class="main-content">
             <div class="container-fluid">
                 <div class="row clearfix">
-                    <div
-                            id="signupbox"
-                            style="margin-top: 50px"
-                            class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2"
-                    >
+                    <div id="signupbox"  style="margin-top: 50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" >
                         <div class="panel panel-info">
                             <div class="panel-heading">
                                 <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
                             </div>
                             <div class="panel-body">
-                                <form
-                                        action="/upazilla/fieldDayFormPost"
-                                        id="FieldTrialForm"
-                                        class="form-horizontal"
-                                        method="post"
-                                        role="form"
-                                        enctype="multipart/form-data"
-                                >
-                                    <div
-                                            id="signupalert"
-                                            style="display: none"
-                                            class="alert alert-danger"
-                                    >
-                                        <p>Error:</p>
-                                        <span></span>
+                                <form action="/upazilla/fieldDayFormPost" id="FieldTrialForm" class="form-horizontal" method="post" role="form" enctype="multipart/form-data" >
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-md-3 control-label" >ব্যাচ নং/নাম</label>
+                                        <div class="col-md-9">
+                                          <select name="batch">
+                                            <option value="" disabled selected hidden>
+                                              Choose a batch no.
+                                            </option>
+                                            <%for(let step=0; step< parseInt( activities.field_day
+                                            ); step++) { %>
+                                            <option
+                                              value= "<%= step+1 %>" > <%=title%> <%=step+1%>
+                                            </option>
+                                            <% } %>
+                                          </select>
+                                        </div>
                                     </div>
 
-                  <div class="form-group">
-                    <label for="name" class="col-md-3 control-label"
-                      >ব্যাচ নং/নাম</label
-                    >
-                    <div class="col-md-9">
-                      <select name="batch">
-                        <option value="" disabled selected hidden>
-                          Choose a batch no.
-                        </option>
-                        <%for(let step=0; step< parseInt( activities.field_day
-                        ); step++) { %>
-                        <option 
-                          value= "<%= step+1 %>" > <%=title%> <%=step+1%>
-                        </option>
-                        <% } %>
-                      </select>
-                    </div>
-                  </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-md-3 control-label" >বিস্তারিত</label >
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="description" placeholder="বিস্তারিত"/>
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                        <label for="description" class="col-md-3 control-label"
-                        >বিস্তারিত</label
-                        >
-                        <div class="col-md-9">
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    name="description"
-                                    placeholder="বিস্তারিত"
-                            />
-                        </div>
-                    </div>
+                                    <div class="form-group">
+                                        <label for="date" class="col-md-3 control-label" >তারিখ</label>
+                                        <div class="col-md-9">
+                                            <input type="date" class="form-control" name="date" placeholder="তারিখ" />
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                        <label for="date" class="col-md-3 control-label"
-                        >তারিখ</label
-                        >
-                        <div class="col-md-9">
-                            <input
-                                    type="date"
-                                    class="form-control"
-                                    name="date"
-                                    placeholder="তারিখ"
-                            />
-                        </div>
-                    </div>
+                                    <div class="form-group">
+                                        <label>Choose</label>
+                                        <input type="file" id="filename" class="form-control" name="newsUp" required multiple />
+                                    </div>
 
-                    <div class="form-group">
-                        <label>Choose</label>
-                        <input
-                                type="file"
-                                id="filename"
-                                class="form-control"
-                                name="newsUp"
-                                required
-                                multiple
-                        />
-                    </div>
 
-                    <div class="form-group">
-                        <div class="col-md-9">
-                            <label for="year">বছর :</label>
-                            <select id="year" name="year" required>
-                                <option value="2017">২০১৭-১৮</option>
-                                <option value="2018">২০১৮-১৯</option>
-                                <option value="2019">২০১৯-২০</option>
-                                <option value="2020">২০২০-২১</option>
-                                <option value="2021">২০২১-২২</option>
-                                <option value="2022">২০২২-২৩</option>
-                            </select>
-                        </div>
-                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-9">
+                                            <label for="year">বছর :</label>
+                                            <select id="year" name="year" required>
+                                                <option value="2017">২০১৭-১৮</option>
+                                                <option value="2018">২০১৮-১৯</option>
+                                                <option value="2019">২০১৯-২০</option>
+                                                <option value="2020">২০২০-২১</option>
+                                                <option value="2021">২০২১-২২</option>
+                                                <option value="2022">২০২২-২৩</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                    <input
-                        type="hidden"
-                        class="form-control"
-                        name="user_id"
-                        placeholder="id"
-                        value="<%= user_id %>"
-                      />
+                                    <input type="hidden" class="form-control"  name="user_id"  placeholder="id" value="<%= user_id %>" />
 
                                     <div class="form-group">
                                         <!-- Button -->
                                         <div class="col-md-offset-3 col-md-9">
-                                            <input
-                                                    type="submit"
-                                                    name="submit"
-                                                    value="submit"
-                                                    class="btn btn-primary"
-                                            />
+                                            <input type="submit" name="submit" value="submit" class="btn btn-primary" />
                                         </div>
                                     </div>
                                 </form>
