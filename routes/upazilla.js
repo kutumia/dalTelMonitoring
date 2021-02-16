@@ -24,6 +24,7 @@ const {
   farmerTrainingFormUpdatePost,
   farmerTrainingCardDelete,
   farmerTrainingCardOpen,
+  farmerTrainingImageDelete,
 
   farmerPrize,
   farmerPrizeYear,
@@ -111,6 +112,7 @@ router.get("/farmerTrainingFormEdit/:id", farmerTrainingFormEdit);
 router.post("/farmerTrainingFormUpdatePost/:id", uploadfarmerTraining, farmerTrainingFormUpdatePost);
 router.get("/farmerTrainingCardDelete/:id", farmerTrainingCardDelete);
 router.get("/farmerTrainingCardOpen/:id", farmerTrainingCardOpen);
+router.get("/farmerTrainingImageDelete/:farmerTrainingId/:imageId", farmerTrainingImageDelete);
 
 router.get("/farmerPrize", farmerPrize);
 router.post("/farmerPrizeYear", farmerPrizeYear);

@@ -390,8 +390,7 @@ module.exports.fieldDayForm = async (req, res) => {
 };
 // @GET - /fieldDayFormEdit
 module.exports.fieldDayFormEdit = async (req, res) => {
-  try
-  {
+  try  {
     var startRange = "";
     var endRange = "";
     var year = "";
@@ -503,11 +502,8 @@ module.exports.fieldDayFormPost = async (req, res) => {
 };
 // @POST - /fieldDayFormUpdatePost
 module.exports.fieldDayFormUpdatePost = async (req, res) => {
-
   const updatedFieldDay = await fieldDay.findByPk(req.params.id)
-
   const path = req.files ;
-
   if (path) {
     let imagePath = JSON.parse(updatedFieldDay.image);
 
@@ -622,7 +618,7 @@ module.exports.fieldDayImageDelete = async (req,res) => {
 module.exports.farmerTraining = async (req, res) => {
   await farmerTraining
       .findAll({
-        where: { upazilla: req.session.user_id },
+        where: { upazillaId: req.session.user_id },
       })
       .then((data) => {
         res.render("upazilla/farmerTraining/farmerTraining", {
@@ -656,6 +652,7 @@ module.exports.farmerTrainingYear = async (req, res) => {
       console.log(err);
     })
 }
+//@GET - /farmerTrainingCardOpen
 module.exports.farmerTrainingCardOpen = async (req, res) => {
   
   var ddata=await farmerTraining.findByPk(req.params.id)
@@ -680,19 +677,39 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
 module.exports.farmerTrainingForm = async (req, res) => {
   var startRange = "";
   var endRange = "";
+  var year = "";
+
   if (res.locals.moment().format("M") < 7) {
-    startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+    startRange = res.locals.moment().subtract(1, "year").format("yyyy");
+    endRange = res.locals.moment().format("yyyy");
   } else {
-    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+    startRange = res.locals.moment().format("yyyy");
+    endRange = res.locals.moment().add(1, "year").format("yyyy");
+  }
+
+  if(startRange === "2017" && endRange === "2018"){
+    year = "2017"
+  }
+  else if(startRange === "2018" && endRange === "2019"){
+    year = "2018"
+  }
+  else if(startRange === "2019" && endRange === "2020"){
+    year = "2019"
+  }
+  else if(startRange === "2020" && endRange === "2021"){
+    year = "2020"
+  }
+  else if(startRange === "2021" && endRange === "2022"){
+    year = "2021"
+  }
+  else if(startRange === "2022" && endRange === "2023"){
+    year = "2022"
   }
 
   const farmerTrainingActivities = await Activities.findOne({
     where : {
       upazillaId : req.session.user_id,
-      start_time : startRange,
-      end_time : endRange,
+      year
     }
   });
   res.render("upazilla/farmerTraining/farmerTrainingForm", {
@@ -705,20 +722,10 @@ module.exports.farmerTrainingForm = async (req, res) => {
 };
 //@POST - /farmerTrainingFormPost
 module.exports.farmerTrainingFormPost = async (req, res) => {
-  var startRange = "";
-  var endRange = "";
-  if (res.locals.moment().format("M") < 7) {
-    startRange = "jul" + "-" + res.locals.moment().subtract(1,"year").format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().format("yyyy");
-  } else {
-    startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-    endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
-  }
   const activity = await Activities.findOne({
     where : {
       upazillaId : req.body.user_id,
-      start_time : startRange,
-      end_time : endRange,
+      year : req.body.year
     }
   });
   const path = req.file;
@@ -728,44 +735,46 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
       const imagePathName = "/upload/farmerTraining/" + image.filename;
       imageArray.push(imagePathName)
     })
-
     var imagePath = JSON.stringify(imageArray);
-
+    const{batch,description,date,year,user_id} = req.body;
     var name = `কৃষক প্রশিক্ষণ - ${req.body.batch}`;
-    var batch = req.body.batch;
-    var description = req.body.description;
-    var date = req.body.date;
-    var year = req.body.year;
-    var user_id = req.body.user_id;
-    if(activity.farmer_training_done < activity.farmer_training){
-      try{
-        await farmerTraining
-        .create({
-          name: name,
-          description: description,
-          date: date,
-          batch: batch,
-          year: year,
-          image: imagePath,
-          upazillaId: user_id,
-        });       
-        let farmerTrainingValue = activity.farmer_training_done;
-        let incrementedValue = ++farmerTrainingValue;
-        await activity.update(
-          {
-            farmer_training_done : incrementedValue
-          },
-          { 
-            where: {id : activity.id},
-          }
-        );
-        res.redirect("/upazilla/farmerTraining");
-      } catch(err){
-        console.log("Activities are not updated !", err);
-      } 
-    } else {
-      req.flash("message", "Abort !!! Already overloaded !");
+
+    if ( !activity ) {
+      req.flash("message", "No yet assigned any farmer training during this year");
       res.redirect("/upazilla/farmerTrainingForm");
+    }
+    else{
+      if(activity.farmer_training_done < activity.farmer_training){
+        try{
+          await farmerTraining
+              .create({
+                name: name,
+                description: description,
+                date: date,
+                batch: batch,
+                year: year,
+                image: imagePath,
+                upazillaId: user_id,
+              });
+          let farmerTrainingValue = activity.farmer_training_done;
+          let incrementedValue = ++farmerTrainingValue;
+          await activity.update(
+              {
+                farmer_training_done : incrementedValue
+              },
+              {
+                where: {id : activity.id},
+              }
+          );
+          res.redirect("/upazilla/farmerTraining");
+        } catch(err){
+          console.log("Activities are not updated !", err);
+        }
+      }
+      else {
+        req.flash("message", "Abort !!! Already overloaded !");
+        res.redirect("/upazilla/farmerTrainingForm");
+      }
     }
   } else {
     console.log("file not uploaded successfully");
@@ -776,18 +785,39 @@ module.exports.farmerTrainingFormEdit = async (req, res) => {
   try{
     var startRange = "";
     var endRange = "";
+    var year = "";
+
     if (res.locals.moment().format("M") < 7) {
-      startRange = "jul" + "-" + res.locals.moment().subtract(1, "year").format("yyyy");
-      endRange = "jul" + "-" + res.locals.moment().format("yyyy");
+      startRange = res.locals.moment().subtract(1, "year").format("yyyy");
+      endRange = res.locals.moment().format("yyyy");
     } else {
-      startRange = "jul" + "-" + res.locals.moment().format("yyyy");
-      endRange = "jul" + "-" + res.locals.moment().add(1, "year").format("yyyy");
+      startRange = res.locals.moment().format("yyyy");
+      endRange = res.locals.moment().add(1, "year").format("yyyy");
     }
+
+    if(startRange === "2017" && endRange === "2018"){
+      year = "2017"
+    }
+    else if(startRange === "2018" && endRange === "2019"){
+      year = "2018"
+    }
+    else if(startRange === "2019" && endRange === "2020"){
+      year = "2019"
+    }
+    else if(startRange === "2020" && endRange === "2021"){
+      year = "2020"
+    }
+    else if(startRange === "2021" && endRange === "2022"){
+      year = "2021"
+    }
+    else if(startRange === "2022" && endRange === "2023"){
+      year = "2022"
+    }
+
     const farmerTrainingActivities = await Activities.findOne({
       where : {
         upazillaId : req.session.user_id,
-        start_time : startRange,
-        end_time : endRange,
+        year : year
       }
     });
     const editData = await farmerTraining.findByPk(req.params.id);
@@ -803,9 +833,7 @@ module.exports.farmerTrainingFormEdit = async (req, res) => {
 // @POST - /farmerTrainingFormUpdatePost
 module.exports.farmerTrainingFormUpdatePost = async (req, res) => {
 const updatedFarmerTraining = await farmerTraining.findByPk(req.params.id)
-
 const path = req.files ;
-
 if (path) {
   let imagePath = JSON.parse(updatedFarmerTraining.image);
 
@@ -816,7 +844,7 @@ if (path) {
   const {batch,description,date,year,upazillaId} = req.body;
   var name = `কৃষক প্রশিক্ষণ - ${req.body.batch}`;
       try{
-        const data = await farmerTraining
+        await farmerTraining
         .update({
           name: name,
           batch:batch,
@@ -891,6 +919,32 @@ module.exports.farmerTrainingCardDelete = async (req, res) => {
     console.log(err);
   }
 };
+// @GET - /fieldDayImageDelete
+module.exports.farmerTrainingImageDelete = async (req,res) => {
+  try{
+    const data = await farmerTraining.findByPk(req.params.farmerTrainingId);
+    let images = JSON.parse(data.image);
+    fs.unlink("public/"+images[req.params.imageId], function (err) {
+      if (err) console.log(err);
+      // if no error, file has been deleted successfully
+      console.log('File deleted!');
+    });
+
+    images.splice(req.params.imageId,1)
+
+    await fieldDay.update(
+        {
+          image : JSON.stringify(images)
+        },
+        {
+          where: {id : req.params.fieldDayId},
+        }
+    );
+    res.redirect("/upazilla/farmerTraining");
+  } catch(err){
+    console.log(err);
+  }
+}
 //farmerTraining controller ends ----------------------------------
 
 //farmerPrize controller starts------------------------------------
