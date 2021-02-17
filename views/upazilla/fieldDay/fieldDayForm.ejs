@@ -12,10 +12,21 @@
                                 <div class="panel-title"><h2>মাঠ দিবস তথ্য ফর্ম</h2></div>
                             </div>
                             <div class="panel-body">
-                                <form action="/upazilla/fieldDayFormPost" id="FieldTrialForm" class="form-horizontal" method="post" role="form" enctype="multipart/form-data" >
-
+                                <form 
+                                action="/upazilla/fieldDayFormPost" 
+                                id="FieldTrialForm" 
+                                class="form-horizontal" 
+                                method="post" 
+                                role="form" 
+                                enctype="multipart/form-data" 
+                                >
+                                    <!-- Batch -->
                                     <div class="form-group">
-                                        <label for="name" class="col-md-3 control-label" >ব্যাচ নং/নাম</label>
+                                        <label for="name" 
+                                        class="col-md-3 control-label" 
+                                        >
+                                        ব্যাচ নং/নাম
+                                        </label>
                                         <div class="col-md-9">
                                           <select name="batch">
                                             <option value="" disabled selected hidden>
@@ -31,6 +42,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- Details -->
                                     <div class="form-group">
                                         <label for="description" class="col-md-3 control-label" >বিস্তারিত</label >
                                         <div class="col-md-9">
@@ -38,6 +50,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- Date -->
                                     <div class="form-group">
                                         <label for="date" class="col-md-3 control-label" >তারিখ</label>
                                         <div class="col-md-9">
@@ -45,11 +58,13 @@
                                         </div>
                                     </div>
 
+                                    <!-- NewsUpload  -->
                                     <div class="form-group">
                                         <label>Choose</label>
                                         <input type="file" id="filename" class="form-control" name="newsUp" required multiple />
                                     </div>
 
+                                    <!-- Year  -->
                                     <div class="form-group">
                                         <div class="col-md-9">
                                             <label for="year">বছর :</label>

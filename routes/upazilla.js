@@ -56,6 +56,7 @@ const {
   reviewFormUpdatePost,
   reviewCardDelete,
   reviewCardOpen,
+  reviewImageDelete,
 
   bij,
   bijYear,
@@ -66,6 +67,7 @@ const {
   bijFormUpdatePost,
   bijCardDelete,
   bijCardOpen,
+  bijImageDelete,
 
   motivational,
   motivationalYear,
@@ -76,6 +78,7 @@ const {
   motivationalFormUpdatePost,
   motivationalCardDelete,
   motivationalCardOpen,
+  motivationalImageDelete,
 
   dashboardMonitoring,
   upazillasignup,
@@ -143,6 +146,7 @@ router.get("/reviewFormEdit/:id", reviewFormEdit);
 router.post("/reviewFormUpdatePost/:id", uploadreview, reviewFormUpdatePost);
 router.get("/reviewCardDelete/:id", reviewCardDelete);
 router.get("/reviewCardOpen/:id", reviewCardOpen);
+router.get('/reviewImageDelete/:reviewId/:imageId', reviewImageDelete);
 
 router.get("/bij", bij);
 router.post("/bijYear", bijYear);
@@ -152,6 +156,7 @@ router.get("/bijFormEdit/:id", bijFormEdit);
 router.post("/bijFormUpdatePost/:id", uploadbij, bijFormUpdatePost);
 router.get("/bijCardDelete/:id", bijCardDelete);
 router.get("/bijCardOpen/:id", bijCardOpen);
+router.get("/bijImageDelete/:bijId/:imageId", bijImageDelete);
 
 router.get("/motivational", motivational);
 router.post("/motivationalYear", motivationalYear);
@@ -161,5 +166,6 @@ router.get("/motivationalFormEdit/:id", motivationalFormEdit);
 router.post("/motivationalFormUpdatePost/:id", uploadmotivational, motivationalFormUpdatePost);
 router.get("/motivationalCardDelete/:id", motivationalCardDelete)
 router.get("/motivationalCardOpen/:id", motivationalCardOpen);
+router.get("/motivationalImageDelete/:motivationalId/:imageId", motivationalImageDelete)
 
 module.exports = router;
