@@ -660,7 +660,7 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
       res.render("upazilla/farmerTraining/farmerTrainingGallery", {
         title: "কৃষক প্রশিক্ষণ তথ্য",
         success: "",
-        records: JSON.parse(data.image)
+        records: data
       });
     })
     .catch((err) => {
@@ -721,7 +721,7 @@ module.exports.farmerTrainingFormPost = async (req, res) => {
       year : req.body.year
     }
   });
-  const path = req.file;
+  const path = req.files;
   if (path) {
     let imageArray = [];
     path.map((image) => {
@@ -980,7 +980,7 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
       res.render("upazilla/farmerPrize/farmerPrizeGallery", {
         title: "কৃষক পুরষ্কার তথ্য",
         success: "",
-        records: JSON.parse(data.image)
+        records: data
       });
     })
     .catch((err) => {
@@ -1040,7 +1040,7 @@ module.exports.farmerPrizeFormPost = async (req, res) => {
       year : req.body.year
     }
   });
-  const path = req.file ;
+  const path = req.files ;
   if (path) {
     let imageArray = [];
     path.map((image) => {
@@ -1224,7 +1224,7 @@ module.exports.farmerPrizeCardDelete = async (req, res) => {
 // @GET - /farmerPrizeImageDelete
 module.exports.farmerPrizeImageDelete = async (req,res) => {
   try{
-    const data = await farmerPrize.findByPk(req.params.farmerTrainingId);
+    const data = await farmerPrize.findByPk(req.params.farmerPrizeId);
     let images = JSON.parse(data.image);
     fs.unlink("public/"+images[req.params.imageId], function (err) {
       if (err) console.log(err);
@@ -1300,7 +1300,7 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
       res.render("upazilla/saaoTraining/saaoTrainingGallery", {
         title: "এসএএও প্রশিক্ষণ তথ্য",
         success: "",
-        records: JSON.parse(data.image)
+        records: data
       });
     })
     .catch((err) => {
@@ -1361,7 +1361,7 @@ module.exports.saaoTrainingFormPost = async (req, res) => {
       year : req.body.year
     }
   });
-  const path = req.file ;
+  const path = req.files ;
   if (path) {
     let imageArray = [];
     path.map((image) => {
@@ -1547,7 +1547,7 @@ module.exports.saaoTrainingCardDelete = async (req, res) => {
 // @GET - /fieldTrainingImageDelete
 module.exports.saaoTrainingImageDelete = async (req,res) => {
   try{
-    const data = await saaoTraining.findByPk(req.params.farmerTrainingId);
+    const data = await saaoTraining.findByPk(req.params.saaoTrainingId);
     let images = JSON.parse(data.image);
     fs.unlink("public/"+images[req.params.imageId], function (err) {
       if (err) console.log(err);
@@ -1736,7 +1736,7 @@ module.exports.reviewFormPost = async (req, res) => {
     }
   });
 
-  const path = req.file ;
+  const path = req.files ;
   if (path) {
     let imageArray = [];
     path.map((image) => {
@@ -2064,7 +2064,7 @@ module.exports.bijFormPost = async (req, res) => {
       year : req.body.year
     }
   });  
-  const path = req.file ;
+  const path = req.files ;
   if (path) {
     let imageArray = [];
     path.map((image) => {
@@ -2390,7 +2390,7 @@ module.exports.motivationalFormPost = async (req, res) => {
       year : req.body.year
     }
   });
-  const path = req.file ;
+  const path = req.files ;
   if (path) {
     let imageArray = [];
     path.map((image) => {

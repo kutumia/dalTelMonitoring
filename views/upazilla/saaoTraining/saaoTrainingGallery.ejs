@@ -1,37 +1,39 @@
 <%- include('../../includesMonitoring/header')-%>
-        <div id="wrapper" class="wrapper" >
-            <%- include('../../includesMonitoring/topbar')-%>
-            <div class="page-wrap">
-                <%- include('../../includesMonitoring/sidebar')-%>
-                <div class="main-content">
-                    <div class="container-fluid">
-                        <div class="row clearfix">
-                            <div class="col-md-10">
-                                <h1 class="text-center"><%= title %></h1>
-                            </div>
-                            <div class="table-responsive" id="output"></div>
-
-                            <div class="tz-gallery">
-                                <div class="row">
-                                    <%
-                                    const images = JSON.parse(records.image)
-                                    %>
-                                    <% images.forEach(function(row,index){ %>
-                                    <div class="col-sm-12 col-md-4">
-                                        <a class="lightbox" href="<%= row %>">
-                                            <img class="chobi" src="<%= row %>">
-                                        </a>
-                                        <div class="card-body text-center">
-                                            <a href="/upazilla/saaoTrainingImageDelete/<%= records.id %>/<%= index %>" class="btn btn-danger"  style="text-decoration:none;"> <i class="fa fa-trash"></i> Delete</a>
-                                        </div>
+<div id="wrapper" class="wrapper" >
+    <%- include('../../includesMonitoring/topbar')-%>
+    <div class="page-wrap">
+        <%- include('../../includesMonitoring/sidebar')-%>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-md-10">
+                        <h1 class="text-center"><%= title %></h1>
+                    </div>
+                    <div class="table-responsive" id="output"></div>
+                    <div class="tz-gallery">
+                        <div class="row">
+                            <%
+                                const images = JSON.parse(records.image)
+                            %>
+                            <% images.forEach(function(row,index){ %>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="card">
+                                    <a class="lightbox" href="<%= row %>">
+                                        <img class="chobi" src="<%= row %>">
+                                    </a>
+                                    <div class="card-body text-center">
+                                        <a href="/upazilla/saaoTrainingImageDelete/<%= records.id %>/<%= index %>" class="btn btn-danger"  style="text-decoration:none;"> <i class="fa fa-trash"></i> Delete</a>
                                     </div>
-                                    <% }) %>
                                 </div>
                             </div>
+                            <% }) %>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
+         </div>
+    </div>
+</div>
 
 
    

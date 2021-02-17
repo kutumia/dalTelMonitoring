@@ -46,6 +46,7 @@ const {
   saaoTrainingFormUpdatePost,
   saaoTrainingCardDelete,
   saaoTrainingCardOpen,
+  saaoTrainingImageDelete,
 
   review,
   reviewYear,
@@ -114,7 +115,7 @@ router.get("/farmerTrainingForm", farmerTrainingForm);
 router.post("/farmerTrainingFormPost", uploadfarmerTraining, farmerTrainingFormPost);
 router.get("/farmerTrainingFormEdit/:id", farmerTrainingFormEdit);
 router.post("/farmerTrainingFormUpdatePost/:id", uploadfarmerTraining, farmerTrainingFormUpdatePost);
-router.get("/farmerTrainingCardDelete/:id", farmerTrainingCardDelete);
+router.get("/farmerTrainingCardDelete/:id/:year", farmerTrainingCardDelete);
 router.get("/farmerTrainingCardOpen/:id", farmerTrainingCardOpen);
 router.get("/farmerTrainingImageDelete/:farmerTrainingId/:imageId", farmerTrainingImageDelete);
 
@@ -124,7 +125,7 @@ router.get("/farmerPrizeForm", farmerPrizeForm);
 router.post("/farmerPrizeFormPost", uploadfarmerPrize, farmerPrizeFormPost);
 router.get("/farmerPrizeFormEdit/:id", farmerPrizeFormEdit);
 router.post("/farmerPrizeFormUpdatePost/:id", uploadfarmerPrize, farmerPrizeFormUpdatePost);
-router.get("/farmerPrizeCardDelete/:id", farmerPrizeCardDelete);
+router.get("/farmerPrizeCardDelete/:id/:year", farmerPrizeCardDelete);
 router.get("/farmerPrizeCardOpen/:id", farmerPrizeCardOpen);
 router.get("/farmerPrizeImageDelete/:farmerPrizeId/:imageId", farmerPrizeImageDelete);
 
@@ -134,8 +135,8 @@ router.get("/saaoTrainingForm", saaoTrainingForm);
 router.post("/saaoTrainingFormPost", uploadsaaoTraining, saaoTrainingFormPost);
 router.get("/saaoTrainingFormEdit/:id", saaoTrainingFormEdit);
 router.post("/saaoTrainingFormUpdatePost/:id", uploadsaaoTraining, saaoTrainingFormUpdatePost);
-router.get("/saaoTrainingCardDelete/:id", saaoTrainingCardDelete)
-router.get("/saaoTrainingCardOpen/:id", saaoTrainingCardOpen);saaoTrainingImageDelete
+router.get("/saaoTrainingCardDelete/:id/:year", saaoTrainingCardDelete);
+router.get("/saaoTrainingCardOpen/:id", saaoTrainingCardOpen);
 router.get("/saaoTrainingImageDelete/:saaoTrainingId/:imageId", saaoTrainingImageDelete);
 
 router.get("/review", review);
@@ -144,7 +145,7 @@ router.get("/reviewForm", reviewForm);
 router.post("/reviewFormPost", uploadreview, reviewFormPost);
 router.get("/reviewFormEdit/:id", reviewFormEdit);
 router.post("/reviewFormUpdatePost/:id", uploadreview, reviewFormUpdatePost);
-router.get("/reviewCardDelete/:id", reviewCardDelete);
+router.get("/reviewCardDelete/:id/:year", reviewCardDelete);
 router.get("/reviewCardOpen/:id", reviewCardOpen);
 router.get('/reviewImageDelete/:reviewId/:imageId', reviewImageDelete);
 
@@ -154,7 +155,7 @@ router.get("/bijForm", bijForm);
 router.post("/bijFormPost", uploadbij, bijFormPost);
 router.get("/bijFormEdit/:id", bijFormEdit);
 router.post("/bijFormUpdatePost/:id", uploadbij, bijFormUpdatePost);
-router.get("/bijCardDelete/:id", bijCardDelete);
+router.get("/bijCardDelete/:id/:year", bijCardDelete);
 router.get("/bijCardOpen/:id", bijCardOpen);
 router.get("/bijImageDelete/:bijId/:imageId", bijImageDelete);
 
@@ -164,7 +165,7 @@ router.get("/motivationalForm", motivationalForm);
 router.post("/motivationalFormPost", uploadmotivational, motivationalFormPost);
 router.get("/motivationalFormEdit/:id", motivationalFormEdit);
 router.post("/motivationalFormUpdatePost/:id", uploadmotivational, motivationalFormUpdatePost);
-router.get("/motivationalCardDelete/:id", motivationalCardDelete)
+router.get("/motivationalCardDelete/:id/:year", motivationalCardDelete)
 router.get("/motivationalCardOpen/:id", motivationalCardOpen);
 router.get("/motivationalImageDelete/:motivationalId/:imageId", motivationalImageDelete)
 
