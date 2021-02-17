@@ -1,6 +1,6 @@
 <%- include('../../includesMonitoring/header')-%>
-        <div id="wrapper" class="wrapper" >
-            <%- include('../../includesMonitoring/topbar')-%>
+    <div id="wrapper" class="wrapper" >
+        <%- include('../../includesMonitoring/topbar')-%>
             <div class="page-wrap">
                 <%- include('../../includesMonitoring/sidebar')-%>
                 <div class="main-content">
@@ -14,25 +14,26 @@
 
                         <div class="tz-gallery">
                             <div class="row">
-                                <% records.forEach(function(row,index){ %>
+                                <%
+                                const images = JSON.parse(records.image)
+                                %>
+                                <% images.forEach(function(row,index){ %>
                                 <div class="col-sm-12 col-md-4">
-                                    <a class="lightbox" href="<%= row.image %>">
-                                        <img class="chobi" src="<%= row.image %>">
+                                    <a class="lightbox" href="<%= row %>">
+                                        <img class="chobi" src="<%= row %>">
                                     </a>
+                                    <div class="card-body text-center">
+                                        <a href="/upazilla/farmerPrizeImageDelete/<%= records.id %>/<%= index %>" class="btn btn-danger"  style="text-decoration:none;"> <i class="fa fa-trash"></i> Delete</a>
+                                    </div>
                                 </div>
                                 <% }) %>
-                                
-                                
-
                             </div>
-                    
                         </div>
-
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
+    </div>
 
    
 <%- include('../../includesMonitoring/footer')-%>

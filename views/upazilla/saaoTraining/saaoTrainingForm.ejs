@@ -26,15 +26,6 @@
                   role="form"
                   enctype="multipart/form-data"
                 >
-                  <div
-                    id="signupalert"
-                    style="display: none"
-                    class="alert alert-danger"
-                  >
-                    <p>Error:</p>
-                    <span></span>
-                  </div>
-
                   <div class="form-group">
                     <label for="name" class="col-md-3 control-label"
                       >ব্যাচ নং/নাম</label
@@ -90,22 +81,23 @@
                       class="form-control"
                       name="newsUp"
                       required
+                      multiple
                     />
                   </div>
 
-                  <div class="form-group">
-                                        <div class="col-md-9">
-                                            <label for="year">বছর :</label>
-                                        <select id="year" name="year" required>
-                                            <option value="2017">২০১৭-১৮</option>
-                                            <option value="2018">২০১৮-১৯</option>
-                                            <option value="2019">২০১৯-২০</option>
-                                            <option value="2020">২০২০-২১</option>
-                                            <option value="2021">২০২১-২২</option>
-                                            <option value="2022">২০২২-২৩</option>
-                                        </select>
-                                        </div>
-                                    </div>
+                    <div class="form-group">
+                        <div class="col-md-9">
+                            <label for="year">বছর :</label>
+                            <select id="year" name="year" required>
+                                <option value="2017">২০১৭-১৮</option>
+                                <option value="2018">২০১৮-১৯</option>
+                                <option value="2019">২০১৯-২০</option>
+                                <option value="2020">২০২০-২১</option>
+                                <option value="2021">২০২১-২২</option>
+                                <option value="2022">২০২২-২৩</option>
+                            </select>
+                        </div>
+                    </div>
 
                  
                       <input
@@ -127,8 +119,6 @@
                       />
                     </div>
                   </div>
-
-                  <%- include('../../includesMonitoring/footer')-%>
                 </form>
               </div>
             </div>
@@ -138,3 +128,4 @@
     </div>
   </div>
 </div>
+<%- include('../../includesMonitoring/footer')-%>

@@ -26,38 +26,13 @@
                   role="form"
                   enctype="multipart/form-data"
                 >
-                  <div
-                    id="signupalert"
-                    style="display: none"
-                    class="alert alert-danger"
-                  >
-                    <p>Error:</p>
-                    <span></span>
-                  </div>
-                  <% if(messages.message){ %>
-                  <div
-                    class="alert alert-warning alert-dismissible fade show"
-                    role="alert"
-                  >
-                    <strong><%= messages.message %></strong>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="alert"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <% } %>
-
                   <!-- Batch Name -->
                   <div class="form-group">
                     <label for="name" class="col-md-3 control-label"
                       >ব্যাচ নং/নাম</label
                     >
                     <div class="col-md-9">
-                      <select name="name">
+                      <select name="batch">
                         <option value="<%= output.name %>" disabled selected hidden>
                           <%= output.name %>
                         </option>
@@ -106,7 +81,13 @@
 
                   <!-- images -->
                   <div>
-                    <img style="width: 100px; " src="<%= output.image %>" alt="">
+                    <%
+                    var images = JSON.parse(output.image);
+                    images.map( (image,key) => { %>
+                      <img style="width: 100px; " src="<%= image %>" alt="">
+                    <%    })
+                    %>
+
                   </div>
                   <div class="form-group">
                     <label>Choose</label>
@@ -121,25 +102,43 @@
 
                   <!-- year  -->
                   <div class="form-group">
-                    <label for="year" class="col-md-3 control-label">বছর</label>
                     <div class="col-md-9">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="year"
-                        value="<%= output.year %>"
-                      />
+                      <label for="year">বছর :</label>
+                      <select id="year" name="year" required>
+                        <%
+                        if(output.year === 2017){ %>
+                          <option value="<%= output.year %>">২০১৭-১৮</option>
+                        <%  }
+                        else if(output.year === 2018){ %>
+                          <option value="<%= output.year %>">২০১৮-১৯</option>
+                        <%  }
+                        else if(output.year === 2019){ %>
+                          <option value="<%= output.year %>">২০১৯-২০</option>
+                        <%  }
+                        else if(output.year === 2020){ %>
+                          <option value="<%= output.year %>">২০২০-২১</option>
+                        <%  }
+                        else if(output.year === 2021){ %>
+                          <option value="<%= output.year %>">২০২১-২২</option>
+                        <%  }
+                        else if(output.year === 2022){ %>
+                          <option value="<%= output.year %>">২০২২-২৩</option>
+                        <%  } %>
+
+                        <option value="2017">২০১৭-১৮</option>
+                        <option value="2018">২০১৮-১৯</option>
+                        <option value="2019">২০১৯-২০</option>
+                        <option value="2020">২০২০-২১</option>
+                        <option value="2021">২০২১-২২</option>
+                        <option value="2022">২০২২-২৩</option>
+                      </select>
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="year" class="col-md-3 control-label"
-                      >userid</label
-                    >
-                    <!-- <% console.log("frotn",output.upazilla_id)%> -->
                     <div class="col-md-9">
                       <input
-                        type="text"
+                        type="hidden"
                         class="form-control"
                         name="upazillaId"
                         placeholder="id"

@@ -35,6 +35,7 @@ const {
   farmerPrizeFormUpdatePost,
   farmerPrizeCardDelete,
   farmerPrizeCardOpen,
+  farmerPrizeImageDelete,
 
   saaoTraining,
   saaoTrainingYear,
@@ -122,6 +123,7 @@ router.get("/farmerPrizeFormEdit/:id", farmerPrizeFormEdit);
 router.post("/farmerPrizeFormUpdatePost/:id", uploadfarmerPrize, farmerPrizeFormUpdatePost);
 router.get("/farmerPrizeCardDelete/:id", farmerPrizeCardDelete);
 router.get("/farmerPrizeCardOpen/:id", farmerPrizeCardOpen);
+router.get("/farmerPrizeImageDelete/:farmerPrizeId/:imageId", farmerPrizeImageDelete);
 
 router.get("/saaoTraining", saaoTraining);
 router.post("/saaoTrainingYear", saaoTrainingYear);
@@ -130,7 +132,8 @@ router.post("/saaoTrainingFormPost", uploadsaaoTraining, saaoTrainingFormPost);
 router.get("/saaoTrainingFormEdit/:id", saaoTrainingFormEdit);
 router.post("/saaoTrainingFormUpdatePost/:id", uploadsaaoTraining, saaoTrainingFormUpdatePost);
 router.get("/saaoTrainingCardDelete/:id", saaoTrainingCardDelete)
-router.get("/saaoTrainingCardOpen/:id", saaoTrainingCardOpen);
+router.get("/saaoTrainingCardOpen/:id", saaoTrainingCardOpen);saaoTrainingImageDelete
+router.get("/saaoTrainingImageDelete/:saaoTrainingId/:imageId", saaoTrainingImageDelete);
 
 router.get("/review", review);
 router.post("/reviewYear", reviewYear);
