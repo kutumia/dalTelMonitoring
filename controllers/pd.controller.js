@@ -203,7 +203,7 @@ module.exports.fieldDayCardOpen = async (req, res) => {
         res.render("pd/fieldDay/fieldDayGallery", {
           title: "মাঠ দিবস ",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data        });
       })
       .catch((err) => {
         console.log(err);
@@ -266,7 +266,7 @@ module.exports.farmerTrainingCardOpen = async (req, res) => {
         res.render("pd/farmerTraining/farmerTrainingGallery", {
           title: "কৃষক প্রশিক্ষণ তথ্য",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data       });
       })
       .catch((err) => {
         console.log(err);
@@ -330,7 +330,8 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
         res.render("pd/farmerPrize/farmerPrizeGallery", {
           title: "কৃষক পুরষ্কার তথ্য",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -375,6 +376,26 @@ module.exports.fieldDayDistrictFilter=async(req,res)=>{
     catch(err){
         res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'', upazillas:err });
     }
+};
+module.exports.fieldDayCardOpen = async (req, res) => {
+    var ddata=await fieldDay.findByPk(req.params.id)
+    var batchNum=ddata.batch;
+    var year=ddata.year;
+    var upazilla=ddata.upazillaId;
+    await fieldDay
+        .findOne({
+            where: { upazillaId:upazilla,batch:batchNum,year:year },
+        })
+        .then((data) => {
+            res.render("pd/fieldDay/fieldDayGallery", {
+                title: 'মাঠ দিবস',
+                success: "",
+                records: data
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 //fieldDay controller ends
 
@@ -490,7 +511,6 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
     await saaoTraining
       .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
@@ -500,7 +520,8 @@ module.exports.saaoTrainingCardOpen = async (req, res) => {
         res.render("pd/saaoTraining/saaoTrainingGallery", {
           title: "এসএএও প্রশিক্ষণ তথ্য",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data
+        });
       })
       .catch((err) => {
         console.log(err);
