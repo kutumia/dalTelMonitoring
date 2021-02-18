@@ -339,137 +339,6 @@ module.exports.farmerPrizeCardOpen = async (req, res) => {
 };
 //farmerPrize controller ends
 
-
-//fieldDay controller
-module.exports.fieldDay=async(req,res)=>{
-    try{
-        var districts=await dd.findAll();
-        res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'',district:districts });
-    }
-    catch(err){
-        res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:''});
-    }
-     
-    //  records:result
-
-};
-module.exports.fieldDayFilter=async(req,res)=>{
-    await fieldDay.findAll({
-        where: {year: req.body.year,upazillaId: req.body.upazilla}
-    })
-    .then(data => {
-        res.render('pd/fieldDay/fieldDayTable', {records: data} ,function(err, html) {
-         res.send(html);
-        });
-    })
-    .catch(err => {
-        res.render('pd/fieldDay/fieldDayYear', { title: 'মাঠ দিবস ',success:'', records: err });
-    })
-
-};
-module.exports.fieldDayDistrictFilter=async(req,res)=>{
-    try{
-        // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        res.send(upazillass)
-    }
-    catch(err){
-        res.render('pd/fieldDay/fieldDay', { title: 'মাঠ দিবস',success:'', upazillas:err });
-    }
-};
-module.exports.fieldDayCardOpen = async (req, res) => {
-    var ddata=await fieldDay.findByPk(req.params.id)
-    var batchNum=ddata.batch;
-    var year=ddata.year;
-    var upazilla=ddata.upazillaId;
-    await fieldDay
-        .findOne({
-            where: { upazillaId:upazilla,batch:batchNum,year:year },
-        })
-        .then((data) => {
-            res.render("pd/fieldDay/fieldDayGallery", {
-                title: 'মাঠ দিবস',
-                success: "",
-                records: data
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
-//fieldDay controller ends
-
-//farmerTraining controller
-module.exports.farmerTraining=async(req,res)=>{
-    try{
-        var districts=await dd.findAll();
-        res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'',district:districts });
-    }
-    catch(err){
-        res.render('pd/farmerTraining/farmerTraining', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:''});
-    }
-};
-module.exports.farmerTrainingFilter=async(req,res)=>{
-    await farmerTraining.findAll({
-        where: {year: req.body.year,upazillaId: req.body.upazilla}
-    })
-    .then(data => {
-        res.render('pd/farmerTraining/farmerTrainingTable', {records: data} ,function(err, html) {
-         res.send(html);
-        });
-    })
-    .catch(err => {
-        res.render('pd/farmerTraining/farmerTrainingYear', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', records: err });
-    })
-};
-module.exports.farmerTrainingDistrictFilter=async(req,res)=>{
-    try{
-        // var dds=await dd.findAll({where: {id: req.body.district}});
-        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        res.send(upazillass)
-    }
-    catch(err){
-        res.render('pd/demonstration/demonstration', { title: 'কৃষক প্রশিক্ষণ তথ্য',success:'', upazillas:err });
-    }
-};
-//farmerTraining controller ends
-
-//farmerPrize controller
-module.exports.farmerPrize=async(req,res)=>{
-    try{
-        var districts=await dd.findAll();
-        
-        res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'',district:districts });
-    }
-    catch(err){
-        res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:''});
-    }
-};
-module.exports.farmerPrizeFilter=async(req,res)=>{
-    await farmerPrize.findAll({
-        where: {year: req.body.year,upazillaId: req.body.upazilla}
-    })
-    .then(data => {
-        res.render('pd/farmerPrize/farmerPrizeTable', {records: data} ,function(err, html) {
-         res.send(html);
-        });
-    })
-    .catch(err => {
-        res.render('pd/farmerPrize/farmerPrizeYear', { title: 'কৃষক পুরষ্কার তথ্য',success:'', records: err });
-    })
-};
-module.exports.farmerPrizeDistrictFilter=async(req,res)=>{
-    try{
-        var upazillass=await upazilla.findAll({where: {ddId: req.body.district}});
-        
-        res.send(upazillass)
-    }
-    catch(err){
-        res.render('pd/farmerPrize/farmerPrize', { title: 'কৃষক পুরষ্কার তথ্য',success:'', upazillas:err });
-    }
-};
-//farmerPrize controller ends
-
 //saaoTraining controller
 module.exports.saaoTraining=async(req,res)=>{
     try{
@@ -570,7 +439,7 @@ module.exports.reviewCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    
     await review
       .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
@@ -580,7 +449,7 @@ module.exports.reviewCardOpen = async (req, res) => {
         res.render("pd/review/reviewGallery", {
           title: "রিভিউ ডিস্কাশন",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data        });
       })
       .catch((err) => {
         console.log(err);
@@ -631,17 +500,17 @@ module.exports.bijCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    
     await bij
       .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
       })
       .then((data) => {
-        // 
         res.render("pd/bij/bijGallery", {
           title: "বীজ প্রত্যয়ন প্রতিবেদন",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -692,7 +561,7 @@ module.exports.motivationalCardOpen = async (req, res) => {
     var batchNum=ddata.batch;
     var year=ddata.year;
     var upazilla=ddata.upazillaId;
-    console.log("batchNum,year,upazillaID",batchNum,year,upazilla);
+    
     await motivational
       .findOne({
         where: { upazillaId:upazilla,batch:batchNum,year:year },
@@ -701,7 +570,7 @@ module.exports.motivationalCardOpen = async (req, res) => {
         res.render("pd/motivational/motivationalGallery", {
           title: "মোটিভেশনাল ট্যুর",
           success: "",
-          records: JSON.parse(data.image)        });
+          records: data        });
       })
       .catch((err) => {
         console.log(err);
