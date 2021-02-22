@@ -17,15 +17,15 @@
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
                                     <select class="form-control" id="dd_id" name="dd_id">
-                                        <option> Choose an জেলা </option>
+                                        <option>জেলা বাছুন</option>
                                         <% ddArray.map((dd,key) => { %>
-                                            <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                            <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.district %> </option>
                                         <% }) %>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <a href="/pd/addActivities" class="btn btn-danger">Add Activities</a>
+                        <a href="/pd/addActivities" class="btn btn-danger">কার্যক্রম যোগ করুন</a>
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <div id="output">

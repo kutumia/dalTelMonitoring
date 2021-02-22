@@ -17,9 +17,9 @@
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
                                     <select class="form-control" id="dd_id" name="dd_id">
-                                        <option> Choose an জেলা </option>
+                                        <option> জেলা বাছুন</option>
                                         <% ddArray.map((dd,key) => { %>
-                                            <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                            <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.district %> </option>
                                         <% }) %>
                                     </select>
                                 </div>

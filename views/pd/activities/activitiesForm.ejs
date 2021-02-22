@@ -10,7 +10,7 @@
                         <div class="panel panel-info">
                             <div class="panel-heading">
                                 <div class="panel-title text-center">
-                                    <h2>কৃষক পুরষ্কার তথ্য যোগ</h2>
+                                    <h2>কার্যক্রম তথ্য যোগ</h2>
                                 </div>
                                 <p><%
                                     if(success !=''){ %>
@@ -36,9 +36,9 @@
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1" class="col-md-3">জেলা</label>
                                         <select class="form-control" id="dd_id" name="dd_id">
-                                            <option> Choose an জেলা </option>
+                                            <option> জেলা বাছুন</option>
                                             <% ddArray.map((dd,key) => { %>
-                                                <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.uname %> </option>
+                                                <option value = <%= dd.id %> > <%= key+1 %> . <%= dd.district %> </option>
                                             <% }) %>
                                         </select>
                                     </div>
@@ -53,9 +53,9 @@
 
 
                                     <div class="form-group">
-                                        <label for="name" class="col-md-3 control-label">saao_training</label>
+                                        <label for="name" class="col-md-3 control-label">এসএএও প্রশিক্ষণ</label>
                                         <div class="col-md-9">
-                                            <input type="number" class="form-control" name="saao_training" placeholder="saao_training">
+                                            <input type="number" class="form-control" name="saao_training" placeholder="এসএএও প্রশিক্ষণ">
                                         </div>
                                     </div>
 
@@ -74,9 +74,9 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">review</label>
+                                        <label class="col-md-3 control-label">রিভিউ ডিস্কাশন</label>
                                         <div class="col-md-9">
-                                            <input type="number" class="form-control" name="review" placeholder="review">
+                                            <input type="number" class="form-control" name="review" placeholder="রিভিউ ডিস্কাশন">
                                         </div>
                                     </div>
 
@@ -88,16 +88,16 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="year" class="col-md-3 control-label">bij</label>
+                                        <label for="year" class="col-md-3 control-label">বীজ প্রত্যয়ন</label>
                                         <div class="col-md-9">
-                                            <input type="number" class="form-control" name="bij" placeholder="bij" >
+                                            <input type="number" class="form-control" name="bij" placeholder="বীজ প্রত্যয়ন" >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="year" class="col-md-3 control-label">motivational</label>
+                                        <label for="year" class="col-md-3 control-label">মোটিভেশনাল ট্যুর</label>
                                         <div class="col-md-9">
-                                            <input type="number" class="form-control" name="motivational" placeholder="motivational" >
+                                            <input type="number" class="form-control" name="motivational" placeholder="মোটিভেশনাল ট্যুর" >
                                         </div>
                                     </div>
                                     
@@ -137,7 +137,7 @@
         const { data } = await axios.post(`/pd/fetchUpazilla`,{dd_id:dd_id});
         $('#upazillaId').empty();
         if(data){
-            $('#upazillaId').append('<option value="0"> Choose upazillaId </option>');
+            $('#upazillaId').append('<option value="0"> উপজেলা বাছুন </option>');
             if (data.length > 0) {
                 $.each(data, function(key, value){
                     var count = key+1
